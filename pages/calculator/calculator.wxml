@@ -1,0 +1,91 @@
+<!--pages/calculator/calculator.wxml-->
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="header">
+    <text class="title">时赎器</text>
+    <text class="subtitle">计算你的时间值多少钱</text>
+  </view>
+
+  <!-- 输入区域 -->
+  <view class="input-section">
+    <!-- 薪资类型选择 -->
+    <view class="form-group">
+      <view class="label">薪资类型</view>
+      <picker mode="selector" range="{{['按年薪计算', '按月薪计算']}}" value="{{salaryType === 'annual' ? 0 : 1}}" bindchange="onSalaryTypeChange">
+        <view class="picker">
+          {{salaryType === 'annual' ? '按年薪计算' : '按月薪计算'}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 年薪输入 -->
+    <view class="form-group" wx:if="{{salaryType === 'annual'}}">
+      <view class="label">年薪 (元)</view>
+      <input class="input" type="number" placeholder="请输入年薪" value="{{annualSalary}}" bindinput="onAnnualSalaryInput" />
+    </view>
+
+    <!-- 月薪输入 -->
+    <view class="form-group" wx:if="{{salaryType === 'monthly'}}">
+      <view class="label">月薪 (元)</view>
+      <input class="input" type="number" placeholder="请输入月薪" value="{{monthlySalary}}" bindinput="onMonthlySalaryInput" />
+    </view>
+
+    <!-- 其他收入输入 -->
+    <view class="form-group">
+      <view class="label">其他年收入 (元)</view>
+      <input class="input" type="number" placeholder="副业、投资等其他收入" value="{{otherIncome}}" bindinput="onOtherIncomeInput" />
+    </view>
+
+    <!-- 精力系数说明 -->
+    <view class="form-group">
+      <view class="label">建议雇佣单价说明</view>
+      <view class="info-text">基于你的时间价值÷4，再乘以1.0x-2.0x精力系数范围</view>
+    </view>
+  </view>
+
+  <!-- 计算结果 -->
+  <view class="result-section" wx:if="{{showResult}}">
+    <view class="result-card">
+      <view class="result-title">您的时间价值</view>
+      
+      <view class="result-item main-result">
+        <view class="result-label">你的时间价值</view>
+        <view class="result-value highlight">¥{{timeValue || 0}}/小时</view>
+      </view>
+      
+      <view class="result-item">
+        <view class="result-label">建议雇佣单价</view>
+        <view class="result-value">¥{{hiringSuggestionMin || 0}} - ¥{{hiringSuggestionMax || 0}}/小时</view>
+      </view>
+      
+      <view class="result-tip">
+        <text>💡 如果外包费用在建议雇佣单价范围内，建议雇人代做</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提示信息 -->
+  <view class="tips-section" wx:if="{{!showResult}}">
+    <view class="tips-card">
+      <view class="tips-title">💡 使用说明</view>
+      <view class="tips-content">
+        <text>• 输入你的薪资和其他收入</text>
+        <text>• 系统计算你的时间价值(收入÷2000)</text>
+        <text>• 自动生成建议雇佣单价范围</text>
+        <text>• 帮助你决定是否应该雇人代做任务</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="btn btn-secondary" bindtap="showExplanation">查看计算说明</button>
+    <button class="btn btn-danger" bindtap="resetData" wx:if="{{showResult}}">重置数据</button>
+  </view>
+
+  <!-- 底部说明 -->
+  <view class="footer">
+    <text class="quote">"金钱仅仅是用来购买时间的工具"</text>
+    <text class="author">—— 《买回你的时间》</text>
+  </view>
+</view>

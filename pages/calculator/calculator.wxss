@@ -1,0 +1,306 @@
+/* pages/calculator/calculator.wxss */
+
+.container {
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* 页面标题 */
+.header {
+  text-align: center;
+  margin-bottom: 40rpx;
+  padding: 30rpx 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20rpx;
+  color: white;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  opacity: 0.9;
+  display: block;
+}
+
+/* 输入区域 */
+.input-section {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 30rpx;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15rpx;
+}
+
+.input {
+  width: 100%;
+  height: 88rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 15rpx;
+  padding: 0 20rpx;
+  font-size: 30rpx;
+  color: #333;
+  box-sizing: border-box;
+  background: #fafafa;
+}
+
+/* 移除 :focus 伪类，不兼容 */
+
+.picker {
+  height: 88rpx;
+  line-height: 88rpx;
+  padding: 0 20rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 15rpx;
+  font-size: 30rpx;
+  color: #333;
+  background: #fafafa;
+}
+
+/* 信息文本样式 */
+.info-text {
+  font-size: 28rpx;
+  color: #666;
+  background-color: #f8f9fa;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  text-align: center;
+}
+
+/* 计算结果 */
+.result-section {
+  margin-bottom: 30rpx;
+}
+
+.result-card {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  border: 2rpx solid #667eea;
+}
+
+.result-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding: 20rpx;
+  border-radius: 15rpx;
+  background: #f8f9ff;
+}
+
+.main-result {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  margin-bottom: 30rpx;
+}
+
+.main-result .result-label,
+.main-result .result-value {
+  color: white;
+}
+
+.result-label {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.result-value {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.highlight {
+  color: #667eea;
+  font-size: 36rpx;
+}
+
+.result-tip {
+  text-align: center;
+  padding: 20rpx;
+  background: #fff3cd;
+  border-radius: 15rpx;
+  border: 2rpx solid #ffeaa7;
+}
+
+.result-tip text {
+  font-size: 26rpx;
+  color: #856404;
+}
+
+/* 提示信息 */
+.tips-section {
+  margin-bottom: 30rpx;
+}
+
+.tips-card {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.tips-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.tips-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.tips-content text {
+  margin-bottom: 10rpx;
+}
+
+.tips-content text:last-child {
+  margin-bottom: 0;
+}
+
+.tips-content text {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  display: flex;
+  margin: 0 -10rpx 30rpx -10rpx;
+}
+
+.action-buttons .btn {
+  margin: 0 10rpx;
+}
+
+.btn {
+  flex: 1;
+  height: 88rpx;
+  border-radius: 15rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  border: none;
+  color: white;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+}
+
+.btn::after {
+  border: none;
+}
+
+/* 底部说明 */
+.footer {
+  text-align: center;
+  padding: 30rpx 0;
+  color: #888;
+}
+
+.quote {
+  font-size: 28rpx;
+  font-style: italic;
+  display: block;
+  margin-bottom: 10rpx;
+  color: #667eea;
+}
+
+.author {
+  font-size: 24rpx;
+  display: block;
+}
+
+/* 响应式设计 */
+@media (max-width: 400px) {
+  .container {
+    padding: 15rpx;
+  }
+  
+  .title {
+    font-size: 40rpx;
+  }
+  
+  .subtitle {
+    font-size: 24rpx;
+  }
+  
+  .input-section {
+    padding: 20rpx;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .btn {
+    margin-bottom: 15rpx;
+  }
+}
+
+/* 动画效果 */
+.result-card {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tips-card {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

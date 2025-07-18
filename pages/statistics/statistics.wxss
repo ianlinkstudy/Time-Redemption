@@ -1,0 +1,538 @@
+/* pages/statistics/statistics.wxss */
+
+.container {
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* 页面标题 */
+.header {
+  text-align: center;
+  margin-bottom: 30rpx;
+  padding: 30rpx 0;
+  background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+  border-radius: 20rpx;
+  color: white;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  opacity: 0.9;
+  display: block;
+}
+
+/* 总体统计卡片 */
+.overview-section {
+  margin-bottom: 30rpx;
+}
+
+.overview-card {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  border: 2rpx solid #6c5ce7;
+}
+
+.overview-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.overview-stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.stat-item {
+  text-align: center;
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #6c5ce7;
+  display: block;
+  margin-bottom: 5rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 5rpx;
+}
+
+.stat-desc {
+  font-size: 22rpx;
+  color: #999;
+  display: block;
+}
+
+/* 周期统计选择 */
+.period-section {
+  margin-bottom: 20rpx;
+}
+
+.period-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15rpx;
+}
+
+.period-picker {
+  height: 80rpx;
+  line-height: 80rpx;
+  padding: 0 20rpx;
+  background: white;
+  border-radius: 15rpx;
+  border: 2rpx solid #e0e0e0;
+  font-size: 30rpx;
+  color: #333;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 周期统计数据 */
+.period-stats-section {
+  margin-bottom: 30rpx;
+}
+
+.period-card {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.period-card-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.period-stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.period-stat {
+  text-align: center;
+  flex: 1;
+}
+
+.period-stat-label {
+  font-size: 26rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.period-stat-value {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+}
+
+/* 任务类型统计 */
+.task-type-section {
+  margin-bottom: 30rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-creative-time {
+  font-size: 26rpx;
+  color: #6c5ce7;
+  font-weight: normal;
+}
+
+.task-type-list {
+  background: white;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.task-type-item {
+  padding: 20rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.task-type-item:last-child {
+  border-bottom: none;
+}
+
+.task-type-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.task-type-stats {
+  display: flex;
+  gap: 20rpx;
+}
+
+.task-type-stat {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.task-type-stat-value {
+  color: #6c5ce7;
+  font-weight: bold;
+}
+
+/* 创造时间记录 */
+.creative-time-section {
+  margin-bottom: 30rpx;
+}
+
+.creative-time-summary {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.creative-time-total {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.creative-time-label {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+}
+
+.creative-time-value {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #00b894;
+}
+
+.creative-activities {
+  background: white;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.creative-activity-item {
+  padding: 20rpx;
+  border-bottom: 1rpx solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.creative-activity-item:last-child {
+  border-bottom: none;
+}
+
+.creative-activity-name {
+  font-size: 30rpx;
+  color: #333;
+  flex: 1;
+}
+
+.creative-activity-time {
+  font-size: 28rpx;
+  color: #00b894;
+  font-weight: bold;
+  margin-right: 20rpx;
+}
+
+.creative-activity-date {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.no-creative-activities {
+  background: white;
+  border-radius: 20rpx;
+  padding: 60rpx 30rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.no-creative-icon {
+  font-size: 64rpx;
+  margin-bottom: 20rpx;
+}
+
+.no-creative-text {
+  font-size: 32rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+}
+
+.no-creative-tip {
+  font-size: 26rpx;
+  color: #999;
+}
+
+/* 最近决策记录 */
+.recent-decisions-section {
+  margin-bottom: 30rpx;
+}
+
+.recent-decisions-list {
+  background: white;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  margin-bottom: 20rpx;
+}
+
+.recent-decision-item {
+  padding: 20rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.recent-decision-item:last-child {
+  border-bottom: none;
+}
+
+.recent-decision-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.recent-decision-title {
+  font-size: 30rpx;
+  color: #333;
+  flex: 1;
+  margin-right: 20rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recent-decision-result {
+  font-size: 24rpx;
+  padding: 5rpx 15rpx;
+  border-radius: 20rpx;
+  font-weight: bold;
+}
+
+.recent-decision-result.hire {
+  background: #d1f2eb;
+  color: #00b894;
+}
+
+.recent-decision-result.self {
+  background: #ffeaa7;
+  color: #fdcb6e;
+}
+
+.recent-decision-details {
+  display: flex;
+  gap: 20rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.view-all-history {
+  text-align: center;
+  font-size: 28rpx;
+  color: #6c5ce7;
+  padding: 20rpx;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  display: flex;
+  gap: 15rpx;
+  margin-bottom: 30rpx;
+  flex-wrap: wrap;
+}
+
+.btn {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 15rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  border: none;
+  color: white;
+  min-width: 160rpx;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+}
+
+.btn-outline {
+  background: white;
+  color: #666;
+  border: 2rpx solid #ddd;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+}
+
+.btn::after {
+  border: none;
+}
+
+/* 激励文案 */
+.motivation-section {
+  margin-bottom: 30rpx;
+}
+
+.motivation-card {
+  background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  color: white;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  animation: pulse 2s infinite;
+}
+
+.motivation-icon {
+  font-size: 48rpx;
+  margin-right: 20rpx;
+}
+
+.motivation-text {
+  flex: 1;
+}
+
+.motivation-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.motivation-desc {
+  font-size: 26rpx;
+  line-height: 1.4;
+  opacity: 0.9;
+  display: block;
+}
+
+/* 响应式设计 */
+@media (max-width: 400px) {
+  .container {
+    padding: 15rpx;
+  }
+  
+  .overview-stats {
+    flex-direction: column;
+    gap: 20rpx;
+  }
+  
+  .period-stats {
+    flex-direction: column;
+    gap: 20rpx;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .btn {
+    margin-bottom: 10rpx;
+  }
+  
+  .motivation-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .motivation-icon {
+    margin-right: 0;
+    margin-bottom: 15rpx;
+  }
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.overview-card,
+.period-card,
+.task-type-list,
+.creative-time-summary,
+.creative-activities,
+.recent-decisions-list {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* 统计数字动画 */
+.stat-value,
+.period-stat-value,
+.creative-time-value {
+  animation: countUp 0.8s ease-out;
+}
+
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(10rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,534 @@
+/* pages/index/index.wxss */
+
+/* 移除 page 标签选择器，不兼容 */
+
+.container {
+  padding: 20rpx;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* 欢迎头部 */
+.welcome-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20rpx;
+  padding: 40rpx 30rpx;
+  margin-bottom: 30rpx;
+  color: white;
+  text-align: center;
+  box-shadow: 0 8rpx 30rpx rgba(102, 126, 234, 0.3);
+}
+
+.welcome-title {
+  margin-bottom: 30rpx;
+}
+
+.main-title {
+  font-size: 56rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.sub-title {
+  font-size: 28rpx;
+  opacity: 0.9;
+  display: block;
+}
+
+.welcome-greeting {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15rpx;
+  padding: 20rpx;
+}
+
+.greeting-text {
+  font-size: 32rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.greeting-desc {
+  font-size: 26rpx;
+  opacity: 0.9;
+  display: block;
+}
+
+/* 统计概览 */
+.stats-overview {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  border: 2rpx solid #667eea;
+}
+
+.stats-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.stats-grid {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.stat-item {
+  text-align: center;
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #667eea;
+  margin-bottom: 10rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* 快速操作 */
+.quick-actions-section {
+  margin-bottom: 30rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.quick-actions {
+  display: flex;
+  margin: 0 -7.5rpx;
+}
+
+.quick-actions .quick-action-item {
+  margin: 0 7.5rpx;
+}
+
+.quick-action-item {
+  flex: 1;
+  background: white;
+  border-radius: 15rpx;
+  padding: 30rpx 20rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.1);
+  border: 2rpx solid #f0f0f0;
+}
+
+/* 移除 :active 伪类，不兼容 */
+
+.quick-action-icon {
+  font-size: 48rpx;
+  margin-bottom: 15rpx;
+}
+
+.quick-action-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.quick-action-desc {
+  font-size: 22rpx;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* 功能导航 */
+.features-section {
+  margin-bottom: 30rpx;
+}
+
+.features-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.features-grid .feature-item {
+  margin-bottom: 15rpx;
+}
+
+.features-grid .feature-item:last-child {
+  margin-bottom: 0;
+}
+
+.feature-item {
+  background: white;
+  border-radius: 15rpx;
+  padding: 25rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4rpx 15rpx rgba(0, 0, 0, 0.1);
+  border: 2rpx solid #f0f0f0;
+}
+
+/* 移除 :active 伪类，不兼容 */
+
+.feature-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 15rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  margin-right: 20rpx;
+}
+
+.feature-content {
+  flex: 1;
+}
+
+.feature-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5rpx;
+}
+
+.feature-desc {
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.4;
+}
+
+.feature-arrow {
+  font-size: 28rpx;
+  color: #999;
+  margin-left: 15rpx;
+}
+
+/* 今日提示 */
+.today-tip-section {
+  margin-bottom: 30rpx;
+}
+
+.tip-card {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  border: 2rpx solid #fd79a8;
+}
+
+.tip-icon {
+  font-size: 48rpx;
+  margin-right: 20rpx;
+}
+
+.tip-content {
+  flex: 1;
+}
+
+.tip-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.tip-text {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 10rpx;
+}
+
+.tip-author {
+  font-size: 22rpx;
+  color: #999;
+  font-style: italic;
+}
+
+/* 新用户引导 */
+.guide-section {
+  margin-bottom: 30rpx;
+}
+
+.guide-card {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  color: #333;
+  text-align: center;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  border: 2rpx solid #74b9ff;
+}
+
+.guide-icon {
+  font-size: 64rpx;
+  margin-bottom: 20rpx;
+}
+
+.guide-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+  color: #333;
+}
+
+.guide-steps {
+  margin-bottom: 30rpx;
+}
+
+.guide-step {
+  font-size: 26rpx;
+  margin-bottom: 10rpx;
+  color: #666;
+}
+
+.guide-btn {
+  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+  color: white;
+  border: none;
+  border-radius: 25rpx;
+  padding: 15rpx 40rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  box-shadow: 0 4rpx 15rpx rgba(116, 185, 255, 0.3);
+}
+
+.guide-btn::after {
+  border: none;
+}
+
+/* 底部操作 */
+.bottom-actions {
+  display: flex;
+  margin: 0 -7.5rpx 30rpx -7.5rpx;
+}
+
+.bottom-actions .action-btn {
+  margin: 0 7.5rpx;
+}
+
+.action-btn {
+  flex: 1;
+  height: 88rpx;
+  border-radius: 15rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.action-btn.secondary {
+  background: white;
+  color: #667eea;
+  border: 2rpx solid #667eea;
+}
+
+.action-btn::after {
+  border: none;
+}
+
+.btn-icon {
+  font-size: 32rpx;
+}
+
+.btn-text {
+  font-size: 28rpx;
+}
+
+/* 版权信息 */
+.copyright {
+  text-align: center;
+  padding: 30rpx;
+  background: white;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  margin-bottom: 30rpx;
+}
+
+.copyright-text {
+  font-size: 26rpx;
+  color: #667eea;
+  font-style: italic;
+  margin-bottom: 10rpx;
+  display: block;
+}
+
+.copyright-author {
+  font-size: 22rpx;
+  color: #999;
+  display: block;
+}
+
+/* 响应式设计 */
+@media (max-width: 400px) {
+  .container {
+    padding: 15rpx;
+  }
+  
+  .stats-grid {
+    flex-direction: column;
+  }
+  
+  .stats-grid .stat-item {
+    margin-bottom: 20rpx;
+  }
+  
+  .stats-grid .stat-item:last-child {
+    margin-bottom: 0;
+  }
+  
+  .quick-actions {
+    flex-direction: column;
+  }
+  
+  .quick-action-item {
+    margin-bottom: 10rpx;
+  }
+  
+  .feature-item {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .feature-icon {
+    margin-right: 0;
+    margin-bottom: 15rpx;
+  }
+  
+  .feature-arrow {
+    margin-left: 0;
+    margin-top: 10rpx;
+  }
+  
+  .bottom-actions {
+    flex-direction: column;
+  }
+  
+  .action-btn {
+    margin-bottom: 10rpx;
+  }
+  
+  .tip-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .tip-icon {
+    margin-right: 0;
+    margin-bottom: 15rpx;
+  }
+  
+  .quick-actions {
+    margin: 0;
+    flex-direction: column;
+  }
+  
+  .quick-actions .quick-action-item {
+    margin: 0 0 15rpx 0;
+  }
+  
+  .quick-actions .quick-action-item:last-child {
+    margin-bottom: 0;
+  }
+  
+  .bottom-actions {
+    margin: 0 0 30rpx 0;
+    flex-direction: column;
+  }
+  
+  .bottom-actions .action-btn {
+    margin: 0 0 15rpx 0;
+  }
+  
+  .bottom-actions .action-btn:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* 动画效果 */
+.welcome-header,
+.stats-overview,
+.quick-action-item,
+.feature-item,
+.tip-card,
+.guide-card,
+.copyright {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 统计数字动画 */
+.stat-value {
+  animation: countUp 1s ease-out;
+}
+
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 悬浮动画 */
+.welcome-header {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5rpx);
+  }
+}
+
+/* 加载动画 */
+.quick-actions,
+.features-grid {
+  animation: slideInLeft 0.8s ease-out;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

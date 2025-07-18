@@ -1,0 +1,197 @@
+<!--pages/statistics/statistics.wxml-->
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="header">
+    <text class="title">时间统计中心</text>
+    <text class="subtitle">追踪你买回的时间价值</text>
+  </view>
+
+  <!-- 总体统计卡片 -->
+  <view class="overview-section">
+    <view class="overview-card">
+      <view class="overview-title">总体成就</view>
+      <view class="overview-stats">
+        <view class="stat-item">
+          <view class="stat-value">{{totalSavedTime.toFixed(1)}}</view>
+          <view class="stat-label">小时</view>
+          <view class="stat-desc">买回时间</view>
+        </view>
+        <view class="stat-item">
+          <view class="stat-value">¥{{totalSavedMoney.toFixed(0)}}</view>
+          <view class="stat-label">元</view>
+          <view class="stat-desc">节省金额</view>
+        </view>
+        <view class="stat-item">
+          <view class="stat-value">{{totalDecisions}}</view>
+          <view class="stat-label">次</view>
+          <view class="stat-desc">决策记录</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 周期统计选择 -->
+  <view class="period-section">
+    <view class="period-title">统计周期</view>
+    <picker mode="selector" range="{{['全部时间', '本月数据', '今年数据']}}" value="{{showPeriod === 'all' ? 0 : (showPeriod === 'monthly' ? 1 : 2)}}" bindchange="onPeriodChange">
+      <view class="period-picker">
+        {{showPeriod === 'all' ? '全部时间' : (showPeriod === 'monthly' ? '本月数据' : '今年数据')}}
+      </view>
+    </picker>
+  </view>
+
+  <!-- 周期统计数据 -->
+  <view class="period-stats-section">
+    <!-- 全部时间统计 -->
+    <view class="period-card" wx:if="{{showPeriod === 'all'}}">
+      <view class="period-card-title">全部时间统计</view>
+      <view class="period-stats">
+        <view class="period-stat">
+          <view class="period-stat-label">雇人决策</view>
+          <view class="period-stat-value">{{hireDecisions}}次</view>
+        </view>
+        <view class="period-stat">
+          <view class="period-stat-label">自己做</view>
+          <view class="period-stat-value">{{selfDecisions}}次</view>
+        </view>
+        <view class="period-stat">
+          <view class="period-stat-label">创造时间</view>
+          <view class="period-stat-value">{{creativeTime.toFixed(1)}}小时</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 本月统计 -->
+    <view class="period-card" wx:if="{{showPeriod === 'monthly'}}">
+      <view class="period-card-title">本月统计</view>
+      <view class="period-stats">
+        <view class="period-stat">
+          <view class="period-stat-label">节省时间</view>
+          <view class="period-stat-value">{{monthlyStats.savedTime.toFixed(1)}}小时</view>
+        </view>
+        <view class="period-stat">
+          <view class="period-stat-label">节省金额</view>
+          <view class="period-stat-value">¥{{monthlyStats.savedMoney.toFixed(0)}}</view>
+        </view>
+        <view class="period-stat">
+          <view class="period-stat-label">决策次数</view>
+          <view class="period-stat-value">{{monthlyStats.decisions}}次</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 今年统计 -->
+    <view class="period-card" wx:if="{{showPeriod === 'yearly'}}">
+      <view class="period-card-title">今年统计</view>
+      <view class="period-stats">
+        <view class="period-stat">
+          <view class="period-stat-label">节省时间</view>
+          <view class="period-stat-value">{{yearlyStats.savedTime.toFixed(1)}}小时</view>
+        </view>
+        <view class="period-stat">
+          <view class="period-stat-label">节省金额</view>
+          <view class="period-stat-value">¥{{yearlyStats.savedMoney.toFixed(0)}}</view>
+        </view>
+        <view class="period-stat">
+          <view class="period-stat-label">决策次数</view>
+          <view class="period-stat-value">{{yearlyStats.decisions}}次</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 任务类型统计 -->
+  <view class="task-type-section" wx:if="{{Object.keys(taskTypeStats).length > 0}}">
+    <view class="section-title">任务类型分析</view>
+    <view class="task-type-list">
+      <view class="task-type-item" wx:for="{{Object.keys(taskTypeStats)}}" wx:key="*this">
+        <view class="task-type-name">{{item}}</view>
+        <view class="task-type-stats">
+          <view class="task-type-stat">
+            <text class="task-type-stat-label">次数：</text>
+            <text class="task-type-stat-value">{{taskTypeStats[item].count}}</text>
+          </view>
+          <view class="task-type-stat">
+            <text class="task-type-stat-label">时间：</text>
+            <text class="task-type-stat-value">{{taskTypeStats[item].savedTime.toFixed(1)}}h</text>
+          </view>
+          <view class="task-type-stat">
+            <text class="task-type-stat-label">金额：</text>
+            <text class="task-type-stat-value">¥{{taskTypeStats[item].savedMoney.toFixed(0)}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 创造时间记录 -->
+  <view class="creative-time-section">
+    <view class="section-title">
+      创造时间记录
+      <text class="add-creative-time" bindtap="addCreativeTime">+ 添加记录</text>
+    </view>
+    
+    <view class="creative-time-summary">
+      <view class="creative-time-total">
+        <text class="creative-time-label">总创造时间</text>
+        <text class="creative-time-value">{{creativeTime.toFixed(1)}}小时</text>
+      </view>
+    </view>
+
+    <view class="creative-activities" wx:if="{{creativeActivities.length > 0}}">
+      <view class="creative-activity-item" wx:for="{{creativeActivities}}" wx:key="timestamp">
+        <view class="creative-activity-name">{{item.activity}}</view>
+        <view class="creative-activity-time">{{item.hours}}小时</view>
+        <view class="creative-activity-date">{{item.timestamp.split('T')[0]}}</view>
+      </view>
+    </view>
+
+    <view class="no-creative-activities" wx:if="{{creativeActivities.length === 0}}">
+      <view class="no-creative-icon">📝</view>
+      <view class="no-creative-text">还没有创造时间记录</view>
+      <view class="no-creative-tip">记录你如何利用节省的时间创造价值</view>
+    </view>
+  </view>
+
+  <!-- 最近决策记录 -->
+  <view class="recent-decisions-section" wx:if="{{recentDecisions.length > 0}}">
+    <view class="section-title">最近决策记录</view>
+    <view class="recent-decisions-list">
+      <view class="recent-decision-item" wx:for="{{recentDecisions}}" wx:key="id">
+        <view class="recent-decision-header">
+          <view class="recent-decision-title">{{item.taskDescription}}</view>
+          <view class="recent-decision-result {{item.analysis.decision === 'hire' ? 'hire' : 'self'}}">
+            {{item.analysis.decision === 'hire' ? '雇人' : '自己做'}}
+          </view>
+        </view>
+        <view class="recent-decision-details">
+          <text class="recent-decision-time">{{item.estimatedHours}}小时</text>
+          <text class="recent-decision-price">¥{{item.outsourcePrice}}</text>
+          <text class="recent-decision-date">{{item.timestamp.split('T')[0]}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="view-all-history" bindtap="viewDetailHistory">
+      查看全部历史记录 →
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="btn btn-primary" bindtap="addCreativeTime">记录创造时间</button>
+    <button class="btn btn-secondary" bindtap="viewDetailHistory">查看详细历史</button>
+    <button class="btn btn-outline" bindtap="exportData">导出数据</button>
+    <button class="btn btn-danger" bindtap="clearData">清空数据</button>
+  </view>
+
+  <!-- 激励文案 -->
+  <view class="motivation-section" wx:if="{{totalSavedTime > 0}}">
+    <view class="motivation-card">
+      <view class="motivation-icon">🎉</view>
+      <view class="motivation-text">
+        <text class="motivation-title">太棒了！</text>
+        <text class="motivation-desc">你已经买回了 {{totalSavedTime.toFixed(1)}} 小时的时间，继续用它们创造更大价值！</text>
+      </view>
+    </view>
+  </view>
+</view>

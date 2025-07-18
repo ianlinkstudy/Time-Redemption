@@ -1,0 +1,155 @@
+<!--pages/decision/decision.wxml-->
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="header">
+    <text class="title">雇人决策引擎</text>
+    <text class="subtitle">智能判断是否应该雇人代做</text>
+  </view>
+
+  <!-- 时间价值显示 -->
+  <view class="time-value-section">
+    <view class="time-value-card" wx:if="{{timeValue > 0}}">
+      <view class="time-value-title">您的时间价值</view>
+      <view class="time-value-amount">¥{{timeValue.toFixed(2)}}/小时</view>
+      <view class="time-value-tip">精力系数范围：1.0x - 2.0x</view>
+    </view>
+    
+    <view class="no-time-value" wx:if="{{timeValue <= 0}}">
+      <view class="no-time-value-icon">⚠️</view>
+      <view class="no-time-value-text">尚未设置时间价值</view>
+      <button class="btn btn-primary" bindtap="goToCalculator">去计算时间价值</button>
+    </view>
+  </view>
+
+  <!-- 任务输入区域 -->
+  <view class="task-input-section" wx:if="{{timeValue > 0}}">
+    <view class="section-title">任务信息</view>
+    
+    <!-- 任务描述 -->
+    <view class="form-group">
+      <view class="label">任务描述</view>
+      <textarea 
+        class="textarea" 
+        placeholder="请详细描述要外包的任务..."
+        value="{{taskDescription}}"
+        bindinput="onTaskDescriptionInput"
+        maxlength="200"
+        show-confirm-bar="false"
+      ></textarea>
+    </view>
+
+    <!-- 任务类型 -->
+    <view class="form-group">
+      <view class="label">
+        任务类型
+        <text class="label-tip" bindtap="showTaskTypeInfo">查看说明</text>
+      </view>
+      <picker mode="selector" range="{{taskTypes}}" range-key="name" value="{{taskTypeIndex}}" bindchange="onTaskTypeChange">
+        <view class="picker">
+          {{taskTypes[taskTypeIndex].name}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 预估时间 -->
+    <view class="form-group">
+      <view class="label">预估时间 (小时)</view>
+      <input 
+        class="input" 
+        type="digit" 
+        placeholder="预估完成需要的时间"
+        value="{{estimatedHours}}"
+        bindinput="onEstimatedHoursInput"
+      />
+    </view>
+
+    <!-- 外包价格 -->
+    <view class="form-group">
+      <view class="label">外包价格 (元)</view>
+      <input 
+        class="input" 
+        type="number" 
+        placeholder="外包总费用"
+        value="{{outsourcePrice}}"
+        bindinput="onOutsourcePriceInput"
+      />
+    </view>
+
+    <!-- 分析按钮 -->
+    <view class="analyze-section">
+      <button class="btn btn-primary btn-large" bindtap="analyzeDecision">
+        🤖 开始智能分析
+      </button>
+    </view>
+  </view>
+
+  <!-- 决策结果 -->
+  <view class="result-section" wx:if="{{showResult}}">
+    <view class="result-card {{decision === 'hire' ? 'hire-result' : 'self-result'}}">
+      <view class="result-header">
+        <view class="result-icon">
+          {{decision === 'hire' ? '👥' : '🙋‍♂️'}}
+        </view>
+        <view class="result-title">
+          {{analysis.recommendation}}
+        </view>
+      </view>
+      
+      <view class="result-reason">
+        {{analysis.reason}}
+      </view>
+      
+      <view class="result-details">
+        <view class="detail-item">
+          <view class="detail-label">外包单价</view>
+          <view class="detail-value">¥{{analysis.pricePerHour.toFixed(2)}}/小时</view>
+        </view>
+        <view class="detail-item">
+          <view class="detail-label">你的时间成本</view>
+          <view class="detail-value">¥{{analysis.timeCost.toFixed(2)}}</view>
+        </view>
+        <view class="detail-item">
+          <view class="detail-label">外包费用</view>
+          <view class="detail-value">¥{{analysis.price.toFixed(2)}}</view>
+        </view>
+        <view class="detail-item {{analysis.savings > 0 ? 'positive' : 'negative'}}">
+          <view class="detail-label">
+            {{analysis.savings > 0 ? '节省金额' : '额外支出'}}
+          </view>
+          <view class="detail-value">
+            {{analysis.savings > 0 ? '+' : ''}}¥{{analysis.savings.toFixed(2)}}
+          </view>
+        </view>
+      </view>
+      
+      <view class="result-tip" wx:if="{{analysis.savings > 0}}">
+        💰 投资回报率: {{analysis.roi.toFixed(1)}}%
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons" wx:if="{{timeValue > 0}}">
+    <button class="btn btn-secondary" bindtap="resetAnalysis" wx:if="{{showResult}}">
+      重新分析
+    </button>
+    <button class="btn btn-outline" bindtap="clearForm">
+      清空表单
+    </button>
+    <button class="btn btn-info" bindtap="viewHistory">
+      查看历史
+    </button>
+  </view>
+
+  <!-- 温馨提示 -->
+  <view class="tips-section">
+    <view class="tips-card">
+      <view class="tips-title">💡 决策建议</view>
+      <view class="tips-content">
+        <text>• 除了价格，还要考虑任务质量和时间成本</text>
+        <text>• 复杂任务建议选择经验丰富的服务商</text>
+        <text>• 节省的时间最好用于更有价值的工作</text>
+      </view>
+    </view>
+  </view>
+</view>

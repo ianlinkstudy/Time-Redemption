@@ -1,0 +1,399 @@
+/* pages/decision/decision.wxss */
+
+.container {
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* 页面标题 */
+.header {
+  text-align: center;
+  margin-bottom: 30rpx;
+  padding: 30rpx 0;
+  background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+  border-radius: 20rpx;
+  color: white;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  opacity: 0.9;
+  display: block;
+}
+
+/* 时间价值显示区域 */
+.time-value-section {
+  margin-bottom: 30rpx;
+}
+
+.time-value-card {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  border: 2rpx solid #74b9ff;
+}
+
+.time-value-title {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 15rpx;
+}
+
+.time-value-amount {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #74b9ff;
+  margin-bottom: 10rpx;
+}
+
+.time-value-tip {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.no-time-value {
+  background: white;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  border: 2rpx solid #ffeaa7;
+}
+
+.no-time-value-icon {
+  font-size: 64rpx;
+  margin-bottom: 20rpx;
+}
+
+.no-time-value-text {
+  font-size: 32rpx;
+  color: #666;
+  margin-bottom: 30rpx;
+}
+
+/* 任务输入区域 */
+.task-input-section {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 30rpx;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 30rpx;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label-tip {
+  font-size: 24rpx;
+  color: #74b9ff;
+  font-weight: normal;
+}
+
+.input {
+  width: 100%;
+  height: 88rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 15rpx;
+  padding: 0 20rpx;
+  font-size: 30rpx;
+  color: #333;
+  box-sizing: border-box;
+  background: #fafafa;
+}
+
+/* 移除 :focus 伪类，不兼容 */
+
+.textarea {
+  width: 100%;
+  min-height: 120rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 15rpx;
+  padding: 20rpx;
+  font-size: 30rpx;
+  color: #333;
+  box-sizing: border-box;
+  background: #fafafa;
+}
+
+/* 移除 :focus 伪类，不兼容 */
+
+.picker {
+  height: 88rpx;
+  line-height: 88rpx;
+  padding: 0 20rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 15rpx;
+  font-size: 30rpx;
+  color: #333;
+  background: #fafafa;
+}
+
+/* 分析按钮 */
+.analyze-section {
+  margin-top: 40rpx;
+}
+
+.btn-large {
+  height: 100rpx;
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+/* 决策结果 */
+.result-section {
+  margin-bottom: 30rpx;
+}
+
+.result-card {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.5s ease-out;
+}
+
+.hire-result {
+  border: 2rpx solid #00b894;
+}
+
+.self-result {
+  border: 2rpx solid #e17055;
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.result-icon {
+  font-size: 48rpx;
+  margin-right: 20rpx;
+}
+
+.result-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.result-reason {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 30rpx;
+  padding: 20rpx;
+  background: #f8f9ff;
+  border-radius: 15rpx;
+}
+
+.result-details {
+  margin-bottom: 20rpx;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15rpx 0;
+  border-bottom: 1rpx solid #eee;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.detail-value {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.positive .detail-value {
+  color: #00b894;
+}
+
+.negative .detail-value {
+  color: #e17055;
+}
+
+.result-tip {
+  text-align: center;
+  padding: 20rpx;
+  background: #d1f2eb;
+  border-radius: 15rpx;
+  color: #00b894;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  display: flex;
+  margin: 0 -7.5rpx 30rpx -7.5rpx;
+  flex-wrap: wrap;
+}
+
+.action-buttons .btn {
+  margin: 0 7.5rpx 15rpx 7.5rpx;
+}
+
+.btn {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 15rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  border: none;
+  color: white;
+  min-width: 200rpx;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+}
+
+.btn-outline {
+  background: white;
+  color: #666;
+  border: 2rpx solid #ddd;
+}
+
+.btn-info {
+  background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+}
+
+.btn::after {
+  border: none;
+}
+
+/* 温馨提示 */
+.tips-section {
+  margin-bottom: 30rpx;
+}
+
+.tips-card {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.tips-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.tips-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.tips-content text {
+  margin-bottom: 10rpx;
+}
+
+.tips-content text:last-child {
+  margin-bottom: 0;
+}
+
+.tips-content text {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* 响应式设计 */
+@media (max-width: 400px) {
+  .container {
+    padding: 15rpx;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .btn {
+    margin-bottom: 10rpx;
+  }
+  
+  .result-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .result-icon {
+    margin-right: 0;
+    margin-bottom: 10rpx;
+  }
+}
+
+/* 动画效果 */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tips-card,
+.time-value-card,
+.task-input-section {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
