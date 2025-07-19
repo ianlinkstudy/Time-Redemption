@@ -101,6 +101,11 @@
         {{analysis.reason}}
       </view>
       
+      <!-- 调试信息 -->
+      <view style="background: #ff0000; color: white; padding: 8rpx; margin: 8rpx 0; font-size: 22rpx;">
+        调试：pricePerHour={{analysis.pricePerHour}}, timeCost={{analysis.timeCost}}, price={{analysis.price}}, savings={{analysis.savings}}
+      </view>
+      
       <view class="result-details">
         <view class="detail-item">
           <view class="detail-label">外包单价</view>
