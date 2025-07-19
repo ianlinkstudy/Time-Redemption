@@ -8,15 +8,15 @@
   background-color: #f5f5f5;
 }
 
-/* 欢迎头部 - 现代渐变设计 */
+/* 欢迎头部 - 多巴胺渐变设计 */
 .welcome-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 50%, #4ECDC4 100%);
   border-radius: 24rpx;
-  padding: 48rpx 32rpx;
+  padding: 56rpx 40rpx;
   margin-bottom: 32rpx;
   color: white;
   text-align: center;
-  box-shadow: 0 12rpx 40rpx rgba(102, 126, 234, 0.25);
+  box-shadow: 0 16rpx 48rpx rgba(255, 107, 107, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -28,7 +28,7 @@
   right: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
   animation: float 6s ease-in-out infinite;
 }
 
@@ -73,72 +73,81 @@
   display: block;
 }
 
-/* 统计概览 - 现代卡片设计 */
+/* 统计概览 - 多巴胺卡片设计 */
 .stats-overview {
-  background: white;
-  border-radius: 24rpx;
-  padding: 40rpx 32rpx;
   margin-bottom: 32rpx;
-  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.08);
-  border: none;
-  position: relative;
-  overflow: hidden;
-}
-
-.stats-overview::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4rpx;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
 }
 
 .stats-title {
-  font-size: 36rpx;
+  font-size: 40rpx;
   font-weight: 800;
   color: #1a1a1a;
   text-align: center;
-  margin-bottom: 40rpx;
+  margin-bottom: 32rpx;
   letter-spacing: -0.5rpx;
 }
 
 .stats-grid {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  gap: 20rpx;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 24rpx;
 }
 
 .stat-item {
   text-align: center;
   flex: 1;
-  padding: 24rpx 16rpx;
-  background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
-  border-radius: 16rpx;
-  border: 2rpx solid #e8f0ff;
+  padding: 40rpx 24rpx;
+  border-radius: 24rpx;
   transition: all 0.3s ease;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-item:nth-child(1) {
+  background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%);
+  color: white;
+}
+
+.stat-item:nth-child(2) {
+  background: linear-gradient(135deg, #A8EDEA 0%, #FED6E3 100%);
+  color: #2C3E50;
+}
+
+.stat-item:nth-child(3) {
+  background: linear-gradient(135deg, #FFD89B 0%, #19547B 100%);
+  color: white;
+}
+
+.stat-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6rpx;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .stat-item:active {
-  transform: translateY(2rpx);
-  box-shadow: 0 4rpx 16rpx rgba(102, 126, 234, 0.15);
+  transform: translateY(4rpx);
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.2);
 }
 
 .stat-value {
-  font-size: 40rpx;
+  font-size: 48rpx;
   font-weight: 800;
-  color: #667eea;
-  margin-bottom: 12rpx;
+  margin-bottom: 16rpx;
   letter-spacing: -0.5rpx;
+  display: block;
 }
 
 .stat-label {
-  font-size: 26rpx;
-  color: #666;
+  font-size: 28rpx;
   line-height: 1.4;
-  font-weight: 500;
+  font-weight: 600;
+  opacity: 0.9;
 }
 
 /* 快速操作 */
@@ -192,42 +201,50 @@
   line-height: 1.4;
 }
 
-/* 使用步骤 - 现代卡片设计 */
+/* 使用步骤 - 多巴胺卡片设计 */
 .steps-section {
-  background: white;
-  border-radius: 24rpx;
-  padding: 40rpx 30rpx;
-  margin-bottom: 30rpx;
-  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.08);
-  border: none;
+  margin-bottom: 32rpx;
 }
 
 .section-title {
-  font-size: 36rpx;
+  font-size: 40rpx;
   font-weight: 800;
   color: #1a1a1a;
   text-align: center;
-  margin-bottom: 40rpx;
+  margin-bottom: 32rpx;
   letter-spacing: -0.5rpx;
 }
 
 .steps-list {
   display: flex;
   flex-direction: column;
-  gap: 20rpx;
+  gap: 24rpx;
 }
 
 .step-item {
   display: flex;
   align-items: center;
-  padding: 32rpx 24rpx;
-  background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
-  border-radius: 20rpx;
-  border: 2rpx solid #e8f0ff;
+  padding: 40rpx 32rpx;
+  border-radius: 24rpx;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4rpx 16rpx rgba(102, 126, 234, 0.08);
   position: relative;
   overflow: hidden;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+}
+
+.step-item:nth-child(1) {
+  background: linear-gradient(135deg, #FFD93D 0%, #FF6B6B 100%);
+  color: white;
+}
+
+.step-item:nth-child(2) {
+  background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+  color: white;
+}
+
+.step-item:nth-child(3) {
+  background: linear-gradient(135deg, #A8E6CF 0%, #7FCDCD 100%);
+  color: #2C3E50;
 }
 
 .step-item::before {
@@ -236,38 +253,25 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 4rpx;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  height: 6rpx;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .step-number {
-  width: 72rpx;
-  height: 72rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  width: 80rpx;
+  height: 80rpx;
+  background: rgba(255, 255, 255, 0.2);
   color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32rpx;
+  font-size: 36rpx;
   font-weight: 800;
-  margin-right: 24rpx;
+  margin-right: 32rpx;
   flex-shrink: 0;
-  box-shadow: 0 6rpx 20rpx rgba(102, 126, 234, 0.3);
-  position: relative;
-}
-
-.step-number::after {
-  content: '';
-  position: absolute;
-  top: -2rpx;
-  left: -2rpx;
-  right: -2rpx;
-  bottom: -2rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 50%;
-  z-index: -1;
-  opacity: 0.3;
+  backdrop-filter: blur(10rpx);
+  border: 2rpx solid rgba(255, 255, 255, 0.3);
 }
 
 .step-content {
@@ -276,34 +280,33 @@
 }
 
 .step-title {
-  font-size: 32rpx;
+  font-size: 36rpx;
   font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 8rpx;
+  margin-bottom: 12rpx;
   letter-spacing: -0.3rpx;
 }
 
 .step-desc {
-  font-size: 28rpx;
-  color: #666;
+  font-size: 30rpx;
   line-height: 1.5;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .step-status {
-  width: 56rpx;
-  height: 56rpx;
-  background: linear-gradient(135deg, #52c41a 0%, #73d13d 100%);
+  width: 64rpx;
+  height: 64rpx;
+  background: rgba(255, 255, 255, 0.2);
   color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28rpx;
+  font-size: 32rpx;
   font-weight: 800;
-  margin-left: 20rpx;
+  margin-left: 24rpx;
   flex-shrink: 0;
-  box-shadow: 0 4rpx 16rpx rgba(82, 196, 26, 0.3);
+  backdrop-filter: blur(10rpx);
+  border: 2rpx solid rgba(255, 255, 255, 0.3);
 }
 
 /* 功能导航 */
@@ -370,19 +373,18 @@
   margin-left: 15rpx;
 }
 
-/* 今日提示 - 现代卡片设计 */
+/* 今日提示 - 多巴胺卡片设计 */
 .today-tip-section {
   margin-bottom: 32rpx;
 }
 
 .tip-card {
-  background: linear-gradient(135deg, #fff5f7 0%, #ffffff 100%);
+  background: linear-gradient(135deg, #FFE5E5 0%, #FFF0F5 100%);
   border-radius: 24rpx;
-  padding: 40rpx 32rpx;
+  padding: 48rpx 40rpx;
   display: flex;
   align-items: center;
-  box-shadow: 0 8rpx 32rpx rgba(253, 121, 168, 0.12);
-  border: 2rpx solid #fce4ec;
+  box-shadow: 0 12rpx 40rpx rgba(255, 182, 193, 0.25);
   position: relative;
   overflow: hidden;
 }
@@ -393,14 +395,14 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 4rpx;
-  background: linear-gradient(90deg, #fd79a8 0%, #fdcb6e 100%);
+  height: 6rpx;
+  background: linear-gradient(90deg, #FFB6C1 0%, #FFC0CB 100%);
 }
 
 .tip-icon {
-  font-size: 56rpx;
-  margin-right: 24rpx;
-  filter: drop-shadow(0 4rpx 8rpx rgba(253, 121, 168, 0.2));
+  font-size: 64rpx;
+  margin-right: 32rpx;
+  filter: drop-shadow(0 6rpx 12rpx rgba(255, 182, 193, 0.3));
 }
 
 .tip-content {
@@ -409,24 +411,24 @@
 }
 
 .tip-title {
-  font-size: 32rpx;
+  font-size: 36rpx;
   font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 12rpx;
+  color: #2C3E50;
+  margin-bottom: 16rpx;
   letter-spacing: -0.3rpx;
 }
 
 .tip-text {
-  font-size: 28rpx;
-  color: #666;
+  font-size: 30rpx;
+  color: #34495E;
   line-height: 1.6;
-  margin-bottom: 12rpx;
+  margin-bottom: 16rpx;
   opacity: 0.9;
 }
 
 .tip-author {
-  font-size: 24rpx;
-  color: #999;
+  font-size: 26rpx;
+  color: #7F8C8D;
   font-style: italic;
   font-weight: 500;
 }
@@ -483,27 +485,28 @@
   border: none;
 }
 
-/* 底部操作 - 现代按钮设计 */
+/* 底部操作 - 多巴胺按钮设计 */
 .bottom-actions {
   display: flex;
-  gap: 16rpx;
+  gap: 24rpx;
   margin-bottom: 32rpx;
 }
 
 .action-btn {
   flex: 1;
-  height: 96rpx;
-  border-radius: 20rpx;
-  font-size: 30rpx;
+  height: 112rpx;
+  border-radius: 24rpx;
+  font-size: 32rpx;
   font-weight: 700;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12rpx;
+  gap: 16rpx;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.15);
 }
 
 .action-btn::before {
@@ -513,7 +516,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   transition: left 0.5s;
 }
 
@@ -522,26 +525,25 @@
 }
 
 .action-btn.primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
   color: white;
-  box-shadow: 0 8rpx 24rpx rgba(102, 126, 234, 0.3);
+  box-shadow: 0 12rpx 40rpx rgba(255, 107, 107, 0.4);
 }
 
 .action-btn.primary:active {
-  transform: translateY(2rpx);
-  box-shadow: 0 4rpx 12rpx rgba(102, 126, 234, 0.4);
+  transform: translateY(4rpx);
+  box-shadow: 0 6rpx 20rpx rgba(255, 107, 107, 0.5);
 }
 
 .action-btn.secondary {
-  background: white;
-  color: #667eea;
-  border: 2rpx solid #667eea;
-  box-shadow: 0 4rpx 16rpx rgba(102, 126, 234, 0.1);
+  background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+  color: white;
+  box-shadow: 0 12rpx 40rpx rgba(78, 205, 196, 0.4);
 }
 
 .action-btn.secondary:active {
-  transform: translateY(2rpx);
-  background: #f8faff;
+  transform: translateY(4rpx);
+  box-shadow: 0 6rpx 20rpx rgba(78, 205, 196, 0.5);
 }
 
 .action-btn::after {
@@ -556,15 +558,14 @@
   font-size: 28rpx;
 }
 
-/* 版权信息 - 现代设计 */
+/* 版权信息 - 多巴胺设计 */
 .copyright {
   text-align: center;
-  padding: 40rpx 32rpx;
-  background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
+  padding: 48rpx 40rpx;
+  background: linear-gradient(135deg, #FFF8DC 0%, #FFE4E1 100%);
   border-radius: 24rpx;
   margin-bottom: 32rpx;
-  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.06);
-  border: 2rpx solid #e8f0ff;
+  box-shadow: 0 12rpx 40rpx rgba(255, 182, 193, 0.2);
   position: relative;
   overflow: hidden;
 }
@@ -575,25 +576,25 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 3rpx;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  height: 6rpx;
+  background: linear-gradient(90deg, #FFB6C1 0%, #FFC0CB 100%);
 }
 
 .copyright-text {
-  font-size: 28rpx;
-  color: #667eea;
+  font-size: 30rpx;
+  color: #2C3E50;
   font-style: italic;
-  margin-bottom: 12rpx;
+  margin-bottom: 16rpx;
   display: block;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.5rpx;
 }
 
 .copyright-author {
-  font-size: 24rpx;
-  color: #999;
+  font-size: 26rpx;
+  color: #7F8C8D;
   display: block;
-  font-weight: 400;
+  font-weight: 500;
   opacity: 0.8;
 }
 
