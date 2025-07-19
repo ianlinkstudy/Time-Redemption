@@ -174,11 +174,7 @@ Page({
     const savings = timeCost - price;
     const roi = savings > 0 ? (savings / price * 100) : 0;
     
-    // 调试：检查计算过程
-    console.log('=== 计算过程调试 ===');
-    console.log('输入值:', { estimatedHours, outsourcePrice, timeValue });
-    console.log('解析后:', { hours, price, timeValue });
-    console.log('计算结果:', { pricePerHour, timeCost, savings, roi });
+
     
     // 决策逻辑
     let decision = '';
@@ -207,29 +203,11 @@ Page({
       reason
     };
     
-    // 调试信息
-    console.log('=== 决策分析结果 ===');
-    console.log('输入数据:', { hours, price, timeValue });
-    console.log('计算结果:', analysis);
-    
     this.setData({
       showResult: true,
       decision,
       analysis
     });
-    
-    // 检查setData后的页面数据
-    setTimeout(() => {
-      console.log('=== setData后的页面数据 ===');
-      console.log('showResult:', this.data.showResult);
-      console.log('decision:', this.data.decision);
-      console.log('analysis对象:', this.data.analysis);
-      console.log('analysis.pricePerHour:', this.data.analysis.pricePerHour);
-      console.log('analysis.timeCost:', this.data.analysis.timeCost);
-      console.log('analysis.price:', this.data.analysis.price);
-      console.log('analysis.savings:', this.data.analysis.savings);
-      console.log('analysis.roi:', this.data.analysis.roi);
-    }, 100);
     
     // 保存决策记录
     this.saveDecisionRecord({
