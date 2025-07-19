@@ -31,27 +31,10 @@ Page({
   },
 
   onLoad: function() {
-    console.log('=== 决策页面加载开始 ===');
-    
-    // 详细的数据检查
-    const rawData = wx.getStorageSync('timeCalculatorData');
-    console.log('原始localStorage数据:', rawData);
-    console.log('数据类型:', typeof rawData);
-    
     // 加载用户时间价值数据
     this.loadTimeValue();
     // 加载历史记录
     this.loadDecisionHistory();
-    
-    // 页面数据状态检查
-    setTimeout(() => {
-      console.log('页面加载后的timeValue:', this.data.timeValue);
-      console.log('timeValue类型:', typeof this.data.timeValue);
-      console.log('timeValue > 0?', this.data.timeValue > 0);
-      console.log('完整页面数据:', this.data);
-    }, 100);
-    
-    console.log('=== 决策页面加载完成 ===');
   },
 
   onShow: function() {
@@ -63,39 +46,20 @@ Page({
   loadTimeValue: function() {
     try {
       const timeData = wx.getStorageSync('timeCalculatorData');
-      console.log('=== 决策页面时间价值加载调试 ===');
-      console.log('原始数据:', timeData);
-      console.log('数据类型:', typeof timeData);
-      
       let timeValue = 0;
-      if (timeData) {
-        console.log('检测到数据，timeData.timeValue:', timeData.timeValue);
-        console.log('timeData.timeValue的类型:', typeof timeData.timeValue);
-        
-        if (timeData.timeValue !== undefined && timeData.timeValue !== null) {
-          // 处理可能的字符串类型
-          if (typeof timeData.timeValue === 'string') {
-            console.log('发现字符串类型的timeValue，尝试转换...');
-            timeValue = parseFloat(timeData.timeValue);
-          } else {
-            timeValue = timeData.timeValue;
-          }
-          
-          console.log('解析后时间价值:', timeValue);
-          console.log('是否为有效数字:', !isNaN(timeValue) && timeValue > 0);
+      
+      if (timeData && timeData.timeValue !== undefined && timeData.timeValue !== null) {
+        // 处理可能的字符串类型
+        if (typeof timeData.timeValue === 'string') {
+          timeValue = parseFloat(timeData.timeValue);
         } else {
-          console.log('timeData.timeValue为null或undefined');
+          timeValue = timeData.timeValue;
         }
-      } else {
-        console.log('未找到时间价值数据');
       }
       
       this.setData({
         timeValue: timeValue
       });
-      
-      console.log('决策页面设置的时间价值:', this.data.timeValue);
-      console.log('=== 调试结束 ===');
     } catch (error) {
       console.error('加载时间价值数据失败:', error);
       this.setData({
@@ -300,23 +264,5 @@ Page({
     });
   },
 
-  // 调试：手动重新加载时间价值
-  debugLoadTimeValue: function() {
-    console.log('=== 手动重新加载时间价值 ===');
-    
-    // 直接检查localStorage
-    const rawData = wx.getStorageSync('timeCalculatorData');
-    console.log('localStorage中的原始数据:', rawData);
-    
-    // 重新加载
-    this.loadTimeValue();
-    
-    // 显示当前页面数据
-    console.log('重新加载后的页面数据:', this.data);
-    
-    wx.showToast({
-      title: '已重新加载，查看调试信息',
-      icon: 'none'
-    });
-  }
+
 });

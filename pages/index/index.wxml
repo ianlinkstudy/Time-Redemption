@@ -9,10 +9,7 @@
       </view>
       <view class="welcome-greeting">
         <text class="greeting-text">你好，{{userInfo.name}}！</text>
-        <!-- 调试信息 -->
-        <view style="background: #ff0000; color: white; padding: 8rpx; margin: 8rpx 0; font-size: 22rpx;">
-          调试：timeValue={{userInfo.timeValue}}, hasSet={{userInfo.hasSetTimeValue}}
-        </view>
+
         <text class="greeting-desc" wx:if="{{userInfo.hasSetTimeValue && userInfo.timeValue > 0}}">
           您的时间价值：¥{{userInfo.timeValue}}/小时
         </text>
