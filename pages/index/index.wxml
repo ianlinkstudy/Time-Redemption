@@ -9,8 +9,8 @@
       </view>
       <view class="welcome-greeting">
         <text class="greeting-text">你好，{{userInfo.name}}！</text>
-        <text class="greeting-desc" wx:if="{{userInfo.hasSetTimeValue}}">
-          您的时间价值：¥{{userInfo.timeValue.toFixed(2)}}/小时
+        <text class="greeting-desc" wx:if="{{userInfo.hasSetTimeValue && userInfo.timeValue > 0}}">
+          您的时间价值：¥{{userInfo.timeValue}}/小时
         </text>
         <text class="greeting-desc" wx:else>
           还未设置时间价值，快去计算一下吧！

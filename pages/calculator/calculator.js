@@ -93,15 +93,22 @@ Page({
         hiringSuggestionMin: this.data.hiringSuggestionMin,
         hiringSuggestionMax: this.data.hiringSuggestionMax,
         showResult: this.data.showResult,
+        totalAnnualIncome: this.data.totalAnnualIncome,
         updateTime: new Date().toISOString()
       };
+      
+      console.log('=== 计算器保存数据 ===');
+      console.log('准备保存的数据:', data);
+      console.log('timeValue类型:', typeof data.timeValue);
+      console.log('timeValue值:', data.timeValue);
+      
       wx.setStorageSync('timeCalculatorData', data);
       
-      console.log('保存数据:', data);
-      
-      // 确保数据保存成功
+      // 立即验证保存结果
       const savedData = wx.getStorageSync('timeCalculatorData');
       console.log('保存后验证读取:', savedData);
+      console.log('验证timeValue:', savedData.timeValue);
+      console.log('验证成功:', savedData.timeValue === data.timeValue);
       
       // 同时保存到用户信息中（虽然首页不使用这个，但保持一致性）
       const userInfo = wx.getStorageSync('userInfo') || {};
@@ -297,22 +304,37 @@ Page({
 
   // 保存并退出编辑模式
   saveAndExit: function() {
+    console.log('=== 开始保存并退出 ===');
+    
     // 先计算年总收入
     const totalIncome = this.calculateTotalIncome();
+    console.log('计算的年总收入:', totalIncome);
     
     if (totalIncome > 0) {
       // 进行时间价值计算（会自动保存数据）
       this.calculateTimeValue();
       
-      // 退出编辑模式
-      this.setData({
-        isEditing: false
-      });
-      
-      wx.showToast({
-        title: '保存成功',
-        icon: 'success'
-      });
+      // 使用setTimeout确保计算完成后再退出编辑模式
+      setTimeout(() => {
+        console.log('计算完成，当前时间价值:', this.data.timeValue);
+        
+        if (this.data.timeValue > 0) {
+          // 退出编辑模式
+          this.setData({
+            isEditing: false
+          });
+          
+          wx.showToast({
+            title: '保存成功',
+            icon: 'success'
+          });
+        } else {
+          wx.showToast({
+            title: '计算时间价值失败，请重试',
+            icon: 'none'
+          });
+        }
+      }, 200);
     } else {
       wx.showToast({
         title: '请填写有效的收入信息',

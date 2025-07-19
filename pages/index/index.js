@@ -322,13 +322,20 @@ Page({
     });
   },
 
-  // 手动刷新数据（调试用）
+     // 手动刷新数据（调试用）
   refreshData: function() {
-    console.log('手动刷新数据');
+    console.log('=== 手动刷新数据 ===');
+    
+    // 直接检查localStorage中的原始数据
+    const rawData = wx.getStorageSync('timeCalculatorData');
+    console.log('localStorage原始数据:', rawData);
+    
+    // 重新加载数据
     this.loadUserData();
     this.loadStatistics();
+    
     wx.showToast({
-      title: '数据已刷新',
+      title: '数据已刷新，请查看控制台',
       icon: 'success'
     });
   },
