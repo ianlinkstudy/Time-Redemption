@@ -1,19 +1,38 @@
 /* pages/calculator/calculator.wxss */
 
 .container {
-  padding: 20rpx;
-  background-color: #f5f5f5;
+  padding: 24rpx;
+  background: linear-gradient(135deg, #f8faff 0%, #f5f7ff 100%);
   min-height: 100vh;
 }
 
-/* 页面标题 */
+/* 页面标题 - 现代设计 */
 .header {
   text-align: center;
-  margin-bottom: 40rpx;
-  padding: 30rpx 0;
+  margin-bottom: 48rpx;
+  padding: 48rpx 32rpx;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 20rpx;
+  border-radius: 24rpx;
   color: white;
+  box-shadow: 0 12rpx 40rpx rgba(102, 126, 234, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
 }
 
 .title {
@@ -29,17 +48,30 @@
   display: block;
 }
 
-/* 输入区域 */
+/* 输入区域 - 现代卡片设计 */
 .input-section {
   background: white;
-  border-radius: 20rpx;
-  padding: 30rpx;
-  margin-bottom: 30rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  border-radius: 24rpx;
+  padding: 40rpx 32rpx;
+  margin-bottom: 32rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.08);
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.input-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4rpx;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
 }
 
 .form-group {
-  margin-bottom: 30rpx;
+  margin-bottom: 32rpx;
 }
 
 .form-group:last-child {
@@ -48,34 +80,36 @@
 
 .label {
   font-size: 32rpx;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 15rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 16rpx;
+  letter-spacing: -0.3rpx;
 }
 
 .input {
   width: 100%;
-  height: 88rpx;
-  border: 2rpx solid #e0e0e0;
-  border-radius: 15rpx;
-  padding: 0 20rpx;
-  font-size: 30rpx;
-  color: #333;
+  height: 96rpx;
+  border: 2rpx solid #e8f0ff;
+  border-radius: 20rpx;
+  padding: 0 24rpx;
+  font-size: 32rpx;
+  color: #1a1a1a;
   box-sizing: border-box;
-  background: #fafafa;
+  background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
+  transition: all 0.3s ease;
+  font-weight: 500;
 }
 
-/* 移除 :focus 伪类，不兼容 */
-
 .picker {
-  height: 88rpx;
-  line-height: 88rpx;
-  padding: 0 20rpx;
-  border: 2rpx solid #e0e0e0;
-  border-radius: 15rpx;
-  font-size: 30rpx;
-  color: #333;
-  background: #fafafa;
+  height: 96rpx;
+  line-height: 96rpx;
+  padding: 0 24rpx;
+  border: 2rpx solid #e8f0ff;
+  border-radius: 20rpx;
+  font-size: 32rpx;
+  color: #1a1a1a;
+  background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
+  font-weight: 500;
 }
 
 /* 信息文本样式 */
@@ -88,41 +122,62 @@
   text-align: center;
 }
 
-/* 计算结果 */
+/* 计算结果 - 现代卡片设计 */
 .result-section {
-  margin-bottom: 30rpx;
+  margin-bottom: 32rpx;
 }
 
 .result-card {
   background: white;
-  border-radius: 20rpx;
-  padding: 30rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-  border: 2rpx solid #667eea;
+  border-radius: 24rpx;
+  padding: 40rpx 32rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.08);
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.result-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4rpx;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
 }
 
 .result-title {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #333;
+  font-size: 40rpx;
+  font-weight: 800;
+  color: #1a1a1a;
   text-align: center;
-  margin-bottom: 30rpx;
+  margin-bottom: 40rpx;
+  letter-spacing: -0.5rpx;
 }
 
 .result-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20rpx;
-  padding: 20rpx;
-  border-radius: 15rpx;
-  background: #f8f9ff;
+  margin-bottom: 24rpx;
+  padding: 32rpx 24rpx;
+  border-radius: 20rpx;
+  background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
+  border: 2rpx solid #e8f0ff;
+  transition: all 0.3s ease;
+}
+
+.result-item:last-child {
+  margin-bottom: 0;
 }
 
 .main-result {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  margin-bottom: 30rpx;
+  margin-bottom: 32rpx;
+  border: none;
+  box-shadow: 0 8rpx 24rpx rgba(102, 126, 234, 0.3);
 }
 
 .main-result .result-label,
@@ -131,19 +186,22 @@
 }
 
 .result-label {
-  font-size: 28rpx;
+  font-size: 30rpx;
   color: #666;
+  font-weight: 500;
 }
 
 .result-value {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -0.3rpx;
 }
 
 .highlight {
   color: #667eea;
-  font-size: 36rpx;
+  font-size: 40rpx;
+  font-weight: 800;
 }
 
 .result-tip {

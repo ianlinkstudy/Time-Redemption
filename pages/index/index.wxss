@@ -8,15 +8,33 @@
   background-color: #f5f5f5;
 }
 
-/* 欢迎头部 */
+/* 欢迎头部 - 现代渐变设计 */
 .welcome-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 20rpx;
-  padding: 40rpx 30rpx;
-  margin-bottom: 30rpx;
+  border-radius: 24rpx;
+  padding: 48rpx 32rpx;
+  margin-bottom: 32rpx;
   color: white;
   text-align: center;
-  box-shadow: 0 8rpx 30rpx rgba(102, 126, 234, 0.3);
+  box-shadow: 0 12rpx 40rpx rgba(102, 126, 234, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
 }
 
 .welcome-title {
@@ -55,46 +73,72 @@
   display: block;
 }
 
-/* 统计概览 */
+/* 统计概览 - 现代卡片设计 */
 .stats-overview {
   background: white;
-  border-radius: 20rpx;
-  padding: 30rpx;
-  margin-bottom: 30rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-  border: 2rpx solid #667eea;
+  border-radius: 24rpx;
+  padding: 40rpx 32rpx;
+  margin-bottom: 32rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.08);
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-overview::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4rpx;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
 }
 
 .stats-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
+  font-size: 36rpx;
+  font-weight: 800;
+  color: #1a1a1a;
   text-align: center;
-  margin-bottom: 30rpx;
+  margin-bottom: 40rpx;
+  letter-spacing: -0.5rpx;
 }
 
 .stats-grid {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  gap: 20rpx;
 }
 
 .stat-item {
   text-align: center;
   flex: 1;
+  padding: 24rpx 16rpx;
+  background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
+  border-radius: 16rpx;
+  border: 2rpx solid #e8f0ff;
+  transition: all 0.3s ease;
+}
+
+.stat-item:active {
+  transform: translateY(2rpx);
+  box-shadow: 0 4rpx 16rpx rgba(102, 126, 234, 0.15);
 }
 
 .stat-value {
-  font-size: 36rpx;
-  font-weight: bold;
+  font-size: 40rpx;
+  font-weight: 800;
   color: #667eea;
-  margin-bottom: 10rpx;
+  margin-bottom: 12rpx;
+  letter-spacing: -0.5rpx;
 }
 
 .stat-label {
-  font-size: 24rpx;
+  font-size: 26rpx;
   color: #666;
   line-height: 1.4;
+  font-weight: 500;
 }
 
 /* 快速操作 */
@@ -146,6 +190,120 @@
   font-size: 22rpx;
   color: #666;
   line-height: 1.4;
+}
+
+/* 使用步骤 - 现代卡片设计 */
+.steps-section {
+  background: white;
+  border-radius: 24rpx;
+  padding: 40rpx 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.08);
+  border: none;
+}
+
+.section-title {
+  font-size: 36rpx;
+  font-weight: 800;
+  color: #1a1a1a;
+  text-align: center;
+  margin-bottom: 40rpx;
+  letter-spacing: -0.5rpx;
+}
+
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  padding: 32rpx 24rpx;
+  background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
+  border-radius: 20rpx;
+  border: 2rpx solid #e8f0ff;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4rpx 16rpx rgba(102, 126, 234, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.step-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4rpx;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+.step-number {
+  width: 72rpx;
+  height: 72rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  font-weight: 800;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+  box-shadow: 0 6rpx 20rpx rgba(102, 126, 234, 0.3);
+  position: relative;
+}
+
+.step-number::after {
+  content: '';
+  position: absolute;
+  top: -2rpx;
+  left: -2rpx;
+  right: -2rpx;
+  bottom: -2rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+.step-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.step-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 8rpx;
+  letter-spacing: -0.3rpx;
+}
+
+.step-desc {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.5;
+  opacity: 0.8;
+}
+
+.step-status {
+  width: 56rpx;
+  height: 56rpx;
+  background: linear-gradient(135deg, #52c41a 0%, #73d13d 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 800;
+  margin-left: 20rpx;
+  flex-shrink: 0;
+  box-shadow: 0 4rpx 16rpx rgba(82, 196, 26, 0.3);
 }
 
 /* 功能导航 */
@@ -212,48 +370,65 @@
   margin-left: 15rpx;
 }
 
-/* 今日提示 */
+/* 今日提示 - 现代卡片设计 */
 .today-tip-section {
-  margin-bottom: 30rpx;
+  margin-bottom: 32rpx;
 }
 
 .tip-card {
-  background: white;
-  border-radius: 20rpx;
-  padding: 30rpx;
+  background: linear-gradient(135deg, #fff5f7 0%, #ffffff 100%);
+  border-radius: 24rpx;
+  padding: 40rpx 32rpx;
   display: flex;
   align-items: center;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-  border: 2rpx solid #fd79a8;
+  box-shadow: 0 8rpx 32rpx rgba(253, 121, 168, 0.12);
+  border: 2rpx solid #fce4ec;
+  position: relative;
+  overflow: hidden;
+}
+
+.tip-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4rpx;
+  background: linear-gradient(90deg, #fd79a8 0%, #fdcb6e 100%);
 }
 
 .tip-icon {
-  font-size: 48rpx;
-  margin-right: 20rpx;
+  font-size: 56rpx;
+  margin-right: 24rpx;
+  filter: drop-shadow(0 4rpx 8rpx rgba(253, 121, 168, 0.2));
 }
 
 .tip-content {
   flex: 1;
+  min-width: 0;
 }
 
 .tip-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 10rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 12rpx;
+  letter-spacing: -0.3rpx;
 }
 
 .tip-text {
-  font-size: 26rpx;
+  font-size: 28rpx;
   color: #666;
-  line-height: 1.5;
-  margin-bottom: 10rpx;
+  line-height: 1.6;
+  margin-bottom: 12rpx;
+  opacity: 0.9;
 }
 
 .tip-author {
-  font-size: 22rpx;
+  font-size: 24rpx;
   color: #999;
   font-style: italic;
+  font-weight: 500;
 }
 
 /* 新用户引导 */
@@ -308,38 +483,65 @@
   border: none;
 }
 
-/* 底部操作 */
+/* 底部操作 - 现代按钮设计 */
 .bottom-actions {
   display: flex;
-  margin: 0 -7.5rpx 30rpx -7.5rpx;
-}
-
-.bottom-actions .action-btn {
-  margin: 0 7.5rpx;
+  gap: 16rpx;
+  margin-bottom: 32rpx;
 }
 
 .action-btn {
   flex: 1;
-  height: 88rpx;
-  border-radius: 15rpx;
-  font-size: 28rpx;
-  font-weight: bold;
+  height: 96rpx;
+  border-radius: 20rpx;
+  font-size: 30rpx;
+  font-weight: 700;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10rpx;
+  gap: 12rpx;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.action-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.action-btn:active::before {
+  left: 100%;
 }
 
 .action-btn.primary {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
+  box-shadow: 0 8rpx 24rpx rgba(102, 126, 234, 0.3);
+}
+
+.action-btn.primary:active {
+  transform: translateY(2rpx);
+  box-shadow: 0 4rpx 12rpx rgba(102, 126, 234, 0.4);
 }
 
 .action-btn.secondary {
   background: white;
   color: #667eea;
   border: 2rpx solid #667eea;
+  box-shadow: 0 4rpx 16rpx rgba(102, 126, 234, 0.1);
+}
+
+.action-btn.secondary:active {
+  transform: translateY(2rpx);
+  background: #f8faff;
 }
 
 .action-btn::after {
@@ -354,28 +556,45 @@
   font-size: 28rpx;
 }
 
-/* 版权信息 */
+/* 版权信息 - 现代设计 */
 .copyright {
   text-align: center;
-  padding: 30rpx;
-  background: white;
-  border-radius: 20rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-  margin-bottom: 30rpx;
+  padding: 40rpx 32rpx;
+  background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
+  border-radius: 24rpx;
+  margin-bottom: 32rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.06);
+  border: 2rpx solid #e8f0ff;
+  position: relative;
+  overflow: hidden;
+}
+
+.copyright::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3rpx;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
 }
 
 .copyright-text {
-  font-size: 26rpx;
+  font-size: 28rpx;
   color: #667eea;
   font-style: italic;
-  margin-bottom: 10rpx;
+  margin-bottom: 12rpx;
   display: block;
+  font-weight: 500;
+  letter-spacing: 0.5rpx;
 }
 
 .copyright-author {
-  font-size: 22rpx;
+  font-size: 24rpx;
   color: #999;
   display: block;
+  font-weight: 400;
+  opacity: 0.8;
 }
 
 /* 响应式设计 */
