@@ -2,7 +2,10 @@
 <view class="container">
   <!-- 页面标题 -->
   <view class="header card-base">
-    <text class="title">决策历史</text>
+    <view class="header-top">
+      <button class="back-btn" bindtap="goBack">← 返回</button>
+      <text class="title">决策历史</text>
+    </view>
     <text class="subtitle">查看您的所有决策记录</text>
   </view>
 

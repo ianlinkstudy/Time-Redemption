@@ -147,5 +147,10 @@ Page({
   // 前往决策页面
   goToDecision: function() {
     wx.navigateBack();
+  },
+
+  // 返回按钮
+  goBack: function() {
+    wx.navigateBack();
   }
 }); 
