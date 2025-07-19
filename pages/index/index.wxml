@@ -21,8 +21,10 @@
     <!-- 时间赎回成果 -->
     <view class="results-section" wx:if="{{statistics.totalDecisions > 0}}">
       <view class="results-card">
-        <view class="results-icon">📊</view>
-        <view class="results-title">时间赎回成果</view>
+        <view class="results-header">
+          <view class="results-icon">📊</view>
+          <view class="results-title">时间赎回成果</view>
+        </view>
         <view class="results-grid">
           <view class="result-item">
             <view class="result-icon">⏱️</view>
@@ -46,8 +48,10 @@
     <!-- 三步赎回你的时间 -->
     <view class="steps-section">
       <view class="steps-card">
-        <view class="steps-icon">🎯</view>
-        <view class="steps-title">三步赎回你的时间</view>
+        <view class="steps-header">
+          <view class="steps-icon">🎯</view>
+          <view class="steps-title">三步赎回你的时间</view>
+        </view>
         <view class="steps-list">
           <view class="step-item" bindtap="goToCalculator">
             <view class="step-icon">🧮</view>
