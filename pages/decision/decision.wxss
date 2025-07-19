@@ -11,10 +11,10 @@
   text-align: center;
   margin-bottom: 48rpx;
   padding: 56rpx 40rpx;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 50%, #4ECDC4 100%);
+  background: linear-gradient(135deg, #FFD93D 0%, #1E3A8A 50%, #10B981 100%);
   border-radius: 24rpx;
   color: white;
-  box-shadow: 0 16rpx 48rpx rgba(255, 107, 107, 0.3);
+  box-shadow: 0 16rpx 48rpx rgba(253, 224, 71, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -54,11 +54,11 @@
 }
 
 .time-value-card {
-  background: linear-gradient(135deg, #FFE5E5 0%, #FFF0F5 100%);
+  background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
   border-radius: 24rpx;
   padding: 48rpx 40rpx;
   text-align: center;
-  box-shadow: 0 12rpx 40rpx rgba(255, 182, 193, 0.25);
+  box-shadow: 0 12rpx 40rpx rgba(30, 58, 138, 0.25);
   border: none;
   position: relative;
   overflow: hidden;
@@ -71,7 +71,7 @@
   left: 0;
   right: 0;
   height: 6rpx;
-  background: linear-gradient(90deg, #FFB6C1 0%, #FFC0CB 100%);
+  background: linear-gradient(90deg, #1E3A8A 0%, #3B82F6 100%);
 }
 
 .time-value-title {
@@ -129,11 +129,11 @@
 
 /* 任务输入区域 - 多巴胺卡片设计 */
 .task-input-section {
-  background: linear-gradient(135deg, #FFF8DC 0%, #FFE4E1 100%);
+  background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
   border-radius: 24rpx;
   padding: 48rpx 40rpx;
   margin-bottom: 32rpx;
-  box-shadow: 0 12rpx 40rpx rgba(255, 182, 193, 0.2);
+  box-shadow: 0 12rpx 40rpx rgba(249, 115, 22, 0.2);
   border: none;
   position: relative;
   overflow: hidden;
@@ -146,7 +146,7 @@
   left: 0;
   right: 0;
   height: 6rpx;
-  background: linear-gradient(90deg, #FFB6C1 0%, #FFC0CB 100%);
+  background: linear-gradient(90deg, #F97316 0%, #EA580C 100%);
 }
 
 .section-title {

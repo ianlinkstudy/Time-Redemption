@@ -10,13 +10,13 @@
 
 /* 欢迎头部 - 多巴胺渐变设计 */
 .welcome-header {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 50%, #4ECDC4 100%);
+  background: linear-gradient(135deg, #FFD93D 0%, #1E3A8A 50%, #10B981 100%);
   border-radius: 24rpx;
   padding: 56rpx 40rpx;
   margin-bottom: 32rpx;
   color: white;
   text-align: center;
-  box-shadow: 0 16rpx 48rpx rgba(255, 107, 107, 0.3);
+  box-shadow: 0 16rpx 48rpx rgba(253, 224, 71, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -106,17 +106,17 @@
 }
 
 .stat-item:nth-child(1) {
-  background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%);
-  color: white;
+  background: linear-gradient(135deg, #FFD93D 0%, #F59E0B 100%);
+  color: #1F2937;
 }
 
 .stat-item:nth-child(2) {
-  background: linear-gradient(135deg, #A8EDEA 0%, #FED6E3 100%);
-  color: #2C3E50;
+  background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+  color: white;
 }
 
 .stat-item:nth-child(3) {
-  background: linear-gradient(135deg, #FFD89B 0%, #19547B 100%);
+  background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
   color: white;
 }
 
@@ -233,18 +233,18 @@
 }
 
 .step-item:nth-child(1) {
-  background: linear-gradient(135deg, #FFD93D 0%, #FF6B6B 100%);
-  color: white;
+  background: linear-gradient(135deg, #FFD93D 0%, #F59E0B 100%);
+  color: #1F2937;
 }
 
 .step-item:nth-child(2) {
-  background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+  background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
   color: white;
 }
 
 .step-item:nth-child(3) {
-  background: linear-gradient(135deg, #A8E6CF 0%, #7FCDCD 100%);
-  color: #2C3E50;
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: white;
 }
 
 .step-item::before {
@@ -379,12 +379,12 @@
 }
 
 .tip-card {
-  background: linear-gradient(135deg, #FFE5E5 0%, #FFF0F5 100%);
+  background: linear-gradient(135deg, #6B7280 0%, #9CA3AF 100%);
   border-radius: 24rpx;
   padding: 48rpx 40rpx;
   display: flex;
   align-items: center;
-  box-shadow: 0 12rpx 40rpx rgba(255, 182, 193, 0.25);
+  box-shadow: 0 12rpx 40rpx rgba(107, 114, 128, 0.25);
   position: relative;
   overflow: hidden;
 }
@@ -396,7 +396,7 @@
   left: 0;
   right: 0;
   height: 6rpx;
-  background: linear-gradient(90deg, #FFB6C1 0%, #FFC0CB 100%);
+  background: linear-gradient(90deg, #6B7280 0%, #9CA3AF 100%);
 }
 
 .tip-icon {
@@ -525,25 +525,25 @@
 }
 
 .action-btn.primary {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
-  color: white;
-  box-shadow: 0 12rpx 40rpx rgba(255, 107, 107, 0.4);
+  background: linear-gradient(135deg, #FFD93D 0%, #F59E0B 100%);
+  color: #1F2937;
+  box-shadow: 0 12rpx 40rpx rgba(253, 224, 71, 0.4);
 }
 
 .action-btn.primary:active {
   transform: translateY(4rpx);
-  box-shadow: 0 6rpx 20rpx rgba(255, 107, 107, 0.5);
+  box-shadow: 0 6rpx 20rpx rgba(253, 224, 71, 0.5);
 }
 
 .action-btn.secondary {
-  background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+  background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
   color: white;
-  box-shadow: 0 12rpx 40rpx rgba(78, 205, 196, 0.4);
+  box-shadow: 0 12rpx 40rpx rgba(30, 58, 138, 0.4);
 }
 
 .action-btn.secondary:active {
   transform: translateY(4rpx);
-  box-shadow: 0 6rpx 20rpx rgba(78, 205, 196, 0.5);
+  box-shadow: 0 6rpx 20rpx rgba(30, 58, 138, 0.5);
 }
 
 .action-btn::after {
@@ -562,10 +562,10 @@
 .copyright {
   text-align: center;
   padding: 48rpx 40rpx;
-  background: linear-gradient(135deg, #FFF8DC 0%, #FFE4E1 100%);
+  background: linear-gradient(135deg, #6B7280 0%, #9CA3AF 100%);
   border-radius: 24rpx;
   margin-bottom: 32rpx;
-  box-shadow: 0 12rpx 40rpx rgba(255, 182, 193, 0.2);
+  box-shadow: 0 12rpx 40rpx rgba(107, 114, 128, 0.2);
   position: relative;
   overflow: hidden;
 }
@@ -577,7 +577,7 @@
   left: 0;
   right: 0;
   height: 6rpx;
-  background: linear-gradient(90deg, #FFB6C1 0%, #FFC0CB 100%);
+  background: linear-gradient(90deg, #6B7280 0%, #9CA3AF 100%);
 }
 
 .copyright-text {
