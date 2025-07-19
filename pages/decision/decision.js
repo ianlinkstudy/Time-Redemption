@@ -214,8 +214,8 @@ Page({
       taskDescription,
       taskType,
       estimatedHours: hours,
-      outsourcePrice: price,
-      userTimeValue: timeValue,
+      outsourcePrice: price.toFixed(2),
+      userTimeValue: timeValue.toFixed(2),
       analysis
     });
   },

@@ -27,15 +27,15 @@
       <view class="history-details">
         <view class="detail-row">
           <text class="detail-label">外包单价:</text>
-          <text class="detail-value">¥{{item.analysis.pricePerHour.toFixed(2)}}/小时</text>
+          <text class="detail-value">¥{{item.analysis.pricePerHour}}/小时</text>
         </view>
         <view class="detail-row">
           <text class="detail-label">时间价值:</text>
-          <text class="detail-value">¥{{item.userTimeValue.toFixed(2)}}/小时</text>
+          <text class="detail-value">¥{{item.userTimeValue}}/小时</text>
         </view>
         <view class="detail-row {{item.analysis.savings > 0 ? 'positive' : 'negative'}}">
           <text class="detail-label">{{item.analysis.savings > 0 ? '节省' : '额外支出'}}:</text>
-          <text class="detail-value">{{item.analysis.savings > 0 ? '+' : ''}}¥{{item.analysis.savings.toFixed(2)}}</text>
+          <text class="detail-value">{{item.analysis.savings > 0 ? '+' : ''}}¥{{item.analysis.savings}}</text>
         </view>
       </view>
       
