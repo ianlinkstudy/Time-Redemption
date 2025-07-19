@@ -31,10 +31,27 @@ Page({
   },
 
   onLoad: function() {
+    console.log('=== 决策页面加载开始 ===');
+    
+    // 详细的数据检查
+    const rawData = wx.getStorageSync('timeCalculatorData');
+    console.log('原始localStorage数据:', rawData);
+    console.log('数据类型:', typeof rawData);
+    
     // 加载用户时间价值数据
     this.loadTimeValue();
     // 加载历史记录
     this.loadDecisionHistory();
+    
+    // 页面数据状态检查
+    setTimeout(() => {
+      console.log('页面加载后的timeValue:', this.data.timeValue);
+      console.log('timeValue类型:', typeof this.data.timeValue);
+      console.log('timeValue > 0?', this.data.timeValue > 0);
+      console.log('完整页面数据:', this.data);
+    }, 100);
+    
+    console.log('=== 决策页面加载完成 ===');
   },
 
   onShow: function() {
@@ -51,12 +68,26 @@ Page({
       console.log('数据类型:', typeof timeData);
       
       let timeValue = 0;
-      if (timeData && timeData.timeValue) {
-        timeValue = parseFloat(timeData.timeValue);
-        console.log('解析后时间价值:', timeValue);
-        console.log('是否为有效数字:', !isNaN(timeValue) && timeValue > 0);
+      if (timeData) {
+        console.log('检测到数据，timeData.timeValue:', timeData.timeValue);
+        console.log('timeData.timeValue的类型:', typeof timeData.timeValue);
+        
+        if (timeData.timeValue !== undefined && timeData.timeValue !== null) {
+          // 处理可能的字符串类型
+          if (typeof timeData.timeValue === 'string') {
+            console.log('发现字符串类型的timeValue，尝试转换...');
+            timeValue = parseFloat(timeData.timeValue);
+          } else {
+            timeValue = timeData.timeValue;
+          }
+          
+          console.log('解析后时间价值:', timeValue);
+          console.log('是否为有效数字:', !isNaN(timeValue) && timeValue > 0);
+        } else {
+          console.log('timeData.timeValue为null或undefined');
+        }
       } else {
-        console.log('未找到时间价值数据或数据无效');
+        console.log('未找到时间价值数据');
       }
       
       this.setData({
