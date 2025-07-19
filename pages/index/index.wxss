@@ -8,33 +8,17 @@
   background-color: #f5f5f5;
 }
 
-/* 欢迎头部 - 多巴胺渐变设计 */
+/* 欢迎头部 - 纯色卡片设计 */
 .welcome-header {
-  background: linear-gradient(135deg, #FFD93D 0%, #1E3A8A 50%, #10B981 100%);
+  background: #FFD93D;
   border-radius: 24rpx;
   padding: 56rpx 40rpx;
   margin-bottom: 32rpx;
-  color: white;
+  color: #1F2937;
   text-align: center;
   box-shadow: 0 16rpx 48rpx rgba(253, 224, 71, 0.3);
   position: relative;
   overflow: hidden;
-}
-
-.welcome-header::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(180deg); }
 }
 
 .welcome-title {
@@ -73,18 +57,9 @@
   display: block;
 }
 
-/* 统计概览 - 多巴胺卡片设计 */
+/* 统计概览 - 纯色卡片设计 */
 .stats-overview {
   margin-bottom: 32rpx;
-}
-
-.stats-title {
-  font-size: 40rpx;
-  font-weight: 800;
-  color: #1a1a1a;
-  text-align: center;
-  margin-bottom: 32rpx;
-  letter-spacing: -0.5rpx;
 }
 
 .stats-grid {
@@ -106,33 +81,31 @@
 }
 
 .stat-item:nth-child(1) {
-  background: linear-gradient(135deg, #FFD93D 0%, #F59E0B 100%);
+  background: #FFD93D;
   color: #1F2937;
 }
 
 .stat-item:nth-child(2) {
-  background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+  background: #1E3A8A;
   color: white;
 }
 
 .stat-item:nth-child(3) {
-  background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+  background: #F97316;
   color: white;
-}
-
-.stat-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 6rpx;
-  background: rgba(255, 255, 255, 0.3);
 }
 
 .stat-item:active {
   transform: translateY(4rpx);
   box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.2);
+}
+
+.stat-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  margin-bottom: 16rpx;
+  letter-spacing: -0.3rpx;
+  display: block;
 }
 
 .stat-value {
@@ -201,18 +174,9 @@
   line-height: 1.4;
 }
 
-/* 使用步骤 - 多巴胺卡片设计 */
+/* 使用步骤 - 纯色卡片设计 */
 .steps-section {
   margin-bottom: 32rpx;
-}
-
-.section-title {
-  font-size: 40rpx;
-  font-weight: 800;
-  color: #1a1a1a;
-  text-align: center;
-  margin-bottom: 32rpx;
-  letter-spacing: -0.5rpx;
 }
 
 .steps-list {
@@ -233,28 +197,18 @@
 }
 
 .step-item:nth-child(1) {
-  background: linear-gradient(135deg, #FFD93D 0%, #F59E0B 100%);
+  background: #FFD93D;
   color: #1F2937;
 }
 
 .step-item:nth-child(2) {
-  background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+  background: #1E3A8A;
   color: white;
 }
 
 .step-item:nth-child(3) {
-  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  background: #10B981;
   color: white;
-}
-
-.step-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 6rpx;
-  background: rgba(255, 255, 255, 0.3);
 }
 
 .step-number {
@@ -373,30 +327,20 @@
   margin-left: 15rpx;
 }
 
-/* 今日提示 - 多巴胺卡片设计 */
+/* 今日提示 - 纯色卡片设计 */
 .today-tip-section {
   margin-bottom: 32rpx;
 }
 
 .tip-card {
-  background: linear-gradient(135deg, #6B7280 0%, #9CA3AF 100%);
+  background: #10B981;
   border-radius: 24rpx;
   padding: 48rpx 40rpx;
   display: flex;
   align-items: center;
-  box-shadow: 0 12rpx 40rpx rgba(107, 114, 128, 0.25);
+  box-shadow: 0 12rpx 40rpx rgba(16, 185, 129, 0.25);
   position: relative;
   overflow: hidden;
-}
-
-.tip-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 6rpx;
-  background: linear-gradient(90deg, #6B7280 0%, #9CA3AF 100%);
 }
 
 .tip-icon {
@@ -525,7 +469,7 @@
 }
 
 .action-btn.primary {
-  background: linear-gradient(135deg, #FFD93D 0%, #F59E0B 100%);
+  background: #FFD93D;
   color: #1F2937;
   box-shadow: 0 12rpx 40rpx rgba(253, 224, 71, 0.4);
 }
@@ -536,7 +480,7 @@
 }
 
 .action-btn.secondary {
-  background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+  background: #1E3A8A;
   color: white;
   box-shadow: 0 12rpx 40rpx rgba(30, 58, 138, 0.4);
 }
@@ -562,22 +506,12 @@
 .copyright {
   text-align: center;
   padding: 48rpx 40rpx;
-  background: linear-gradient(135deg, #6B7280 0%, #9CA3AF 100%);
+  background: #F97316;
   border-radius: 24rpx;
   margin-bottom: 32rpx;
-  box-shadow: 0 12rpx 40rpx rgba(107, 114, 128, 0.2);
+  box-shadow: 0 12rpx 40rpx rgba(249, 115, 22, 0.2);
   position: relative;
   overflow: hidden;
-}
-
-.copyright::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 6rpx;
-  background: linear-gradient(90deg, #6B7280 0%, #9CA3AF 100%);
 }
 
 .copyright-text {

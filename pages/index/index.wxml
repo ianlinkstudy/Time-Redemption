@@ -19,17 +19,19 @@
 
     <!-- 统计概览 -->
     <view class="stats-overview" wx:if="{{statistics.totalDecisions > 0}}">
-      <view class="stats-title">您的时间管理成果</view>
       <view class="stats-grid">
         <view class="stat-item">
+          <view class="stat-title">时间管理成果</view>
           <view class="stat-value">{{statistics.totalSavedTime.toFixed(1)}}</view>
           <view class="stat-label">已买回时间(小时)</view>
         </view>
         <view class="stat-item">
+          <view class="stat-title">节省金额</view>
           <view class="stat-value">¥{{statistics.totalSavedMoney.toFixed(0)}}</view>
           <view class="stat-label">节省金额(元)</view>
         </view>
         <view class="stat-item">
+          <view class="stat-title">决策记录</view>
           <view class="stat-value">{{statistics.totalDecisions}}</view>
           <view class="stat-label">决策记录(次)</view>
         </view>
@@ -38,7 +40,6 @@
 
       <!-- 使用步骤 -->
   <view class="steps-section">
-    <view class="section-title">三步开始时间管理</view>
     <view class="steps-list">
       <view class="step-item" bindtap="goToCalculator">
         <view class="step-number">1</view>
