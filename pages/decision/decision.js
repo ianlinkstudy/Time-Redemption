@@ -201,6 +201,11 @@ Page({
       reason
     };
     
+    // 调试信息
+    console.log('=== 决策分析结果 ===');
+    console.log('输入数据:', { hours, price, timeValue });
+    console.log('计算结果:', analysis);
+    
     this.setData({
       showResult: true,
       decision,
