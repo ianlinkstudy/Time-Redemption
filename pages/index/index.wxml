@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <view class="container">
     <!-- 欢迎头部 -->
-    <view class="welcome-header">
+    <view class="welcome-header card-base">
       <view class="welcome-icon">⏰</view>
       <view class="welcome-title">
         <text class="main-title">时间赎回器</text>
@@ -20,7 +20,7 @@
 
     <!-- 时间赎回成果 -->
     <view class="results-section" wx:if="{{statistics.totalDecisions > 0}}">
-      <view class="results-card">
+      <view class="results-card card-base">
         <view class="results-header">
           <view class="results-icon">📊</view>
           <view class="results-title">时间赎回成果</view>
@@ -47,7 +47,7 @@
 
     <!-- 三步赎回你的时间 -->
     <view class="steps-section">
-      <view class="steps-card">
+      <view class="steps-card card-base">
         <view class="steps-header">
           <view class="steps-icon">🎯</view>
           <view class="steps-title">三步赎回你的时间</view>
@@ -83,7 +83,7 @@
 
     <!-- 今日金句 -->
     <view class="today-tip-section">
-      <view class="tip-card">
+      <view class="tip-card card-base">
         <view class="tip-icon">💡</view>
         <view class="tip-content">
           <view class="tip-title">{{todayTip.title}}</view>
@@ -102,7 +102,7 @@
     </view>
 
     <!-- 版权信息 -->
-    <view class="copyright">
+    <view class="copyright card-base">
       <text class="copyright-text">"金钱仅仅是用来购买时间的工具"</text>
       <text class="copyright-author">—— 《买回你的时间》</text>
     </view>
