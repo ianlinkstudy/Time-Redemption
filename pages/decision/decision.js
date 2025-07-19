@@ -267,5 +267,25 @@ Page({
       content: typeInfo,
       showCancel: false
     });
+  },
+
+  // 调试：手动重新加载时间价值
+  debugLoadTimeValue: function() {
+    console.log('=== 手动重新加载时间价值 ===');
+    
+    // 直接检查localStorage
+    const rawData = wx.getStorageSync('timeCalculatorData');
+    console.log('localStorage中的原始数据:', rawData);
+    
+    // 重新加载
+    this.loadTimeValue();
+    
+    // 显示当前页面数据
+    console.log('重新加载后的页面数据:', this.data);
+    
+    wx.showToast({
+      title: '已重新加载，查看调试信息',
+      icon: 'none'
+    });
   }
 });
