@@ -15,6 +15,9 @@ Page({
     // 界面状态
     showResult: false,
     isEditing: false, // 编辑模式标识
+    
+    // 计算属性
+    totalAnnualIncome: 0 // 年总收入
   },
 
   onLoad: function () {
@@ -46,6 +49,9 @@ Page({
           hiringSuggestionMax: savedData.hiringSuggestionMax || 0,
           showResult: savedData.showResult || false
         });
+        // 计算年总收入
+        this.calculateTotalIncome();
+        
         // 如果有保存的计算结果，显示结果状态；否则进入编辑模式
         if (savedData.timeValue > 0) {
           this.setData({
@@ -113,6 +119,7 @@ Page({
     this.setData({
       salaryType: salaryTypeMap[e.detail.value]
     });
+    this.calculateTotalIncome();
     this.calculateTimeValue();
   },
 
@@ -121,6 +128,7 @@ Page({
     this.setData({
       annualSalary: e.detail.value
     });
+    this.calculateTotalIncome();
     this.calculateTimeValue();
   },
 
@@ -129,6 +137,7 @@ Page({
     this.setData({
       monthlySalary: e.detail.value
     });
+    this.calculateTotalIncome();
     this.calculateTimeValue();
   },
 
@@ -137,6 +146,7 @@ Page({
     this.setData({
       otherIncome: e.detail.value
     });
+    this.calculateTotalIncome();
     this.calculateTimeValue();
   },
 
@@ -251,6 +261,24 @@ Page({
     });
   },
 
+  // 计算年总收入
+  calculateTotalIncome: function() {
+    const { salaryType, annualSalary, monthlySalary, otherIncome } = this.data;
+    let totalIncome = 0;
+    
+    if (salaryType === 'annual') {
+      totalIncome = (parseFloat(annualSalary) || 0) + (parseFloat(otherIncome) || 0);
+    } else {
+      totalIncome = ((parseFloat(monthlySalary) || 0) * 12) + (parseFloat(otherIncome) || 0);
+    }
+    
+    this.setData({
+      totalAnnualIncome: totalIncome
+    });
+    
+    return totalIncome;
+  },
+
   // 进入编辑模式
   startEdit: function() {
     this.setData({
@@ -260,18 +288,16 @@ Page({
 
   // 保存并退出编辑模式
   saveAndExit: function() {
-    // 先进行计算
-    this.calculateTimeValue();
+    // 先计算年总收入
+    const totalIncome = this.calculateTotalIncome();
     
-    // 检查是否有有效的计算结果
-    if (this.data.timeValue > 0) {
-      // 保存数据
-      this.saveData();
+    if (totalIncome > 0) {
+      // 进行时间价值计算（会自动保存数据）
+      this.calculateTimeValue();
       
       // 退出编辑模式
       this.setData({
-        isEditing: false,
-        showResult: true
+        isEditing: false
       });
       
       wx.showToast({

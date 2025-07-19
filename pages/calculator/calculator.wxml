@@ -16,7 +16,7 @@
       
       <view class="income-item">
         <view class="income-label">年总收入</view>
-        <view class="income-value">¥{{(salaryType === 'annual' ? (annualSalary || 0) : (monthlySalary || 0) * 12) + (otherIncome || 0)}}</view>
+        <view class="income-value">¥{{totalAnnualIncome}}</view>
       </view>
       
       <view class="income-breakdown">

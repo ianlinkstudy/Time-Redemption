@@ -144,13 +144,19 @@ Page({
       const timeCalculatorData = wx.getStorageSync('timeCalculatorData');
       const userName = wx.getStorageSync('userName');
       
+      console.log('首页加载时间数据:', timeCalculatorData);
+      
+      const timeValue = timeCalculatorData?.timeValue ? parseFloat(timeCalculatorData.timeValue) : 0;
+      
       this.setData({
         userInfo: {
           name: userName || '时间管理者',
-          timeValue: timeCalculatorData?.timeValue || 0,
-          hasSetTimeValue: timeCalculatorData?.timeValue > 0
+          timeValue: timeValue,
+          hasSetTimeValue: timeValue > 0
         }
       });
+      
+      console.log('首页设置用户数据:', this.data.userInfo);
     } catch (error) {
       console.error('加载用户数据失败:', error);
     }
