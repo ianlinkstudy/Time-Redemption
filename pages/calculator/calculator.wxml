@@ -1,13 +1,36 @@
 <!--pages/calculator/calculator.wxml-->
 <view class="container">
   <!-- 页面标题 -->
-  <view class="header">
+  <view class="header card-base">
     <text class="title">时赎器</text>
     <text class="subtitle">计算你的时间值多少钱</text>
   </view>
 
-  <!-- 输入区域 -->
-  <view class="input-section">
+  <!-- 显示模式：已保存的收入和时间价值 -->
+  <view class="display-section" wx:if="{{!isEditing && showResult}}">
+    <view class="income-display card-base">
+      <view class="display-header">
+        <view class="display-title">💰 收入信息</view>
+        <button class="btn-edit" bindtap="startEdit">修改</button>
+      </view>
+      
+      <view class="income-item">
+        <view class="income-label">年总收入</view>
+        <view class="income-value">¥{{(salaryType === 'annual' ? (annualSalary || 0) : (monthlySalary || 0) * 12) + (otherIncome || 0)}}</view>
+      </view>
+      
+      <view class="income-breakdown">
+        <text class="breakdown-item" wx:if="{{salaryType === 'annual' && annualSalary}}">年薪: ¥{{annualSalary}}</text>
+        <text class="breakdown-item" wx:if="{{salaryType === 'monthly' && monthlySalary}}">月薪: ¥{{monthlySalary}} × 12</text>
+        <text class="breakdown-item" wx:if="{{otherIncome}}">其他收入: ¥{{otherIncome}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 编辑模式：输入表单 -->
+  <view class="input-section card-base" wx:if="{{isEditing}}">
+    <view class="section-title">💰 收入信息录入</view>
+    
     <!-- 薪资类型选择 -->
     <view class="form-group">
       <view class="label">薪资类型</view>
@@ -36,17 +59,17 @@
       <input class="input" type="number" placeholder="副业、投资等其他收入" value="{{otherIncome}}" bindinput="onOtherIncomeInput" />
     </view>
 
-    <!-- 精力系数说明 -->
-    <view class="form-group">
-      <view class="label">建议雇佣单价说明</view>
-      <view class="info-text">基于你的时间价值÷4，再乘以1.0x-2.0x精力系数范围</view>
+    <!-- 编辑模式按钮 -->
+    <view class="edit-buttons">
+      <button class="btn btn-outline" bindtap="cancelEdit" wx:if="{{timeValue > 0}}">取消</button>
+      <button class="btn btn-primary" bindtap="saveAndExit">保存</button>
     </view>
   </view>
 
-  <!-- 计算结果 -->
-  <view class="result-section" wx:if="{{showResult}}">
-    <view class="result-card">
-      <view class="result-title">您的时间价值</view>
+  <!-- 计算结果显示 -->
+  <view class="result-section" wx:if="{{showResult && !isEditing}}">
+    <view class="result-card card-base">
+      <view class="result-title">⏰ 时间价值结果</view>
       
       <view class="result-item main-result">
         <view class="result-label">你的时间价值</view>
@@ -64,21 +87,21 @@
     </view>
   </view>
 
-  <!-- 提示信息 -->
-  <view class="tips-section" wx:if="{{!showResult}}">
-    <view class="tips-card">
+  <!-- 使用说明 -->
+  <view class="tips-section" wx:if="{{isEditing}}">
+    <view class="tips-card card-base">
       <view class="tips-title">💡 使用说明</view>
       <view class="tips-content">
-        <text>• 输入你的薪资和其他收入</text>
+        <text>• 输入你的薪资和其他收入信息</text>
         <text>• 系统计算你的时间价值(收入÷2000)</text>
-        <text>• 自动生成建议雇佣单价范围</text>
+        <text>• 自动生成1.0x-2.0x精力系数的雇佣单价范围</text>
         <text>• 帮助你决定是否应该雇人代做任务</text>
       </view>
     </view>
   </view>
 
   <!-- 操作按钮 -->
-  <view class="action-buttons">
+  <view class="action-buttons" wx:if="{{!isEditing}}">
     <button class="btn btn-secondary" bindtap="showExplanation">查看计算说明</button>
     <button class="btn btn-danger" bindtap="resetData" wx:if="{{showResult}}">重置数据</button>
   </view>

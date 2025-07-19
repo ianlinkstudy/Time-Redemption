@@ -13,7 +13,8 @@ Page({
     hiringSuggestionMax: 0, // 建议雇佣单价最大值
     
     // 界面状态
-    showResult: false
+    showResult: false,
+    isEditing: false, // 编辑模式标识
   },
 
   onLoad: function () {
@@ -45,17 +46,32 @@ Page({
           hiringSuggestionMax: savedData.hiringSuggestionMax || 0,
           showResult: savedData.showResult || false
         });
-        // 如果有保存的计算结果，直接显示；否则重新计算
+        // 如果有保存的计算结果，显示结果状态；否则进入编辑模式
         if (savedData.timeValue > 0) {
           this.setData({
-            showResult: true
+            showResult: true,
+            isEditing: false
           });
         } else {
-          this.calculateTimeValue();
+          this.setData({
+            showResult: false,
+            isEditing: true
+          });
         }
+      } else {
+        // 首次使用，进入编辑模式
+        this.setData({
+          isEditing: true,
+          showResult: false
+        });
       }
     } catch (error) {
       console.error('加载数据失败:', error);
+      // 出错时也进入编辑模式
+      this.setData({
+        isEditing: true,
+        showResult: false
+      });
     }
   },
 
@@ -233,6 +249,67 @@ Page({
       content: '你的时间价值 = (年收入 + 其他收入) ÷ 2000\n\n建议雇佣单价 = 时间价值 ÷ 4 × (1~2倍精力系数)\n\n其中：\n• 2000 = 250个工作日 × 8小时\n• ÷ 4 是为了得到合理的雇佣价格\n• 精力系数根据任务复杂度调整',
       showCancel: false
     });
+  },
+
+  // 进入编辑模式
+  startEdit: function() {
+    this.setData({
+      isEditing: true
+    });
+  },
+
+  // 保存并退出编辑模式
+  saveAndExit: function() {
+    // 先进行计算
+    this.calculateTimeValue();
+    
+    // 检查是否有有效的计算结果
+    if (this.data.timeValue > 0) {
+      // 保存数据
+      this.saveData();
+      
+      // 退出编辑模式
+      this.setData({
+        isEditing: false,
+        showResult: true
+      });
+      
+      wx.showToast({
+        title: '保存成功',
+        icon: 'success'
+      });
+    } else {
+      wx.showToast({
+        title: '请填写有效的收入信息',
+        icon: 'none'
+      });
+    }
+  },
+
+  // 取消编辑
+  cancelEdit: function() {
+    // 如果之前有保存的数据，恢复到显示模式
+    if (this.data.timeValue > 0) {
+      this.setData({
+        isEditing: false
+      });
+    } else {
+      // 如果没有保存的数据，提示用户
+      wx.showModal({
+        title: '提示',
+        content: '您还没有保存任何数据，确定要取消吗？',
+        success: (res) => {
+          if (res.confirm) {
+            // 清空输入，保持编辑模式
+            this.setData({
+              annualSalary: '',
+              monthlySalary: '',
+              otherIncome: ''
+            });
+          }
+        }
+      });
+    }
   },
 
   // 测试计算功能
