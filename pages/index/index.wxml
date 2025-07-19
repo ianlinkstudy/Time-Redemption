@@ -2,6 +2,7 @@
 <view class="container">
     <!-- 欢迎头部 -->
     <view class="welcome-header">
+      <view class="welcome-icon">⏰</view>
       <view class="welcome-title">
         <text class="main-title">时间赎回器</text>
         <text class="sub-title">买回你的时间，创造更大价值</text>
@@ -17,58 +18,66 @@
       </view>
     </view>
 
-    <!-- 统计概览 -->
-    <view class="stats-overview" wx:if="{{statistics.totalDecisions > 0}}">
-      <view class="stats-grid">
-        <view class="stat-item">
-          <view class="stat-title">时间管理成果</view>
-          <view class="stat-value">{{statistics.totalSavedTime.toFixed(1)}}</view>
-          <view class="stat-label">已买回时间(小时)</view>
-        </view>
-        <view class="stat-item">
-          <view class="stat-title">节省金额</view>
-          <view class="stat-value">¥{{statistics.totalSavedMoney.toFixed(0)}}</view>
-          <view class="stat-label">节省金额(元)</view>
-        </view>
-        <view class="stat-item">
-          <view class="stat-title">决策记录</view>
-          <view class="stat-value">{{statistics.totalDecisions}}</view>
-          <view class="stat-label">决策记录(次)</view>
+    <!-- 时间赎回成果 -->
+    <view class="results-section" wx:if="{{statistics.totalDecisions > 0}}">
+      <view class="results-card">
+        <view class="results-icon">📊</view>
+        <view class="results-title">时间赎回成果</view>
+        <view class="results-grid">
+          <view class="result-item">
+            <view class="result-icon">⏱️</view>
+            <view class="result-value">{{statistics.totalSavedTime.toFixed(1)}}</view>
+            <view class="result-label">已买回时间(小时)</view>
+          </view>
+          <view class="result-item">
+            <view class="result-icon">💰</view>
+            <view class="result-value">¥{{statistics.totalSavedMoney.toFixed(0)}}</view>
+            <view class="result-label">节省金额(元)</view>
+          </view>
+          <view class="result-item">
+            <view class="result-icon">📝</view>
+            <view class="result-value">{{statistics.totalDecisions}}</view>
+            <view class="result-label">决策记录(次)</view>
+          </view>
         </view>
       </view>
     </view>
 
-      <!-- 使用步骤 -->
-  <view class="steps-section">
-    <view class="steps-list">
-      <view class="step-item" bindtap="goToCalculator">
-        <view class="step-number">1</view>
-        <view class="step-content">
-          <view class="step-title">计算时间价值</view>
-          <view class="step-desc">输入收入，算出每小时值多少钱</view>
-        </view>
-        <view class="step-status" wx:if="{{userInfo.hasSetTimeValue}}">✓</view>
-      </view>
-      
-      <view class="step-item" bindtap="goToDecision">
-        <view class="step-number">2</view>
-        <view class="step-content">
-          <view class="step-title">智能决策分析</view>
-          <view class="step-desc">判断任务是自己做还是雇人做</view>
-        </view>
-      </view>
-      
-      <view class="step-item" bindtap="goToStatistics">
-        <view class="step-number">3</view>
-        <view class="step-content">
-          <view class="step-title">查看管理成果</view>
-          <view class="step-desc">统计节省时间，追踪价值创造</view>
+    <!-- 三步赎回你的时间 -->
+    <view class="steps-section">
+      <view class="steps-card">
+        <view class="steps-icon">🎯</view>
+        <view class="steps-title">三步赎回你的时间</view>
+        <view class="steps-list">
+          <view class="step-item" bindtap="goToCalculator">
+            <view class="step-icon">🧮</view>
+            <view class="step-content">
+              <view class="step-title">计算时间价值</view>
+              <view class="step-desc">输入收入，算出每小时值多少钱</view>
+            </view>
+            <view class="step-status" wx:if="{{userInfo.hasSetTimeValue}}">✓</view>
+          </view>
+          
+          <view class="step-item" bindtap="goToDecision">
+            <view class="step-icon">🤖</view>
+            <view class="step-content">
+              <view class="step-title">智能决策分析</view>
+              <view class="step-desc">判断任务是自己做还是雇人做</view>
+            </view>
+          </view>
+          
+          <view class="step-item" bindtap="goToStatistics">
+            <view class="step-icon">📈</view>
+            <view class="step-content">
+              <view class="step-title">查看管理成果</view>
+              <view class="step-desc">统计节省时间，追踪价值创造</view>
+            </view>
+          </view>
         </view>
       </view>
     </view>
-  </view>
 
-    <!-- 今日提示 -->
+    <!-- 今日金句 -->
     <view class="today-tip-section">
       <view class="tip-card">
         <view class="tip-icon">💡</view>
@@ -80,35 +89,11 @@
       </view>
     </view>
 
-    <!-- 新用户引导 -->
-    <view class="guide-section" wx:if="{{isFirstTimeUser}}">
-      <view class="guide-card">
-        <view class="guide-icon">🎯</view>
-        <view class="guide-content">
-          <view class="guide-title">开始使用时间赎回器</view>
-          <view class="guide-steps">
-            <view class="guide-step">1. 设置您的时间价值</view>
-            <view class="guide-step">2. 使用决策引擎判断任务</view>
-            <view class="guide-step">3. 查看时间管理成果</view>
-          </view>
-          <button class="guide-btn" bindtap="goToCalculator">开始设置</button>
-        </view>
-      </view>
-    </view>
-
     <!-- 底部操作 -->
     <view class="bottom-actions">
       <button class="action-btn secondary" bindtap="showHelp">
         <text class="btn-icon">❓</text>
         <text class="btn-text">使用帮助</text>
-      </button>
-      <button class="action-btn primary" bindtap="goToCalculator" wx:if="{{!userInfo.hasSetTimeValue}}">
-        <text class="btn-icon">🧮</text>
-        <text class="btn-text">设置时间价值</text>
-      </button>
-      <button class="action-btn primary" bindtap="goToDecision" wx:else>
-        <text class="btn-icon">🎯</text>
-        <text class="btn-text">开始决策</text>
       </button>
     </view>
 
