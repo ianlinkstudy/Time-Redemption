@@ -197,11 +197,11 @@ Page({
     
     const analysis = {
       hours,
-      price,
-      pricePerHour,
-      timeCost,
-      savings,
-      roi,
+      price: price.toFixed(2),
+      pricePerHour: pricePerHour.toFixed(2),
+      timeCost: timeCost.toFixed(2),
+      savings: savings.toFixed(2),
+      roi: roi.toFixed(1),
       decision,
       recommendation,
       reason

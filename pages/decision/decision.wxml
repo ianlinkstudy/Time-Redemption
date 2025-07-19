@@ -109,28 +109,28 @@
       <view class="result-details">
         <view class="detail-item">
           <view class="detail-label">外包单价</view>
-          <view class="detail-value">¥{{analysis.pricePerHour !== undefined && analysis.pricePerHour !== null ? analysis.pricePerHour.toFixed(2) : '0.00'}}/小时</view>
+          <view class="detail-value">¥{{analysis.pricePerHour}}/小时</view>
         </view>
         <view class="detail-item">
           <view class="detail-label">你的时间成本</view>
-          <view class="detail-value">¥{{analysis.timeCost !== undefined && analysis.timeCost !== null ? analysis.timeCost.toFixed(2) : '0.00'}}</view>
+          <view class="detail-value">¥{{analysis.timeCost}}</view>
         </view>
         <view class="detail-item">
           <view class="detail-label">外包费用</view>
-          <view class="detail-value">¥{{analysis.price !== undefined && analysis.price !== null ? analysis.price.toFixed(2) : '0.00'}}</view>
+          <view class="detail-value">¥{{analysis.price}}</view>
         </view>
         <view class="detail-item {{analysis.savings > 0 ? 'positive' : 'negative'}}">
           <view class="detail-label">
             {{analysis.savings > 0 ? '节省金额' : '额外支出'}}
           </view>
           <view class="detail-value">
-            {{analysis.savings > 0 ? '+' : ''}}¥{{analysis.savings !== undefined && analysis.savings !== null ? analysis.savings.toFixed(2) : '0.00'}}
+            {{analysis.savings > 0 ? '+' : ''}}¥{{analysis.savings}}
           </view>
         </view>
       </view>
       
       <view class="result-tip" wx:if="{{analysis.savings > 0}}">
-        💰 投资回报率: {{analysis.roi !== undefined && analysis.roi !== null ? analysis.roi.toFixed(1) : '0.0'}}%
+        💰 投资回报率: {{analysis.roi}}%
       </view>
     </view>
   </view>
