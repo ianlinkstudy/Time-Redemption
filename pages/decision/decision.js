@@ -46,13 +46,22 @@ Page({
   loadTimeValue: function() {
     try {
       const timeData = wx.getStorageSync('timeCalculatorData');
-      if (timeData) {
+      console.log('加载的时间数据:', timeData);
+      if (timeData && timeData.timeValue) {
         this.setData({
-          timeValue: timeData.timeValue || 0
+          timeValue: parseFloat(timeData.timeValue) || 0
+        });
+        console.log('设置时间价值:', this.data.timeValue);
+      } else {
+        this.setData({
+          timeValue: 0
         });
       }
     } catch (error) {
       console.error('加载时间价值数据失败:', error);
+      this.setData({
+        timeValue: 0
+      });
     }
   },
 

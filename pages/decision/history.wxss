@@ -1,0 +1,244 @@
+/* pages/decision/history.wxss */
+
+.container {
+  padding: 24rpx;
+  background: #f2f2f7;
+  min-height: 100vh;
+}
+
+/* 通用卡片基础样式 */
+.card-base {
+  background: #ffffff;
+  border-radius: 20rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 20rpx rgba(0, 0, 0, 0.05);
+  border: 1rpx solid rgba(0, 0, 0, 0.04);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 页面标题 - 苹果风格设计 */
+.header {
+  text-align: center;
+  padding: 48rpx 32rpx;
+  color: #1d1d1f;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8rpx;
+  color: #1d1d1f;
+}
+
+.subtitle {
+  font-size: 26rpx;
+  color: #86868b;
+  display: block;
+  font-weight: 400;
+}
+
+/* 历史记录列表 */
+.history-list {
+  margin-bottom: 16rpx;
+}
+
+.history-item {
+  padding: 24rpx;
+  transition: all 0.2s ease;
+}
+
+.history-item:active {
+  transform: scale(0.98);
+  background: #f8f9fa;
+}
+
+/* 历史记录头部 */
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16rpx;
+}
+
+.task-info {
+  flex: 1;
+  min-width: 0;
+  margin-right: 16rpx;
+}
+
+.task-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin-bottom: 8rpx;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.task-meta {
+  display: flex;
+  gap: 12rpx;
+}
+
+.task-type,
+.task-time,
+.task-price {
+  font-size: 22rpx;
+  color: #86868b;
+  background: #f2f2f7;
+  padding: 4rpx 8rpx;
+  border-radius: 8rpx;
+}
+
+/* 决策结果 */
+.decision-result {
+  text-align: center;
+  min-width: 120rpx;
+}
+
+.decision-result.hire {
+  color: #34c759;
+}
+
+.decision-result.self {
+  color: #ff9500;
+}
+
+.result-icon {
+  font-size: 32rpx;
+  margin-bottom: 4rpx;
+}
+
+.result-text {
+  font-size: 22rpx;
+  font-weight: 600;
+}
+
+/* 历史详情 */
+.history-details {
+  background: #f2f2f7;
+  border-radius: 12rpx;
+  padding: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.detail-row:last-child {
+  margin-bottom: 0;
+}
+
+.detail-label {
+  font-size: 24rpx;
+  color: #86868b;
+}
+
+.detail-value {
+  font-size: 24rpx;
+  color: #1d1d1f;
+  font-weight: 500;
+}
+
+.detail-row.positive .detail-value {
+  color: #34c759;
+}
+
+.detail-row.negative .detail-value {
+  color: #ff3b30;
+}
+
+/* 历史记录底部 */
+.history-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.timestamp {
+  font-size: 22rpx;
+  color: #86868b;
+}
+
+.actions {
+  display: flex;
+  gap: 8rpx;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 80rpx 32rpx;
+  color: #1d1d1f;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.6;
+}
+
+.empty-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  margin-bottom: 12rpx;
+  color: #1d1d1f;
+}
+
+.empty-desc {
+  font-size: 26rpx;
+  color: #86868b;
+  margin-bottom: 32rpx;
+  line-height: 1.4;
+}
+
+/* 底部操作 */
+.bottom-actions {
+  margin-top: 16rpx;
+  margin-bottom: 0;
+}
+
+/* 按钮样式 */
+.btn {
+  width: 100%;
+  height: 88rpx;
+  border-radius: 20rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+  opacity: 0.8;
+}
+
+.btn-primary {
+  background: #007aff;
+  color: white;
+}
+
+.btn-danger {
+  background: #ff3b30;
+  color: white;
+}
+
+.btn-mini {
+  width: auto;
+  height: 60rpx;
+  padding: 0 16rpx;
+  font-size: 22rpx;
+  border-radius: 12rpx;
+} 

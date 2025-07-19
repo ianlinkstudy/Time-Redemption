@@ -3,6 +3,7 @@
     "pages/index/index",
     "pages/calculator/calculator",
     "pages/decision/decision",
+    "pages/decision/history",
     "pages/statistics/statistics",
     "pages/settings/settings"
   ],

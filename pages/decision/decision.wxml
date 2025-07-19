@@ -1,20 +1,20 @@
 <!--pages/decision/decision.wxml-->
 <view class="container">
   <!-- 页面标题 -->
-  <view class="header">
+  <view class="header card-base">
     <text class="title">雇人决策引擎</text>
     <text class="subtitle">智能判断是否应该雇人代做</text>
   </view>
 
   <!-- 时间价值显示 -->
   <view class="time-value-section">
-    <view class="time-value-card" wx:if="{{timeValue > 0}}">
+    <view class="time-value-card card-base" wx:if="{{timeValue > 0}}">
       <view class="time-value-title">您的时间价值</view>
       <view class="time-value-amount">¥{{timeValue.toFixed(2)}}/小时</view>
       <view class="time-value-tip">精力系数范围：1.0x - 2.0x</view>
     </view>
     
-    <view class="no-time-value" wx:if="{{timeValue <= 0}}">
+    <view class="no-time-value card-base" wx:if="{{timeValue <= 0}}">
       <view class="no-time-value-icon">⚠️</view>
       <view class="no-time-value-text">尚未设置时间价值</view>
       <button class="btn btn-primary" bindtap="goToCalculator">去计算时间价值</button>
@@ -22,7 +22,7 @@
   </view>
 
   <!-- 任务输入区域 -->
-  <view class="task-input-section" wx:if="{{timeValue > 0}}">
+  <view class="task-input-section card-base" wx:if="{{timeValue > 0}}">
     <view class="section-title">任务信息</view>
     
     <!-- 任务描述 -->
@@ -85,7 +85,7 @@
 
   <!-- 决策结果 -->
   <view class="result-section" wx:if="{{showResult}}">
-    <view class="result-card {{decision === 'hire' ? 'hire-result' : 'self-result'}}">
+    <view class="result-card card-base {{decision === 'hire' ? 'hire-result' : 'self-result'}}">
       <view class="result-header">
         <view class="result-icon">
           {{decision === 'hire' ? '👥' : '🙋‍♂️'}}
@@ -143,7 +143,7 @@
 
   <!-- 温馨提示 -->
   <view class="tips-section">
-    <view class="tips-card">
+    <view class="tips-card card-base">
       <view class="tips-title">💡 决策建议</view>
       <view class="tips-content">
         <text>• 除了价格，还要考虑任务质量和时间成本</text>
