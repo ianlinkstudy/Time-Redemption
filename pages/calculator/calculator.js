@@ -99,7 +99,11 @@ Page({
       
       console.log('保存数据:', data);
       
-      // 同时保存到用户信息中
+      // 确保数据保存成功
+      const savedData = wx.getStorageSync('timeCalculatorData');
+      console.log('保存后验证读取:', savedData);
+      
+      // 同时保存到用户信息中（虽然首页不使用这个，但保持一致性）
       const userInfo = wx.getStorageSync('userInfo') || {};
       userInfo.timeValue = this.data.timeValue;
       userInfo.hiringSuggestionMin = this.data.hiringSuggestionMin;
@@ -194,6 +198,10 @@ Page({
       
       // 确保数值是有效的
       if (!isNaN(timeValue) && isFinite(timeValue) && timeValue > 0) {
+        console.log('=== 计算器设置时间价值 ===');
+        console.log('计算得到的时间价值:', timeValue);
+        console.log('时间价值类型:', typeof timeValue);
+        
         this.setData({
           timeValue: timeValue,
           hiringSuggestionMin: hiringSuggestionMin,
@@ -201,7 +209,8 @@ Page({
           showResult: true
         });
         
-        console.log('设置数据完成:', { timeValue, hiringSuggestionMin, hiringSuggestionMax });
+        console.log('setData后页面的时间价值:', this.data.timeValue);
+        console.log('页面时间价值类型:', typeof this.data.timeValue);
         
         // 保存数据
         this.saveData();

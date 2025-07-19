@@ -99,6 +99,10 @@
         <text class="btn-icon">❓</text>
         <text class="btn-text">使用帮助</text>
       </button>
+      <button class="action-btn" bindtap="refreshData" style="margin-left: 12rpx; background: #ff9500;">
+        <text class="btn-icon">🔄</text>
+        <text class="btn-text">刷新数据</text>
+      </button>
     </view>
 
     <!-- 版权信息 -->

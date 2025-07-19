@@ -46,17 +46,25 @@ Page({
   loadTimeValue: function() {
     try {
       const timeData = wx.getStorageSync('timeCalculatorData');
-      console.log('加载的时间数据:', timeData);
+      console.log('=== 决策页面时间价值加载调试 ===');
+      console.log('原始数据:', timeData);
+      console.log('数据类型:', typeof timeData);
+      
+      let timeValue = 0;
       if (timeData && timeData.timeValue) {
-        this.setData({
-          timeValue: parseFloat(timeData.timeValue) || 0
-        });
-        console.log('设置时间价值:', this.data.timeValue);
+        timeValue = parseFloat(timeData.timeValue);
+        console.log('解析后时间价值:', timeValue);
+        console.log('是否为有效数字:', !isNaN(timeValue) && timeValue > 0);
       } else {
-        this.setData({
-          timeValue: 0
-        });
+        console.log('未找到时间价值数据或数据无效');
       }
+      
+      this.setData({
+        timeValue: timeValue
+      });
+      
+      console.log('决策页面设置的时间价值:', this.data.timeValue);
+      console.log('=== 调试结束 ===');
     } catch (error) {
       console.error('加载时间价值数据失败:', error);
       this.setData({

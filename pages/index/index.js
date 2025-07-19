@@ -144,19 +144,30 @@ Page({
       const timeCalculatorData = wx.getStorageSync('timeCalculatorData');
       const userName = wx.getStorageSync('userName');
       
-      console.log('首页加载时间数据:', timeCalculatorData);
+      console.log('=== 首页数据加载调试 ===');
+      console.log('原始时间数据:', timeCalculatorData);
+      console.log('数据类型:', typeof timeCalculatorData);
       
-      const timeValue = timeCalculatorData?.timeValue ? parseFloat(timeCalculatorData.timeValue) : 0;
+      let timeValue = 0;
+      if (timeCalculatorData && timeCalculatorData.timeValue) {
+        timeValue = parseFloat(timeCalculatorData.timeValue);
+        console.log('解析后时间价值:', timeValue);
+      } else {
+        console.log('未找到有效的时间价值数据');
+      }
       
-      this.setData({
-        userInfo: {
-          name: userName || '时间管理者',
-          timeValue: timeValue,
-          hasSetTimeValue: timeValue > 0
-        }
-      });
+      const userInfo = {
+        name: userName || '时间管理者',
+        timeValue: timeValue,
+        hasSetTimeValue: timeValue > 0
+      };
       
-      console.log('首页设置用户数据:', this.data.userInfo);
+      console.log('将要设置的用户数据:', userInfo);
+      
+      this.setData({ userInfo: userInfo });
+      
+      console.log('设置后的页面数据:', this.data.userInfo);
+      console.log('=== 调试结束 ===');
     } catch (error) {
       console.error('加载用户数据失败:', error);
     }
@@ -308,6 +319,17 @@ Page({
   goToSettings: function() {
     wx.switchTab({
       url: '/pages/settings/settings'
+    });
+  },
+
+  // 手动刷新数据（调试用）
+  refreshData: function() {
+    console.log('手动刷新数据');
+    this.loadUserData();
+    this.loadStatistics();
+    wx.showToast({
+      title: '数据已刷新',
+      icon: 'success'
     });
   },
 
