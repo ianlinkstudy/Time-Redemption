@@ -219,6 +219,12 @@ Page({
     // 设置用户选择显示条件
     const showUserChoice = savings > 0;
     
+    // 调试信息
+    console.log('=== 用户选择调试 ===');
+    console.log('savings:', savings);
+    console.log('showUserChoice:', showUserChoice);
+    console.log('decision:', decision);
+    
     this.setData({
       showResult: true,
       decision,
