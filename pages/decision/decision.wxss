@@ -71,6 +71,19 @@
   font-weight: 400;
 }
 
+.suggested-price-tip {
+  font-size: 24rpx;
+  color: #007aff;
+  margin-top: 8rpx;
+  font-weight: 500;
+}
+
+.optional-tag {
+  font-size: 20rpx;
+  color: #86868b;
+  font-weight: normal;
+}
+
 .no-time-value {
   padding: 32rpx;
   text-align: center;
@@ -278,6 +291,33 @@
   color: #34c759;
   font-size: 26rpx;
   font-weight: 600;
+}
+
+/* 用户选择区域 */
+.user-choice-section {
+  margin-top: 24rpx;
+  padding-top: 24rpx;
+  border-top: 1rpx solid #e5e5ea;
+}
+
+.choice-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1d1d1f;
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+
+.choice-buttons {
+  display: flex;
+  gap: 16rpx;
+}
+
+.choice-btn {
+  flex: 1;
+  height: 80rpx;
+  font-size: 28rpx;
+  border-radius: 16rpx;
 }
 
 /* 操作按钮 */

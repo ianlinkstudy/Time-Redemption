@@ -14,6 +14,7 @@
       <view class="time-value-title">您的时间价值</view>
       <view class="time-value-amount">¥{{timeValue}}/小时</view>
       <view class="time-value-tip">精力系数范围：1.0x - 2.0x</view>
+      <view class="suggested-price-tip">建议雇佣单价：¥{{suggestedMinPrice}} - ¥{{suggestedMaxPrice}}/小时</view>
     </view>
     
     <view class="no-time-value card-base" wx:if="{{timeValue <= 0}}">
@@ -27,19 +28,6 @@
   <view class="task-input-section card-base" wx:if="{{timeValue > 0}}">
     <view class="section-title">任务信息</view>
     
-    <!-- 任务描述 -->
-    <view class="form-group">
-      <view class="label">任务描述</view>
-      <textarea 
-        class="textarea" 
-        placeholder="请详细描述要外包的任务..."
-        value="{{taskDescription}}"
-        bindinput="onTaskDescriptionInput"
-        maxlength="200"
-        show-confirm-bar="false"
-      ></textarea>
-    </view>
-
     <!-- 任务类型 -->
     <view class="form-group">
       <view class="label">
@@ -77,6 +65,19 @@
       />
     </view>
 
+    <!-- 任务描述 -->
+    <view class="form-group">
+      <view class="label">任务描述 <text class="optional-tag">(选填)</text></view>
+      <textarea 
+        class="textarea" 
+        placeholder="请详细描述要外包的任务..."
+        value="{{taskDescription}}"
+        bindinput="onTaskDescriptionInput"
+        maxlength="200"
+        show-confirm-bar="false"
+      ></textarea>
+    </view>
+
     <!-- 分析按钮 -->
     <view class="analyze-section">
       <button class="btn btn-primary btn-large" bindtap="analyzeDecision">
@@ -109,8 +110,8 @@
           <view class="detail-value">¥{{analysis.pricePerHour}}/小时</view>
         </view>
         <view class="detail-item">
-          <view class="detail-label">你的时间成本</view>
-          <view class="detail-value">¥{{analysis.timeCost}}</view>
+          <view class="detail-label">建议雇佣单价</view>
+          <view class="detail-value">¥{{suggestedMinPrice}} - ¥{{suggestedMaxPrice}}/小时</view>
         </view>
         <view class="detail-item">
           <view class="detail-label">外包费用</view>
@@ -128,6 +129,15 @@
       
       <view class="result-tip" wx:if="{{analysis.savings > 0}}">
         💰 投资回报率: {{analysis.roi}}%
+      </view>
+      
+      <!-- 用户选择 -->
+      <view class="user-choice-section" wx:if="{{analysis.savings > 0}}">
+        <view class="choice-title">您是否选择雇佣？</view>
+        <view class="choice-buttons">
+          <button class="btn btn-primary choice-btn" bindtap="chooseHire">✅ 选择雇佣</button>
+          <button class="btn btn-outline choice-btn" bindtap="chooseSelf">❌ 自己完成</button>
+        </view>
       </view>
     </view>
   </view>

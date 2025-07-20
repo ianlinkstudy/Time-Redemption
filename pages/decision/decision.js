@@ -3,6 +3,8 @@ Page({
   data: {
     // 用户时间价值数据
     timeValue: 0,
+    suggestedMinPrice: 0, // 建议雇佣单价最小值
+    suggestedMaxPrice: 0, // 建议雇佣单价最大值
     
     // 任务输入数据
     taskDescription: '', // 任务描述
@@ -57,8 +59,14 @@ Page({
         }
       }
       
+      // 计算建议雇佣单价范围 (时间价值/4 * 1~2倍精力系数)
+      const suggestedMinPrice = (timeValue / 4 * 1.0).toFixed(2);
+      const suggestedMaxPrice = (timeValue / 4 * 2.0).toFixed(2);
+      
       this.setData({
-        timeValue: timeValue
+        timeValue: timeValue,
+        suggestedMinPrice: suggestedMinPrice,
+        suggestedMaxPrice: suggestedMaxPrice
       });
     } catch (error) {
       console.error('加载时间价值数据失败:', error);
@@ -141,10 +149,10 @@ Page({
   analyzeDecision: function() {
     const { taskDescription, taskType, estimatedHours, outsourcePrice, timeValue } = this.data;
     
-    // 验证输入
-    if (!taskDescription.trim()) {
+    // 验证输入 - 任务描述改为非必填
+    if (!estimatedHours || !outsourcePrice) {
       wx.showToast({
-        title: '请输入任务描述',
+        title: '请填写完整信息',
         icon: 'none'
       });
       return;
@@ -170,32 +178,37 @@ Page({
     const hours = parseFloat(estimatedHours);
     const price = parseFloat(outsourcePrice);
     const pricePerHour = price / hours;
-    const timeCost = timeValue * hours;
-    const savings = timeCost - price;
+    const suggestedMinPrice = parseFloat(this.data.suggestedMinPrice);
+    const suggestedMaxPrice = parseFloat(this.data.suggestedMaxPrice);
+    
+    // 计算节省金额 (使用建议雇佣单价范围)
+    const avgSuggestedPrice = (suggestedMinPrice + suggestedMaxPrice) / 2;
+    const savings = (avgSuggestedPrice * hours) - price;
     const roi = savings > 0 ? (savings / price * 100) : 0;
     
-
-    
-    // 决策逻辑
+    // 决策逻辑 - 与建议雇佣单价范围比较
     let decision = '';
     let recommendation = '';
     let reason = '';
     
-    if (pricePerHour < timeValue) {
+    if (pricePerHour >= suggestedMinPrice && pricePerHour <= suggestedMaxPrice) {
       decision = 'hire';
       recommendation = '建议雇人';
-      reason = `外包单价 ¥${pricePerHour.toFixed(2)}/小时 < 你的时间价值 ¥${timeValue.toFixed(2)}/小时`;
+      reason = `外包单价 ¥${pricePerHour.toFixed(2)}/小时 在建议范围内 ¥${suggestedMinPrice.toFixed(2)} - ¥${suggestedMaxPrice.toFixed(2)}/小时`;
+    } else if (pricePerHour < suggestedMinPrice) {
+      decision = 'hire';
+      recommendation = '强烈建议雇人';
+      reason = `外包单价 ¥${pricePerHour.toFixed(2)}/小时 低于建议范围 ¥${suggestedMinPrice.toFixed(2)} - ¥${suggestedMaxPrice.toFixed(2)}/小时`;
     } else {
       decision = 'self';
       recommendation = '建议自己做';
-              reason = `外包单价 ¥${pricePerHour.toFixed(2)}/小时 > 你的时间价值 ¥${timeValue.toFixed(2)}/小时`;
+      reason = `外包单价 ¥${pricePerHour.toFixed(2)}/小时 高于建议范围 ¥${suggestedMinPrice.toFixed(2)} - ¥${suggestedMaxPrice.toFixed(2)}/小时`;
     }
     
     const analysis = {
       hours,
       price: price.toFixed(2),
       pricePerHour: pricePerHour.toFixed(2),
-      timeCost: timeCost.toFixed(2),
       savings: savings.toFixed(2),
       roi: roi.toFixed(1),
       decision,
@@ -265,6 +278,60 @@ Page({
       showCancel: false
     });
   },
+
+  // 用户选择雇佣
+  chooseHire: function() {
+    const { analysis, estimatedHours } = this.data;
+    const hours = parseFloat(estimatedHours);
+    
+    // 统计赎回时间
+    this.addRedeemedTime(hours);
+    
+    wx.showToast({
+      title: '已记录赎回时间',
+      icon: 'success'
+    });
+    
+    // 更新决策记录
+    this.updateDecisionRecord(true);
+  },
+
+  // 用户选择自己完成
+  chooseSelf: function() {
+    wx.showToast({
+      title: '已记录选择',
+      icon: 'success'
+    });
+    
+    // 更新决策记录
+    this.updateDecisionRecord(false);
+  },
+
+  // 添加赎回时间
+  addRedeemedTime: function(hours) {
+    try {
+      const redeemedTime = wx.getStorageSync('redeemedTime') || 0;
+      const newRedeemedTime = redeemedTime + hours;
+      wx.setStorageSync('redeemedTime', newRedeemedTime);
+    } catch (error) {
+      console.error('保存赎回时间失败:', error);
+    }
+  },
+
+  // 更新决策记录
+  updateDecisionRecord: function(choseHire) {
+    try {
+      const history = wx.getStorageSync('decisionHistory') || [];
+      if (history.length > 0) {
+        // 更新最新的决策记录
+        history[0].userChoice = choseHire;
+        history[0].choseHire = choseHire;
+        wx.setStorageSync('decisionHistory', history);
+      }
+    } catch (error) {
+      console.error('更新决策记录失败:', error);
+    }
+  }
 
 
 });
