@@ -291,16 +291,22 @@ Page({
 
   // 用户选择雇佣
   chooseHire: function() {
-    const { analysis, estimatedHours } = this.data;
+    const { analysis, estimatedHours, showUserChoice } = this.data;
     const hours = parseFloat(estimatedHours);
     
-    // 统计赎回时间
-    this.addRedeemedTime(hours);
-    
-    wx.showToast({
-      title: '已记录赎回时间',
-      icon: 'success'
-    });
+    // 只有在有节省时才统计赎回时间
+    if (showUserChoice) {
+      this.addRedeemedTime(hours);
+      wx.showToast({
+        title: '已记录赎回时间',
+        icon: 'success'
+      });
+    } else {
+      wx.showToast({
+        title: '已记录选择',
+        icon: 'success'
+      });
+    }
     
     // 更新决策记录
     this.updateDecisionRecord(true);

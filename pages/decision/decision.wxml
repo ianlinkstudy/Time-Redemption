@@ -137,10 +137,10 @@
       </view>
       
       <!-- 用户选择 -->
-      <view class="user-choice-section" wx:if="{{decision === 'hire'}}">
+      <view class="user-choice-section" wx:if="{{showResult}}">
         <view class="choice-title">您是否选择雇佣？</view>
         <view class="choice-buttons">
-          <button class="btn btn-primary choice-btn" bindtap="chooseHire">✅ 选择雇佣</button>
+          <button class="btn btn-primary choice-btn" bindtap="chooseHire">✅ 选择雇佣（买回时间）</button>
           <button class="btn btn-outline choice-btn" bindtap="chooseSelf">❌ 自己完成</button>
         </view>
       </view>
