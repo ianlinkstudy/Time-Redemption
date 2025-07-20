@@ -294,19 +294,15 @@ Page({
     const { analysis, estimatedHours, showUserChoice } = this.data;
     const hours = parseFloat(estimatedHours);
     
-    // 只有在有节省时才统计赎回时间
-    if (showUserChoice) {
-      this.addRedeemedTime(hours);
-      wx.showToast({
-        title: '已记录赎回时间',
-        icon: 'success'
-      });
-    } else {
-      wx.showToast({
-        title: '已记录选择',
-        icon: 'success'
-      });
-    }
+    // 统计赎回时间
+    this.addRedeemedTime(hours);
+    
+    // 显示买回时间提示
+    wx.showToast({
+      title: `恭喜你，你已买回${hours}小时！`,
+      icon: 'success',
+      duration: 2000
+    });
     
     // 更新决策记录
     this.updateDecisionRecord(true);
@@ -314,9 +310,13 @@ Page({
 
   // 用户选择自己完成
   chooseSelf: function() {
+    const { estimatedHours } = this.data;
+    const hours = parseFloat(estimatedHours);
+    
     wx.showToast({
-      title: '已记录选择',
-      icon: 'success'
+      title: `你选择自己完成，预计需要${hours}小时`,
+      icon: 'none',
+      duration: 2000
     });
     
     // 更新决策记录
