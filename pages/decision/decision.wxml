@@ -117,22 +117,22 @@
           <view class="detail-label">外包费用</view>
           <view class="detail-value">¥{{analysis.price}}</view>
         </view>
-        <view class="detail-item {{analysis.savings > 0 ? 'positive' : 'negative'}}">
+        <view class="detail-item {{showUserChoice ? 'positive' : 'negative'}}">
           <view class="detail-label">
-            {{analysis.savings > 0 ? '节省金额' : '额外支出'}}
+            {{showUserChoice ? '节省金额' : '额外支出'}}
           </view>
           <view class="detail-value">
-            {{analysis.savings > 0 ? '+' : ''}}¥{{analysis.savings}}
+            {{showUserChoice ? '+' : ''}}¥{{analysis.savings}}
           </view>
         </view>
       </view>
       
-      <view class="result-tip" wx:if="{{analysis.savings > 0}}">
+      <view class="result-tip" wx:if="{{showUserChoice}}">
         💰 投资回报率: {{analysis.roi}}%
       </view>
       
       <!-- 用户选择 -->
-      <view class="user-choice-section" wx:if="{{analysis.savings > 0}}">
+      <view class="user-choice-section" wx:if="{{showUserChoice}}">
         <view class="choice-title">您是否选择雇佣？</view>
         <view class="choice-buttons">
           <button class="btn btn-primary choice-btn" bindtap="chooseHire">✅ 选择雇佣</button>

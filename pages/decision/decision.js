@@ -216,10 +216,14 @@ Page({
       reason
     };
     
+    // 设置用户选择显示条件
+    const showUserChoice = savings > 0;
+    
     this.setData({
       showResult: true,
       decision,
-      analysis
+      analysis,
+      showUserChoice: showUserChoice
     });
     
     // 保存决策记录
