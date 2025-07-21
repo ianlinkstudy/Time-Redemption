@@ -33,13 +33,15 @@ Page({
     const index = e.currentTarget.dataset.index;
     const item = this.data.historyList[index];
     
+    const userChoice = item.choseHire ? '选择雇佣' : '自己完成';
     const detailInfo = `任务：${item.taskDescription}\n` +
                       `类型：${item.taskType}\n` +
                       `预估时间：${item.estimatedHours}小时\n` +
                       `外包价格：¥${item.outsourcePrice}\n` +
                       `时间价值：¥${item.userTimeValue}/小时\n` +
                       `决策结果：${item.analysis.recommendation}\n` +
-                      `原因：${item.analysis.reason}`;
+                      `原因：${item.analysis.reason}\n` +
+                      `您的选择：${userChoice}`;
     
     wx.showModal({
       title: '决策详情',

@@ -217,8 +217,12 @@
   border-left: 4rpx solid #34c759;
 }
 
-.self-result {
+.consider-result {
   border-left: 4rpx solid #ff9500;
+}
+
+.self-result {
+  border-left: 4rpx solid #ff3b30;
 }
 
 .result-header {
@@ -286,12 +290,21 @@
 .result-tip {
   text-align: center;
   padding: 16rpx;
-  background: rgba(52, 199, 89, 0.1);
   border-radius: 12rpx;
-  color: #34c759;
   font-size: 26rpx;
   font-weight: 600;
 }
+
+.positive-tip {
+  background: rgba(52, 199, 89, 0.1);
+  color: #34c759;
+}
+
+.negative-tip {
+  background: rgba(255, 59, 48, 0.1);
+  color: #ff3b30;
+}
+
 
 /* 用户选择区域 */
 .user-choice-section {

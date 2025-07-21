@@ -13,7 +13,7 @@ Page({
     // 统计数据
     statistics: {
       totalSavedTime: 0,
-      totalSavedMoney: 0,
+      equivalentValue: 0,
       totalDecisions: 0,
       recentDecisions: 0
     },
@@ -134,8 +134,43 @@ Page({
   },
 
   onShow: function() {
+    // 检查时间价值数据是否有更新
+    this.checkTimeValueUpdate();
     this.loadUserData();
     this.loadStatistics();
+    
+    // 强制刷新数据
+    setTimeout(() => {
+      this.loadStatistics();
+    }, 100);
+  },
+
+  // 检查时间价值数据更新
+  checkTimeValueUpdate: function() {
+    try {
+      const timeData = wx.getStorageSync('timeCalculatorData');
+      const currentTimeValue = this.data.userInfo.timeValue;
+      
+      if (timeData && timeData.timeValue !== undefined && timeData.timeValue !== null) {
+        const newTimeValue = typeof timeData.timeValue === 'string' ? parseFloat(timeData.timeValue) : timeData.timeValue;
+        
+        // 如果时间价值发生变化，显示提示
+        if (Math.abs(newTimeValue - currentTimeValue) > 0.01) {
+          console.log('首页 - 时间价值已更新:', currentTimeValue, '→', newTimeValue);
+          
+          // 可选：显示提示信息
+          if (currentTimeValue > 0) {
+            wx.showToast({
+              title: '时间价值已更新',
+              icon: 'success',
+              duration: 2000
+            });
+          }
+        }
+      }
+    } catch (error) {
+      console.error('检查时间价值更新失败:', error);
+    }
   },
 
   // 加载用户数据
@@ -177,9 +212,16 @@ Page({
   loadStatistics: function() {
     try {
       const decisionHistory = wx.getStorageSync('decisionHistory') || [];
+      const redeemedTime = wx.getStorageSync('redeemedTime') || 0;
+      const timeCalculatorData = wx.getStorageSync('timeCalculatorData');
+      
+      let timeValue = 0;
+      if (timeCalculatorData && timeCalculatorData.timeValue) {
+        timeValue = parseFloat(timeCalculatorData.timeValue);
+      }
       
       let totalSavedTime = 0;
-      let totalSavedMoney = 0;
+      let equivalentValue = 0; // 等效价值
       let recentDecisions = 0;
       
       // 计算最近7天的决策数量
@@ -187,9 +229,8 @@ Page({
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
       
       decisionHistory.forEach(record => {
-        if (record.analysis.decision === 'hire' && record.analysis.savings > 0) {
+        if (record.userChoice && record.choseHire) {
           totalSavedTime += record.estimatedHours;
-          totalSavedMoney += record.analysis.savings;
         }
         
         const recordDate = new Date(record.timestamp);
@@ -198,13 +239,22 @@ Page({
         }
       });
       
+      // 计算等效价值：已买回时间 × 时间价值
+      equivalentValue = redeemedTime * timeValue;
+      
+
+      
+      const newStatistics = {
+        totalSavedTime: redeemedTime, // 使用存储的赎回时间
+        equivalentValue: equivalentValue, // 等效价值
+        totalSavedTimeDisplay: (redeemedTime || 0).toFixed(1), // 格式化显示
+        equivalentValueDisplay: (equivalentValue || 0).toFixed(0), // 格式化显示
+        totalDecisions: decisionHistory.length,
+        recentDecisions: recentDecisions
+      };
+      
       this.setData({
-        statistics: {
-          totalSavedTime: totalSavedTime,
-          totalSavedMoney: totalSavedMoney,
-          totalDecisions: decisionHistory.length,
-          recentDecisions: recentDecisions
-        }
+        statistics: newStatistics
       });
     } catch (error) {
       console.error('加载统计数据失败:', error);
@@ -313,6 +363,22 @@ Page({
     wx.switchTab({
       url: '/pages/statistics/statistics'
     });
+  },
+
+  // 手动刷新数据
+  refreshData: function() {
+    console.log('=== 手动刷新数据 ===');
+    this.loadUserData();
+    this.loadStatistics();
+    
+    // 显示当前数据状态
+    setTimeout(() => {
+      console.log('当前页面数据:', this.data);
+      wx.showToast({
+        title: '数据已刷新',
+        icon: 'success'
+      });
+    }, 200);
   },
 
   // 跳转到设置页面

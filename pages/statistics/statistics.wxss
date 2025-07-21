@@ -82,6 +82,110 @@
   display: block;
 }
 
+/* 分析结果 */
+.overview-analysis {
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #eee;
+}
+
+.analysis-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.analysis-item:last-child {
+  margin-bottom: 0;
+}
+
+.analysis-header {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.analysis-label {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.analysis-icon {
+  font-size: 20rpx;
+  color: #007aff;
+  cursor: pointer;
+}
+
+.analysis-value {
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.analysis-value.excellent {
+  color: #34c759;
+}
+
+.analysis-value.good {
+  color: #007aff;
+}
+
+.analysis-value.normal {
+  color: #ff9500;
+}
+
+.analysis-value.poor {
+  color: #ff3b30;
+}
+
+/* 决策统计 */
+.decision-stats-section {
+  margin-bottom: 30rpx;
+}
+
+.decision-stats-card {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.decision-stat-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding: 20rpx;
+  background: #f8f9fa;
+  border-radius: 15rpx;
+}
+
+.decision-stat-item:last-child {
+  margin-bottom: 0;
+}
+
+.decision-stat-icon {
+  font-size: 40rpx;
+  margin-right: 20rpx;
+  width: 60rpx;
+  text-align: center;
+}
+
+.decision-stat-content {
+  flex: 1;
+}
+
+.decision-stat-value {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5rpx;
+}
+
+.decision-stat-label {
+  font-size: 24rpx;
+  color: #666;
+}
+
 /* 周期统计选择 */
 .period-section {
   margin-bottom: 20rpx;

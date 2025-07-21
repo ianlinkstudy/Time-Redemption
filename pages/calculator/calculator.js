@@ -24,14 +24,7 @@ Page({
     // 加载已保存的数据
     this.loadSavedData();
     
-    // 测试计算功能
     console.log('计算器页面加载完成');
-    console.log('当前数据:', this.data);
-    
-    // 延迟1秒后进行测试
-    setTimeout(() => {
-      this.testCalculation();
-    }, 1000);
   },
 
   // 加载已保存的数据
@@ -369,25 +362,5 @@ Page({
     }
   },
 
-  // 测试计算功能
-  testCalculation: function() {
-    console.log('开始测试计算功能...');
-    
-    // 设置测试数据
-    this.setData({
-      annualSalary: '120000',
-      salaryType: 'annual',
-      otherIncome: '0'
-    });
-    
-    // 触发计算
-    this.calculateTimeValue();
-    
-    console.log('测试完成，结果:', {
-      timeValue: this.data.timeValue,
-      hiringSuggestionMin: this.data.hiringSuggestionMin,
-      hiringSuggestionMax: this.data.hiringSuggestionMax,
-      showResult: this.data.showResult
-    });
-  }
+
 });

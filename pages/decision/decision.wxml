@@ -88,59 +88,64 @@
 
   <!-- 决策结果 -->
   <view class="result-section" wx:if="{{showResult}}">
-    <view class="result-card card-base {{decision === 'hire' ? 'hire-result' : 'self-result'}}">
-      <view class="result-header">
-        <view class="result-icon">
-          {{decision === 'hire' ? '👥' : '🙋‍♂️'}}
+    <view class="result-card card-base {{decision === 'hire' ? 'hire-result' : decision === 'consider' ? 'consider-result' : 'self-result'}}">
+              <view class="result-header">
+          <view class="result-icon">
+            {{decision === 'hire' ? '👥' : decision === 'consider' ? '🤔' : '🙋‍♂️'}}
+          </view>
+          <view class="result-title">
+            {{analysis.recommendation}}
+          </view>
         </view>
-        <view class="result-title">
-          {{analysis.recommendation}}
-        </view>
-      </view>
       
       <view class="result-reason">
         {{analysis.reason}}
       </view>
       
-      <!-- 调试信息 -->
-      <view style="background: #ff0000; color: white; padding: 8rpx; margin: 8rpx 0; font-size: 22rpx;">
-        调试：showUserChoice={{showUserChoice}}, savings={{analysis.savings}}, decision={{decision}}
-      </view>
-      
-
-      
       <view class="result-details">
+        <view class="detail-item">
+          <view class="detail-label">您的时间价值</view>
+          <view class="detail-value">¥{{analysis.timeValue}}/小时</view>
+        </view>
         <view class="detail-item">
           <view class="detail-label">外包单价</view>
           <view class="detail-value">¥{{analysis.pricePerHour}}/小时</view>
         </view>
         <view class="detail-item">
           <view class="detail-label">建议雇佣单价</view>
-          <view class="detail-value">¥{{suggestedMinPrice}} - ¥{{suggestedMaxPrice}}/小时</view>
+          <view class="detail-value">¥{{analysis.suggestedMinPrice}} - ¥{{analysis.suggestedMaxPrice}}/小时</view>
+        </view>
+        <view class="detail-item">
+          <view class="detail-label">精力消耗等级</view>
+          <view class="detail-value">{{analysis.energyLevel}}</view>
         </view>
         <view class="detail-item">
           <view class="detail-label">外包费用</view>
           <view class="detail-value">¥{{analysis.price}}</view>
         </view>
-        <view class="detail-item {{showUserChoice ? 'positive' : 'negative'}}">
+        <view class="detail-item {{analysis.savings >= 0 ? 'positive' : 'negative'}}">
           <view class="detail-label">
-            {{showUserChoice ? '节省金额' : '额外支出'}}
+            {{analysis.savings >= 0 ? '节省金额' : '额外支出'}}
           </view>
           <view class="detail-value">
-            {{showUserChoice ? '+' : ''}}¥{{analysis.savings}}
+            {{analysis.savings >= 0 ? '+' : ''}}¥{{analysis.savings}}
           </view>
         </view>
       </view>
       
-      <view class="result-tip" wx:if="{{showUserChoice}}">
-        💰 投资回报率: {{analysis.roi}}%
+      <view class="result-tip {{analysis.roi >= 0 ? 'positive-tip' : 'negative-tip'}}">
+        💰 时间赎回性价比: {{analysis.roi}}% (节省金额÷外包费用×100%)
       </view>
       
       <!-- 用户选择 -->
       <view class="user-choice-section" wx:if="{{showResult}}">
-        <view class="choice-title">您是否选择雇佣？</view>
+        <view class="choice-title">
+          {{decision === 'consider' ? '您是否选择雇佣？(需谨慎考虑)' : '您是否选择雇佣？'}}
+        </view>
         <view class="choice-buttons">
-          <button class="btn btn-primary choice-btn" bindtap="chooseHire">✅ 选择雇佣（买回时间）</button>
+          <button class="btn {{decision === 'consider' ? 'btn-secondary' : 'btn-primary'}} choice-btn" bindtap="chooseHire">
+            {{decision === 'consider' ? '🤔 谨慎雇佣' : '✅ 选择雇佣（买回时间）'}}
+          </button>
           <button class="btn btn-outline choice-btn" bindtap="chooseSelf">❌ 自己完成</button>
         </view>
       </view>

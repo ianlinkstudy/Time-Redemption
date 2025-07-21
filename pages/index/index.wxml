@@ -19,8 +19,10 @@
       </view>
     </view>
 
+
+    
     <!-- 时间赎回成果 -->
-    <view class="results-section" wx:if="{{statistics.totalDecisions > 0}}">
+    <view class="results-section">
       <view class="results-card card-base">
         <view class="results-header">
           <view class="results-icon">📊</view>
@@ -29,13 +31,13 @@
         <view class="results-grid">
           <view class="result-item">
             <view class="result-icon">⏱️</view>
-            <view class="result-value">{{statistics.totalSavedTime.toFixed(1)}}</view>
+            <view class="result-value">{{statistics.totalSavedTimeDisplay}}</view>
             <view class="result-label">已买回时间(小时)</view>
           </view>
           <view class="result-item">
             <view class="result-icon">💰</view>
-            <view class="result-value">¥{{statistics.totalSavedMoney.toFixed(0)}}</view>
-            <view class="result-label">节省金额(元)</view>
+            <view class="result-value">¥{{statistics.equivalentValueDisplay}}</view>
+            <view class="result-label">等效价值(元)</view>
           </view>
           <view class="result-item">
             <view class="result-icon">📝</view>

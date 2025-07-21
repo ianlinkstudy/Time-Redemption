@@ -40,6 +40,12 @@
           <text class="detail-label">{{item.analysis.savings > 0 ? '节省' : '额外支出'}}:</text>
           <text class="detail-value">{{item.analysis.savings > 0 ? '+' : ''}}¥{{item.analysis.savings}}</text>
         </view>
+        <view class="detail-row user-choice">
+          <text class="detail-label">您的选择:</text>
+          <text class="detail-value {{item.choseHire ? 'hire-choice' : 'self-choice'}}">
+            {{item.choseHire ? '✅ 选择雇佣' : '❌ 自己完成'}}
+          </text>
+        </view>
       </view>
       
       <view class="history-footer">
@@ -57,6 +63,18 @@
     <view class="empty-title">暂无决策记录</view>
     <view class="empty-desc">您还没有进行过任何决策分析</view>
     <button class="btn btn-primary" bindtap="goToDecision">去进行决策</button>
+  </view>
+
+  <!-- 提示信息 -->
+  <view class="tips-section" wx:if="{{historyList.length > 0}}">
+    <view class="tips-card card-base">
+      <view class="tips-title">💡 记录说明</view>
+      <view class="tips-content">
+        <text>• 相同任务的分析会更新现有记录，不会重复显示</text>
+        <text>• 每次做出选择后，记录会自动更新</text>
+        <text>• 时间戳显示的是最后一次更新的时间</text>
+      </view>
+    </view>
   </view>
 
   <!-- 底部操作 -->
