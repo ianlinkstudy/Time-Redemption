@@ -1,114 +1,179 @@
 <!--pages/calculator/calculator.wxml-->
 <view class="container">
-  <!-- 页面标题 -->
-  <view class="header card-base">
-    <text class="title">时赎器</text>
-    <text class="subtitle">计算你的时间值多少钱</text>
+  <!-- 毛玻璃导航栏 -->
+  <view class="navbar">
+    <view class="navbar-content">
+      <view class="navbar-title">
+        <text class="navbar-icon">🧮</text>
+        <text class="navbar-text">时间价值计算器</text>
+      </view>
+      <view class="navbar-actions">
+        <button class="navbar-btn" bindtap="showExplanation">
+          <text class="navbar-btn-icon">❓</text>
+        </button>
+      </view>
+    </view>
   </view>
 
-  <!-- 显示模式：已保存的收入和时间价值 -->
-  <view class="display-section" wx:if="{{!isEditing && showResult}}">
-    <view class="income-display card-base">
+  <!-- 主要内容区域 -->
+  <view class="main-content">
+    <!-- 页面标题卡片 -->
+    <view class="header-card card fade-in-up">
+      <view class="header-icon">⏰</view>
+      <view class="header-content">
+        <text class="header-title">计算你的时间价值</text>
+        <text class="header-subtitle">了解你的时间值多少钱，做出明智的决策</text>
+      </view>
+    </view>
+
+    <!-- 显示模式：已保存的收入和时间价值 -->
+    <view class="display-card card fade-in-up" wx:if="{{!isEditing && showResult}}">
       <view class="display-header">
-        <view class="display-title">💰 收入信息</view>
-        <button class="btn-edit" bindtap="startEdit">修改</button>
-      </view>
-      
-      <view class="income-item">
-        <view class="income-label">年总收入</view>
-        <view class="income-value">¥{{totalAnnualIncome}}</view>
-      </view>
-      
-      <view class="income-breakdown">
-        <text class="breakdown-item" wx:if="{{salaryType === 'annual' && annualSalary}}">年薪: ¥{{annualSalary}}</text>
-        <text class="breakdown-item" wx:if="{{salaryType === 'monthly' && monthlySalary}}">月薪: ¥{{monthlySalary}} × 12</text>
-        <text class="breakdown-item" wx:if="{{otherIncome}}">其他收入: ¥{{otherIncome}}</text>
-      </view>
-    </view>
-  </view>
-
-  <!-- 编辑模式：输入表单 -->
-  <view class="input-section card-base" wx:if="{{isEditing}}">
-    <view class="section-title">💰 收入信息录入</view>
-    
-    <!-- 薪资类型选择 -->
-    <view class="form-group">
-      <view class="label">薪资类型</view>
-      <picker mode="selector" range="{{['按年薪计算', '按月薪计算']}}" value="{{salaryType === 'annual' ? 0 : 1}}" bindchange="onSalaryTypeChange">
-        <view class="picker">
-          {{salaryType === 'annual' ? '按年薪计算' : '按月薪计算'}}
+        <view class="display-title">
+          <text class="display-icon">💰</text>
+          <text class="display-text">收入信息</text>
         </view>
-      </picker>
-    </view>
-
-    <!-- 年薪输入 -->
-    <view class="form-group" wx:if="{{salaryType === 'annual'}}">
-      <view class="label">年薪 (元)</view>
-      <input class="input" type="number" placeholder="请输入年薪" value="{{annualSalary}}" bindinput="onAnnualSalaryInput" />
-    </view>
-
-    <!-- 月薪输入 -->
-    <view class="form-group" wx:if="{{salaryType === 'monthly'}}">
-      <view class="label">月薪 (元)</view>
-      <input class="input" type="number" placeholder="请输入月薪" value="{{monthlySalary}}" bindinput="onMonthlySalaryInput" />
-    </view>
-
-    <!-- 其他收入输入 -->
-    <view class="form-group">
-      <view class="label">其他年收入 (元)</view>
-      <input class="input" type="number" placeholder="副业、投资等其他收入" value="{{otherIncome}}" bindinput="onOtherIncomeInput" />
-    </view>
-
-    <!-- 编辑模式按钮 -->
-    <view class="edit-buttons">
-      <button class="btn btn-outline" bindtap="cancelEdit" wx:if="{{timeValue > 0}}">取消</button>
-      <button class="btn btn-primary" bindtap="saveAndExit">保存</button>
-    </view>
-  </view>
-
-  <!-- 计算结果显示 -->
-  <view class="result-section" wx:if="{{showResult && !isEditing}}">
-    <view class="result-card card-base">
-      <view class="result-title">⏰ 时间价值结果</view>
-      
-      <view class="result-item main-result">
-        <view class="result-label">你的时间价值</view>
-        <view class="result-value highlight">¥{{timeValue || 0}}/小时</view>
+        <button class="edit-btn" bindtap="startEdit">
+          <text class="edit-icon">✏️</text>
+          <text class="edit-text">修改</text>
+        </button>
       </view>
       
-      <view class="result-item">
-        <view class="result-label">建议雇佣单价</view>
-        <view class="result-value">¥{{hiringSuggestionMin || 0}} - ¥{{hiringSuggestionMax || 0}}/小时</view>
+      <view class="income-summary">
+        <view class="income-main">
+          <text class="income-label">年总收入</text>
+          <text class="income-value">¥{{totalAnnualIncome}}</text>
+        </view>
+        
+        <view class="income-breakdown">
+          <view class="breakdown-item" wx:if="{{salaryType === 'annual' && annualSalary}}">
+            <text class="breakdown-label">年薪</text>
+            <text class="breakdown-value">¥{{annualSalary}}</text>
+          </view>
+          <view class="breakdown-item" wx:if="{{salaryType === 'monthly' && monthlySalary}}">
+            <text class="breakdown-label">月薪</text>
+            <text class="breakdown-value">¥{{monthlySalary}} × 12</text>
+          </view>
+          <view class="breakdown-item" wx:if="{{otherIncome}}">
+            <text class="breakdown-label">其他收入</text>
+            <text class="breakdown-value">¥{{otherIncome}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 编辑模式：输入表单 -->
+    <view class="input-card card fade-in-up" wx:if="{{isEditing}}">
+      <view class="input-header">
+        <text class="input-icon">💰</text>
+        <text class="input-title">收入信息录入</text>
+      </view>
+      
+      <!-- 薪资类型选择 -->
+      <view class="form-group">
+        <text class="form-label">薪资类型</text>
+        <picker mode="selector" range="{{['按年薪计算', '按月薪计算']}}" value="{{salaryType === 'annual' ? 0 : 1}}" bindchange="onSalaryTypeChange">
+          <view class="picker-input">
+            <text class="picker-text">{{salaryType === 'annual' ? '按年薪计算' : '按月薪计算'}}</text>
+            <text class="picker-arrow">▼</text>
+          </view>
+        </picker>
+      </view>
+
+      <!-- 年薪输入 -->
+      <view class="form-group" wx:if="{{salaryType === 'annual'}}">
+        <text class="form-label">年薪 (元)</text>
+        <input class="form-input" type="number" placeholder="请输入年薪" value="{{annualSalary}}" bindinput="onAnnualSalaryInput" />
+      </view>
+
+      <!-- 月薪输入 -->
+      <view class="form-group" wx:if="{{salaryType === 'monthly'}}">
+        <text class="form-label">月薪 (元)</text>
+        <input class="form-input" type="number" placeholder="请输入月薪" value="{{monthlySalary}}" bindinput="onMonthlySalaryInput" />
+      </view>
+
+      <!-- 其他收入输入 -->
+      <view class="form-group">
+        <text class="form-label">其他年收入 (元)</text>
+        <input class="form-input" type="number" placeholder="副业、投资等其他收入" value="{{otherIncome}}" bindinput="onOtherIncomeInput" />
+      </view>
+
+      <!-- 编辑模式按钮 -->
+      <view class="form-actions">
+        <button class="btn btn-secondary" bindtap="cancelEdit" wx:if="{{timeValue > 0}}">取消</button>
+        <button class="btn btn-primary" bindtap="saveAndExit">保存</button>
+      </view>
+    </view>
+
+    <!-- 计算结果显示 -->
+    <view class="result-card card fade-in-up" wx:if="{{showResult && !isEditing}}">
+      <view class="result-header">
+        <text class="result-icon">⏰</text>
+        <text class="result-title">时间价值结果</text>
+      </view>
+      
+      <view class="result-main">
+        <view class="result-item main-result">
+          <text class="result-label">你的时间价值</text>
+          <text class="result-value highlight">¥{{timeValue || 0}}/小时</text>
+        </view>
+        
+        <view class="result-item">
+          <text class="result-label">建议雇佣单价</text>
+          <text class="result-value">¥{{hiringSuggestionMin || 0}} - ¥{{hiringSuggestionMax || 0}}/小时</text>
+        </view>
       </view>
       
       <view class="result-tip">
-        <text>💡 如果外包费用在建议雇佣单价范围内，建议雇人代做</text>
+        <text class="tip-icon">💡</text>
+        <text class="tip-text">如果外包费用在建议雇佣单价范围内，建议雇人代做</text>
       </view>
     </view>
-  </view>
 
-  <!-- 使用说明 -->
-  <view class="tips-section" wx:if="{{isEditing}}">
-    <view class="tips-card card-base">
-      <view class="tips-title">💡 使用说明</view>
+    <!-- 使用说明 -->
+    <view class="tips-card card fade-in-up" wx:if="{{isEditing}}">
+      <view class="tips-header">
+        <text class="tips-icon">💡</text>
+        <text class="tips-title">使用说明</text>
+      </view>
       <view class="tips-content">
-        <text>• 输入你的薪资和其他收入信息</text>
-        <text>• 系统计算你的时间价值(收入÷2000)</text>
-        <text>• 自动生成1.0x-2.0x精力系数的雇佣单价范围</text>
-        <text>• 帮助你决定是否应该雇人代做任务</text>
+        <view class="tip-item">
+          <text class="tip-bullet">•</text>
+          <text class="tip-text">输入你的薪资和其他收入信息</text>
+        </view>
+        <view class="tip-item">
+          <text class="tip-bullet">•</text>
+          <text class="tip-text">系统计算你的时间价值(收入÷2000)</text>
+        </view>
+        <view class="tip-item">
+          <text class="tip-bullet">•</text>
+          <text class="tip-text">自动生成1.0x-2.0x精力系数的雇佣单价范围</text>
+        </view>
+        <view class="tip-item">
+          <text class="tip-bullet">•</text>
+          <text class="tip-text">帮助你决定是否应该雇人代做任务</text>
+        </view>
       </view>
     </view>
-  </view>
 
-  <!-- 操作按钮 -->
-  <view class="action-buttons" wx:if="{{!isEditing}}">
-    <button class="btn btn-secondary" bindtap="showExplanation">查看计算说明</button>
-    <button class="btn btn-danger" bindtap="resetData" wx:if="{{showResult}}">重置数据</button>
-  </view>
+    <!-- 操作按钮 -->
+    <view class="actions-card card fade-in-up" wx:if="{{!isEditing}}">
+      <view class="actions-grid">
+        <button class="action-btn" bindtap="showExplanation">
+          <text class="action-icon">📖</text>
+          <text class="action-text">查看说明</text>
+        </button>
+        <button class="action-btn danger" bindtap="resetData" wx:if="{{showResult}}">
+          <text class="action-icon">🔄</text>
+          <text class="action-text">重置数据</text>
+        </button>
+      </view>
+    </view>
 
-  <!-- 底部说明 -->
-  <view class="footer">
-    <text class="quote">"金钱仅仅是用来购买时间的工具"</text>
-    <text class="author">—— 《买回你的时间》</text>
+    <!-- 底部版权信息 -->
+    <view class="footer-card card fade-in-up">
+      <text class="footer-text">"金钱仅仅是用来购买时间的工具"</text>
+      <text class="footer-author">—— 《买回你的时间》</text>
+    </view>
   </view>
 </view>

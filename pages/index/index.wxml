@@ -1,116 +1,162 @@
 <!--index.wxml-->
 <view class="container">
-    <!-- 欢迎头部 -->
-    <view class="welcome-header card-base">
-      <view class="welcome-icon">⏰</view>
-      <view class="welcome-title">
-        <text class="main-title">时间赎回器</text>
-        <text class="sub-title">买回你的时间，创造更大价值</text>
+  <!-- 毛玻璃导航栏 -->
+  <view class="navbar {{navbarClass}}">
+    <view class="navbar-content">
+      <view class="navbar-title">
+        <text class="navbar-icon">⏰</text>
+        <text class="navbar-text">时间赎回器</text>
       </view>
-      <view class="welcome-greeting">
-        <text class="greeting-text">你好，{{userInfo.name}}！</text>
+      <view class="navbar-actions">
+        <button class="navbar-btn" bindtap="showHelp">
+          <text class="navbar-btn-icon">❓</text>
+        </button>
+      </view>
+    </view>
+  </view>
 
-        <text class="greeting-desc" wx:if="{{userInfo.hasSetTimeValue && userInfo.timeValue > 0}}">
-          您的时间价值：¥{{userInfo.timeValue}}/小时
-        </text>
-        <text class="greeting-desc" wx:else>
-          还未设置时间价值，快去计算一下吧！
-        </text>
+  <!-- 主要内容区域 -->
+  <view class="main-content">
+    <!-- 欢迎卡片 -->
+    <view class="welcome-card card fade-in-up">
+      <view class="welcome-header">
+        <view class="welcome-icon">🌱</view>
+        <view class="welcome-content">
+          <text class="welcome-title">你好，{{userInfo.name}}！</text>
+          <text class="welcome-subtitle">开始你的时间赎回之旅</text>
+        </view>
+      </view>
+      
+      <view class="time-value-display" wx:if="{{userInfo.hasSetTimeValue && userInfo.timeValue > 0}}">
+        <view class="time-value-card">
+          <text class="time-value-label">你的时间价值</text>
+          <text class="time-value-amount">¥{{userInfo.timeValue}}/小时</text>
+        </view>
+      </view>
+      
+      <view class="setup-prompt" wx:else>
+        <text class="setup-text">还未设置时间价值</text>
+        <button class="btn setup-btn" bindtap="goToCalculator">
+          <text class="btn-icon">🧮</text>
+          <text class="btn-text">立即设置</text>
+        </button>
       </view>
     </view>
 
-
-    
-    <!-- 时间赎回成果 -->
-    <view class="results-section">
-      <view class="results-card card-base">
-        <view class="results-header">
-          <view class="results-icon">📊</view>
-          <view class="results-title">时间赎回成果</view>
-        </view>
-        <view class="results-grid">
-          <view class="result-item">
-            <view class="result-icon">⏱️</view>
-            <view class="result-value">{{statistics.totalSavedTimeDisplay}}</view>
-            <view class="result-label">已买回时间(小时)</view>
-          </view>
-          <view class="result-item">
-            <view class="result-icon">💰</view>
-            <view class="result-value">¥{{statistics.equivalentValueDisplay}}</view>
-            <view class="result-label">等效价值(元)</view>
-          </view>
-          <view class="result-item">
-            <view class="result-icon">📝</view>
-            <view class="result-value">{{statistics.totalDecisions}}</view>
-            <view class="result-label">决策记录(次)</view>
-          </view>
-        </view>
+    <!-- 时间赎回成果卡片 -->
+    <view class="results-card card fade-in-up" wx:if="{{statistics.totalSavedTime > 0 || statistics.equivalentValue > 0}}">
+      <view class="results-header">
+        <view class="results-icon">📊</view>
+        <view class="results-title">时间赎回成果</view>
       </view>
-    </view>
-
-    <!-- 三步赎回你的时间 -->
-    <view class="steps-section">
-      <view class="steps-card card-base">
-        <view class="steps-header">
-          <view class="steps-icon">🎯</view>
-          <view class="steps-title">三步赎回你的时间</view>
+      
+      <view class="results-grid">
+        <view class="result-item">
+          <view class="result-icon">⏱️</view>
+          <view class="result-content">
+            <text class="result-value">{{statistics.totalSavedTimeDisplay}}</text>
+            <text class="result-label">已买回时间</text>
+            <text class="result-unit">小时</text>
+          </view>
         </view>
-        <view class="steps-list">
-          <view class="step-item" bindtap="goToCalculator">
-            <view class="step-icon">🧮</view>
-            <view class="step-content">
-              <view class="step-title">计算时间价值</view>
-              <view class="step-desc">输入收入，算出每小时值多少钱</view>
-            </view>
-            <view class="step-status" wx:if="{{userInfo.hasSetTimeValue}}">✓</view>
+        
+        <view class="result-item">
+          <view class="result-icon">💰</view>
+          <view class="result-content">
+            <text class="result-value">¥{{statistics.equivalentValueDisplay}}</text>
+            <text class="result-label">等效价值</text>
+            <text class="result-unit">元</text>
           </view>
-          
-          <view class="step-item" bindtap="goToDecision">
-            <view class="step-icon">🤖</view>
-            <view class="step-content">
-              <view class="step-title">智能决策分析</view>
-              <view class="step-desc">判断任务是自己做还是雇人做</view>
-            </view>
-          </view>
-          
-          <view class="step-item" bindtap="goToStatistics">
-            <view class="step-icon">📈</view>
-            <view class="step-content">
-              <view class="step-title">查看管理成果</view>
-              <view class="step-desc">统计节省时间，追踪价值创造</view>
-            </view>
+        </view>
+        
+        <view class="result-item">
+          <view class="result-icon">📝</view>
+          <view class="result-content">
+            <text class="result-value">{{statistics.totalDecisions}}</text>
+            <text class="result-label">决策记录</text>
+            <text class="result-unit">次</text>
           </view>
         </view>
       </view>
     </view>
 
-    <!-- 今日金句 -->
-    <view class="today-tip-section">
-      <view class="tip-card card-base">
-        <view class="tip-icon">💡</view>
-        <view class="tip-content">
-          <view class="tip-title">{{todayTip.title}}</view>
-          <view class="tip-text">{{todayTip.content}}</view>
-          <view class="tip-author">—— {{todayTip.author}}</view>
+    <!-- 功能导航卡片 -->
+    <view class="features-card card fade-in-up">
+      <view class="features-header">
+        <view class="features-icon">🎯</view>
+        <view class="features-title">三步赎回你的时间</view>
+      </view>
+      
+      <view class="features-list">
+        <view class="feature-item" bindtap="goToCalculator">
+          <view class="feature-icon">🧮</view>
+          <view class="feature-content">
+            <text class="feature-title">计算时间价值</text>
+            <text class="feature-desc">输入收入，算出每小时值多少钱</text>
+          </view>
+          <view class="feature-status" wx:if="{{userInfo.hasSetTimeValue}}">
+            <text class="status-icon">✓</text>
+          </view>
+          <view class="feature-arrow">→</view>
+        </view>
+        
+        <view class="feature-item" bindtap="goToDecision">
+          <view class="feature-icon">🤖</view>
+          <view class="feature-content">
+            <text class="feature-title">智能决策分析</text>
+            <text class="feature-desc">判断任务是自己做还是雇人做</text>
+          </view>
+          <view class="feature-arrow">→</view>
+        </view>
+        
+        <view class="feature-item" bindtap="goToStatistics">
+          <view class="feature-icon">📈</view>
+          <view class="feature-content">
+            <text class="feature-title">查看管理成果</text>
+            <text class="feature-desc">统计节省时间，追踪价值创造</text>
+          </view>
+          <view class="feature-arrow">→</view>
         </view>
       </view>
     </view>
 
-    <!-- 底部操作 -->
-    <view class="bottom-actions">
-      <button class="action-btn secondary" bindtap="showHelp">
-        <text class="btn-icon">❓</text>
-        <text class="btn-text">使用帮助</text>
-      </button>
-      <button class="action-btn" bindtap="refreshData" style="margin-left: 12rpx; background: #ff9500;">
-        <text class="btn-icon">🔄</text>
-        <text class="btn-text">刷新数据</text>
-      </button>
+    <!-- 今日金句卡片 -->
+    <view class="quote-card card fade-in-up">
+      <view class="quote-icon">💡</view>
+      <view class="quote-content">
+        <text class="quote-text">{{todayTip.content}}</text>
+        <text class="quote-author">—— {{todayTip.author}}</text>
+      </view>
     </view>
 
-    <!-- 版权信息 -->
-    <view class="copyright card-base">
-      <text class="copyright-text">"金钱仅仅是用来购买时间的工具"</text>
-      <text class="copyright-author">—— 《买回你的时间》</text>
+    <!-- 快速操作卡片 -->
+    <view class="quick-actions-card card fade-in-up">
+      <view class="quick-actions-header">
+        <text class="quick-actions-title">快速操作</text>
+      </view>
+      
+      <view class="quick-actions-grid">
+        <button class="quick-action-btn" bindtap="goToCalculator">
+          <text class="quick-action-icon">⚡</text>
+          <text class="quick-action-text">快速计算</text>
+        </button>
+        
+        <button class="quick-action-btn" bindtap="goToDecision">
+          <text class="quick-action-icon">🎯</text>
+          <text class="quick-action-text">快速决策</text>
+        </button>
+        
+        <button class="quick-action-btn" bindtap="goToStatistics">
+          <text class="quick-action-icon">📈</text>
+          <text class="quick-action-text">查看统计</text>
+        </button>
+      </view>
     </view>
+
+    <!-- 底部版权信息 -->
+    <view class="footer-card card fade-in-up">
+      <text class="footer-text">"金钱仅仅是用来购买时间的工具"</text>
+      <text class="footer-author">—— 《买回你的时间》</text>
     </view>
+  </view>
+</view>

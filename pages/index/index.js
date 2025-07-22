@@ -14,9 +14,14 @@ Page({
     statistics: {
       totalSavedTime: 0,
       equivalentValue: 0,
+      totalSavedTimeDisplay: '0.0',
+      equivalentValueDisplay: '0',
       totalDecisions: 0,
       recentDecisions: 0
     },
+    
+    // 导航栏状态
+    navbarClass: '',
     
     // 功能导航
     features: [
@@ -99,26 +104,7 @@ Page({
       { content: '时间是由分秒积成的，善于利用零星时间的人，才会做出更大的成绩来。', author: '华罗庚' },
       { content: '时间最不偏私，给任何人都是二十四小时。', author: '赫胥黎' },
       { content: '时间是一切财富中最宝贵的财富。', author: '德奥弗拉斯多' },
-      { content: '时间能消除一切仇怨。在时间面前，世间的一切仇恨都显得微不足道和软弱无力。', author: '莎士比亚' },
-      { content: '时间是最好的医生。', author: '英国谚语' },
-      { content: '时间乃是万物中最宝贵的东西。', author: '柏拉图' },
-      { content: '时间是变化的财富。时钟模仿它，却只有变化而无财富。', author: '泰戈尔' },
-      { content: '时间就是速度，时间就是力量。', author: '郭沫若' },
-      { content: '时间是审查一切罪犯的最老练的法官。', author: '莎士比亚' },
-      { content: '时间是人的财富，全部财富，正如时间是国家的财富一样。', author: '巴尔扎克' },
-      { content: '时间像弹簧，可以缩短也可以拉长。', author: '柬埔寨谚语' },
-      { content: '时间是最伟大、最公正的裁判。', author: '俄国谚语' },
-      { content: '时间能使隐藏的事物显露，也能使灿烂夺目的东西黯然无光。', author: '贺拉斯' },
-      { content: '时间就是金钱。', author: '富兰克林' },
-      { content: '时间是人类发展的空间。', author: '马克思' },
-      { content: '时间是最宝贵的财富。', author: '希腊谚语' },
-      { content: '时间会刺破青春的华丽精致，会把平行线刻上美人的额角。', author: '莎士比亚' },
-      { content: '时间老人自己是个秃顶，所以直到世界末日也会有大群秃顶的徒子徒孙。', author: '莎士比亚' },
-      { content: '时间是衡量事业的标准。', author: '培根' },
-      { content: '时间能够证明爱情，也能够把爱推翻。', author: '李嘉诚' },
-      { content: '时间是最不值钱的东西，也是最值钱的东西。', author: '《时间管理》' },
-      { content: '你热爱生命吗？那么别浪费时间，因为时间是组成生命的材料。', author: '富兰克林' },
-      { content: '时间是一个伟大的作者，它会给每个人写出完美的结局来。', author: '卓别林' }
+      { content: '时间是一个伟大的作者，它必将写出完美的答案。', author: '卓别林' }
     ],
     
     // 显示状态
@@ -129,8 +115,8 @@ Page({
   onLoad: function() {
     this.loadUserData();
     this.loadStatistics();
+    this.loadTodayTip();
     this.checkFirstTimeUser();
-    this.loadRandomQuote();
   },
 
   onShow: function() {
@@ -143,6 +129,20 @@ Page({
     setTimeout(() => {
       this.loadStatistics();
     }, 100);
+  },
+
+  // 页面滚动监听
+  onPageScroll: function(e) {
+    const scrollTop = e.scrollTop;
+    if (scrollTop > 50) {
+      this.setData({
+        navbarClass: 'scrolled'
+      });
+    } else {
+      this.setData({
+        navbarClass: ''
+      });
+    }
   },
 
   // 检查时间价值数据更新
@@ -242,8 +242,6 @@ Page({
       // 计算等效价值：已买回时间 × 时间价值
       equivalentValue = redeemedTime * timeValue;
       
-
-      
       const newStatistics = {
         totalSavedTime: redeemedTime, // 使用存储的赎回时间
         equivalentValue: equivalentValue, // 等效价值
@@ -258,6 +256,26 @@ Page({
       });
     } catch (error) {
       console.error('加载统计数据失败:', error);
+    }
+  },
+
+  // 加载今日金句
+  loadTodayTip: function() {
+    try {
+      const today = new Date();
+      const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+      const quoteIndex = dayOfYear % this.data.timeQuotes.length;
+      const todayQuote = this.data.timeQuotes[quoteIndex];
+      
+      this.setData({
+        todayTip: {
+          title: '今日金句',
+          content: todayQuote.content,
+          author: todayQuote.author
+        }
+      });
+    } catch (error) {
+      console.error('加载今日金句失败:', error);
     }
   },
 
@@ -388,47 +406,30 @@ Page({
     });
   },
 
-     // 手动刷新数据（调试用）
-  refreshData: function() {
-    console.log('=== 手动刷新数据 ===');
-    
-    // 直接检查localStorage中的原始数据
-    const rawData = wx.getStorageSync('timeCalculatorData');
-    console.log('localStorage原始数据:', rawData);
-    
-    // 重新加载数据
-    this.loadUserData();
-    this.loadStatistics();
-    
-    wx.showToast({
-      title: '数据已刷新，请查看控制台',
-      icon: 'success'
-    });
-  },
-
-  // 查看使用帮助
+  // 显示帮助
   showHelp: function() {
     wx.showModal({
       title: '使用帮助',
-      content: '1. 首先在"计算器"中设置您的时间价值\n2. 在"决策"中输入任务信息获取建议\n3. 在"统计"中查看您的时间管理成果\n4. 在"设置"中管理个人信息和应用设置',
+      content: '1. 首先在计算器页面设置你的时间价值\n2. 在决策页面分析任务是否应该外包\n3. 在统计页面查看你的时间管理成果\n\n时间赎回器的核心理念是：用金钱买回时间，用时间创造更大的价值。',
+      confirmText: '知道了',
       showCancel: false
     });
   },
 
-  // 分享小程序
+  // 分享功能
   onShareAppMessage: function() {
     return {
-      title: '时间赎回器 - 计算时间价值，做出明智决策',
+      title: '时间赎回器 - 买回你的时间',
       path: '/pages/index/index',
-      imageUrl: '/images/share-image.jpg'
+      imageUrl: '/images/share-cover.png'
     };
   },
 
   // 分享到朋友圈
   onShareTimeline: function() {
     return {
-      title: '时间赎回器 - 金钱仅仅是用来购买时间的工具',
-      imageUrl: '/images/share-image.jpg'
+      title: '时间赎回器 - 买回你的时间',
+      imageUrl: '/images/share-cover.png'
     };
   },
 
