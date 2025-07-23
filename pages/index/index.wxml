@@ -9,7 +9,7 @@
       </view>
       <view class="navbar-actions">
         <button class="navbar-btn" bindtap="showHelp">
-          <text class="navbar-btn-icon">❓</text>
+          <text class="navbar-btn-text">使用帮助</text>
         </button>
       </view>
     </view>
@@ -127,36 +127,6 @@
         <text class="quote-text">{{todayTip.content}}</text>
         <text class="quote-author">—— {{todayTip.author}}</text>
       </view>
-    </view>
-
-    <!-- 快速操作卡片 -->
-    <view class="quick-actions-card card fade-in-up">
-      <view class="quick-actions-header">
-        <text class="quick-actions-title">快速操作</text>
-      </view>
-      
-      <view class="quick-actions-grid">
-        <button class="quick-action-btn" bindtap="goToCalculator">
-          <text class="quick-action-icon">⚡</text>
-          <text class="quick-action-text">快速计算</text>
-        </button>
-        
-        <button class="quick-action-btn" bindtap="goToDecision">
-          <text class="quick-action-icon">🎯</text>
-          <text class="quick-action-text">快速决策</text>
-        </button>
-        
-        <button class="quick-action-btn" bindtap="goToStatistics">
-          <text class="quick-action-icon">📈</text>
-          <text class="quick-action-text">查看统计</text>
-        </button>
-      </view>
-    </view>
-
-    <!-- 底部版权信息 -->
-    <view class="footer-card card fade-in-up">
-      <text class="footer-text">"金钱仅仅是用来购买时间的工具"</text>
-      <text class="footer-author">—— 《买回你的时间》</text>
     </view>
   </view>
 </view>

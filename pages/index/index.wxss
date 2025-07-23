@@ -57,42 +57,47 @@
 }
 
 .navbar-btn {
-  background: transparent;
-  border: none;
-  padding: 16rpx;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--border-light);
   border-radius: 12rpx;
+  padding: 12rpx 24rpx;
   transition: all 0.3s ease;
 }
 
 .navbar-btn:active {
-  background: rgba(0, 100, 0, 0.1);
+  background: var(--primary-green);
+  color: white;
 }
 
-.navbar-btn-icon {
-  font-size: 32rpx;
+.navbar-btn-text {
+  font-size: 26rpx;
   color: var(--text-secondary);
+  font-weight: 500;
 }
 
 /* 欢迎卡片样式 */
 .welcome-card {
   margin: 24rpx 32rpx;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 255, 254, 0.95) 100%);
+  text-align: center;
+  padding: 48rpx 32rpx;
 }
 
 .welcome-header {
   display: flex;
+  flex-direction: column;
   align-items: center;
   margin-bottom: 32rpx;
 }
 
 .welcome-icon {
   font-size: 56rpx;
-  margin-right: 24rpx;
+  margin-bottom: 24rpx;
   color: var(--primary-green);
 }
 
 .welcome-content {
-  flex: 1;
+  text-align: center;
 }
 
 .welcome-title {
@@ -185,6 +190,7 @@
 .results-header {
   display: flex;
   align-items: center;
+  justify-content: center;
   margin-bottom: 32rpx;
 }
 
@@ -350,6 +356,7 @@
   color: var(--primary-green);
   margin-bottom: 24rpx;
   display: block;
+  text-align: center;
 }
 
 .quote-content {
@@ -453,21 +460,19 @@
     padding-top: 100rpx;
   }
   
+  .welcome-card,
+  .results-card,
+  .features-card,
+  .quote-card {
+    margin: 16rpx 24rpx;
+  }
+  
   .results-grid {
     grid-template-columns: repeat(2, 1fr);
   }
   
   .quick-actions-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .welcome-card,
-  .results-card,
-  .features-card,
-  .quote-card,
-  .quick-actions-card,
-  .footer-card {
-    margin: 16rpx 24rpx;
   }
 }
 
