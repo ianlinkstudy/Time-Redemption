@@ -77,21 +77,32 @@ Page({
   // 加载时间价值数据
   loadTimeValue: function() {
     try {
+      console.log('=== 决策页面数据加载调试 ===');
+      
       const timeData = wx.getStorageSync('timeCalculatorData');
+      console.log('时间计算器数据:', timeData);
+      
       let timeValue = 0;
       
       if (timeData && timeData.timeValue !== undefined && timeData.timeValue !== null) {
-        // 处理可能的字符串类型
+        // 确保转换为数字类型
         if (typeof timeData.timeValue === 'string') {
           timeValue = parseFloat(timeData.timeValue);
         } else {
-          timeValue = timeData.timeValue;
+          timeValue = Number(timeData.timeValue);
         }
+        console.log('解析后时间价值:', timeValue);
+        console.log('时间价值类型:', typeof timeValue);
+      } else {
+        console.log('未找到有效的时间价值数据');
       }
       
       // 计算建议雇佣单价范围 (时间价值/4 * 1~2倍精力系数)
       const suggestedMinPrice = (timeValue / 4 * 1.0).toFixed(2);
       const suggestedMaxPrice = (timeValue / 4 * 2.0).toFixed(2);
+      
+      console.log('建议雇佣单价范围:', suggestedMinPrice, '-', suggestedMaxPrice);
+      console.log('=== 决策页面调试结束 ===');
       
       this.setData({
         timeValue: timeValue,
@@ -101,7 +112,9 @@ Page({
     } catch (error) {
       console.error('加载时间价值数据失败:', error);
       this.setData({
-        timeValue: 0
+        timeValue: 0,
+        suggestedMinPrice: '0.00',
+        suggestedMaxPrice: '0.00'
       });
     }
   },

@@ -82,26 +82,52 @@ Page({
   // 加载统计数据
   loadStatistics: function() {
     try {
+      console.log('=== 统计页面数据加载调试 ===');
+      
       // 加载决策历史记录
       const decisionHistory = wx.getStorageSync('decisionHistory') || [];
+      console.log('决策历史记录:', decisionHistory);
+      console.log('决策历史记录数量:', decisionHistory.length);
       
       // 加载赎回时间
       const redeemedTime = wx.getStorageSync('redeemedTime') || 0;
+      console.log('赎回时间:', redeemedTime);
+      console.log('赎回时间类型:', typeof redeemedTime);
       
       // 加载用户时间价值
       const timeData = wx.getStorageSync('timeCalculatorData');
+      console.log('时间计算器数据:', timeData);
+      
       let userTimeValue = 0;
       if (timeData && timeData.timeValue !== undefined && timeData.timeValue !== null) {
-        userTimeValue = typeof timeData.timeValue === 'string' ? parseFloat(timeData.timeValue) : timeData.timeValue;
+        // 确保转换为数字类型
+        userTimeValue = typeof timeData.timeValue === 'string' ? parseFloat(timeData.timeValue) : Number(timeData.timeValue);
+        console.log('解析后用户时间价值:', userTimeValue);
+        console.log('用户时间价值类型:', typeof userTimeValue);
+      } else {
+        console.log('未找到有效的用户时间价值数据');
       }
       
-
+      console.log('=== 统计页面调试结束 ===');
       
       // 计算统计数据
       this.calculateStats(decisionHistory, userTimeValue, redeemedTime);
       
     } catch (error) {
       console.error('加载统计数据失败:', error);
+      // 设置默认值
+      this.setData({
+        totalRedeemedTime: 0,
+        totalRedeemedTimeDisplay: '0.0',
+        totalSpentMoney: 0,
+        totalDecisions: 0,
+        hireDecisions: 0,
+        selfDecisions: 0,
+        costEfficiency: 0,
+        userTimeValue: 0,
+        recentDecisions: [],
+        taskTypeStats: {}
+      });
     }
   },
 

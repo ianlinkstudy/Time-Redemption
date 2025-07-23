@@ -184,9 +184,11 @@ Page({
       console.log('数据类型:', typeof timeCalculatorData);
       
       let timeValue = 0;
-      if (timeCalculatorData && timeCalculatorData.timeValue) {
-        timeValue = parseFloat(timeCalculatorData.timeValue);
+      if (timeCalculatorData && timeCalculatorData.timeValue !== undefined && timeCalculatorData.timeValue !== null) {
+        // 确保转换为数字类型
+        timeValue = typeof timeCalculatorData.timeValue === 'string' ? parseFloat(timeCalculatorData.timeValue) : Number(timeCalculatorData.timeValue);
         console.log('解析后时间价值:', timeValue);
+        console.log('时间价值类型:', typeof timeValue);
       } else {
         console.log('未找到有效的时间价值数据');
       }
@@ -205,6 +207,14 @@ Page({
       console.log('=== 调试结束 ===');
     } catch (error) {
       console.error('加载用户数据失败:', error);
+      // 设置默认值
+      this.setData({
+        userInfo: {
+          name: '时间管理者',
+          timeValue: 0,
+          hasSetTimeValue: false
+        }
+      });
     }
   },
 
@@ -386,6 +396,11 @@ Page({
   // 手动刷新数据
   refreshData: function() {
     console.log('=== 手动刷新数据 ===');
+    
+    // 强制同步数据
+    this.syncData();
+    
+    // 重新加载数据
     this.loadUserData();
     this.loadStatistics();
     
@@ -397,6 +412,64 @@ Page({
         icon: 'success'
       });
     }, 200);
+  },
+
+  // 数据同步和修复
+  syncData: function() {
+    try {
+      console.log('=== 开始数据同步 ===');
+      
+      // 检查并修复时间价值数据
+      const timeCalculatorData = wx.getStorageSync('timeCalculatorData');
+      if (timeCalculatorData && timeCalculatorData.timeValue !== undefined) {
+        // 确保时间价值是数字类型
+        const timeValue = typeof timeCalculatorData.timeValue === 'string' ? 
+          parseFloat(timeCalculatorData.timeValue) : Number(timeCalculatorData.timeValue);
+        
+        if (!isNaN(timeValue)) {
+          // 更新存储的数据
+          const updatedData = {
+            ...timeCalculatorData,
+            timeValue: timeValue
+          };
+          wx.setStorageSync('timeCalculatorData', updatedData);
+          console.log('时间价值数据已同步:', timeValue);
+        }
+      }
+      
+      // 检查并修复赎回时间数据
+      const redeemedTime = wx.getStorageSync('redeemedTime');
+      if (redeemedTime !== undefined && redeemedTime !== null) {
+        const redeemedTimeNum = typeof redeemedTime === 'string' ? 
+          parseFloat(redeemedTime) : Number(redeemedTime);
+        
+        if (!isNaN(redeemedTimeNum)) {
+          wx.setStorageSync('redeemedTime', redeemedTimeNum);
+          console.log('赎回时间数据已同步:', redeemedTimeNum);
+        }
+      }
+      
+      // 检查并修复决策历史数据
+      const decisionHistory = wx.getStorageSync('decisionHistory') || [];
+      if (decisionHistory.length > 0) {
+        // 确保每个记录的数据类型正确
+        const fixedHistory = decisionHistory.map(record => ({
+          ...record,
+          estimatedHours: typeof record.estimatedHours === 'string' ? 
+            parseFloat(record.estimatedHours) : Number(record.estimatedHours),
+          outsourcePrice: typeof record.outsourcePrice === 'string' ? 
+            parseFloat(record.outsourcePrice) : Number(record.outsourcePrice),
+          userTimeValue: typeof record.userTimeValue === 'string' ? 
+            parseFloat(record.userTimeValue) : Number(record.userTimeValue)
+        }));
+        wx.setStorageSync('decisionHistory', fixedHistory);
+        console.log('决策历史数据已同步，记录数:', fixedHistory.length);
+      }
+      
+      console.log('=== 数据同步完成 ===');
+    } catch (error) {
+      console.error('数据同步失败:', error);
+    }
   },
 
   // 跳转到设置页面
