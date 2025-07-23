@@ -492,21 +492,21 @@
 }
 
 .actions-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16rpx;
+  display: flex;
+  justify-content: center;
 }
 
 .action-btn {
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 16rpx;
-  padding: 32rpx 24rpx;
+  padding: 32rpx 48rpx;
   text-align: center;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-width: 200rpx;
 }
 
 .action-btn:hover {
