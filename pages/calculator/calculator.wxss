@@ -71,9 +71,12 @@
 /* 页面标题卡片 */
 .header-card {
   margin: 24rpx 32rpx;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 255, 254, 0.95) 100%);
-  text-align: center;
   padding: 48rpx 32rpx;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .header-icon {
@@ -100,6 +103,11 @@
 /* 显示卡片样式 */
 .display-card {
   margin: 24rpx 32rpx;
+  padding: 32rpx;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.1);
 }
 
 .display-header {
@@ -305,6 +313,11 @@
 /* 结果卡片样式 */
 .result-card {
   margin: 24rpx 32rpx;
+  padding: 32rpx;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.1);
 }
 
 .result-header {
@@ -455,6 +468,11 @@
 /* 提示卡片样式 */
 .tips-card {
   margin: 24rpx 32rpx;
+  padding: 32rpx;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.1);
 }
 
 .tips-header {
@@ -503,6 +521,11 @@
 /* 操作卡片样式 */
 .actions-card {
   margin: 24rpx 32rpx;
+  padding: 32rpx;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.1);
 }
 
 .actions-grid {
