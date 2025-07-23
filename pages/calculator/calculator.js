@@ -1,23 +1,22 @@
 // pages/calculator/calculator.js
 Page({
   data: {
-    // 用户输入数据
-    annualSalary: '', // 年薪
-    monthlySalary: '', // 月薪
-    otherIncome: '', // 其他收入
-    salaryType: 'annual', // 薪资类型：annual/monthly
+    // 输入数据
+    salaryType: 'annual', // 'annual' 或 'monthly'
+    annualSalary: '',
+    monthlySalary: '',
+    otherIncome: '',
     
     // 计算结果
-    timeValue: 0, // 你的时间价值
-    hiringSuggestionMin: 0, // 建议雇佣单价最小值
-    hiringSuggestionMax: 0, // 建议雇佣单价最大值
+    totalAnnualIncome: 0,
+    timeValue: 0,
+    timeValueQuarter: 0, // 添加1/4时间价值
+    hiringSuggestionMin: 0,
+    hiringSuggestionMax: 0,
     
     // 界面状态
-    showResult: false,
-    isEditing: false, // 编辑模式标识
-    
-    // 计算属性
-    totalAnnualIncome: 0 // 年总收入
+    isEditing: false,
+    showResult: false
   },
 
   onLoad: function () {
@@ -158,80 +157,46 @@ Page({
 
   // 计算时间价值
   calculateTimeValue: function() {
-    const { annualSalary, monthlySalary, otherIncome, salaryType } = this.data;
+    let totalIncome = 0;
     
-    console.log('计算时间价值:', { annualSalary, monthlySalary, otherIncome, salaryType });
-    
-    // 获取年收入
-    let yearlyIncome = 0;
-    
-    if (salaryType === 'annual') {
-      const annualValue = parseFloat(annualSalary);
-      if (!isNaN(annualValue) && annualValue > 0) {
-        yearlyIncome = annualValue;
-      }
-    } else if (salaryType === 'monthly') {
-      const monthlyValue = parseFloat(monthlySalary);
-      if (!isNaN(monthlyValue) && monthlyValue > 0) {
-        yearlyIncome = monthlyValue * 12;
-      }
+    // 计算年收入
+    if (this.data.salaryType === 'annual' && this.data.annualSalary) {
+      totalIncome += parseFloat(this.data.annualSalary);
+    } else if (this.data.salaryType === 'monthly' && this.data.monthlySalary) {
+      totalIncome += parseFloat(this.data.monthlySalary) * 12;
     }
     
-    // 加上其他收入
-    const otherValue = parseFloat(otherIncome);
-    if (!isNaN(otherValue) && otherValue > 0) {
-      yearlyIncome += otherValue;
+    // 添加其他收入
+    if (this.data.otherIncome) {
+      totalIncome += parseFloat(this.data.otherIncome);
     }
     
-    console.log('年收入:', yearlyIncome);
+    // 计算时间价值 (年收入 ÷ 2000)
+    const timeValue = totalIncome / 2000;
     
-    if (yearlyIncome > 0) {
-      // 计算你的时间价值：年收入 ÷ 2000
-      const timeValue = yearlyIncome / 2000;
-      
-      // 计算建议雇佣单价：时间价值 ÷ 4 (基础倍率)
-      const hiringSuggestionMin = timeValue / 4 * 1;  // 1倍精力系数
-      const hiringSuggestionMax = timeValue / 4 * 2;  // 2倍精力系数
-      
-      console.log('时间价值:', timeValue);
-      console.log('建议雇佣单价范围:', hiringSuggestionMin, '-', hiringSuggestionMax);
-      
-      // 确保数值是有效的
-      if (!isNaN(timeValue) && isFinite(timeValue) && timeValue > 0) {
-        console.log('=== 计算器设置时间价值 ===');
-        console.log('计算得到的时间价值:', timeValue);
-        console.log('时间价值类型:', typeof timeValue);
-        
-        this.setData({
-          timeValue: timeValue,
-          hiringSuggestionMin: hiringSuggestionMin,
-          hiringSuggestionMax: hiringSuggestionMax,
-          showResult: true
-        });
-        
-        console.log('setData后页面的时间价值:', this.data.timeValue);
-        console.log('页面时间价值类型:', typeof this.data.timeValue);
-        
-        // 保存数据
-        this.saveData();
-      } else {
-        console.error('计算结果无效:', timeValue);
-        this.setData({
-          timeValue: 0,
-          hiringSuggestionMin: 0,
-          hiringSuggestionMax: 0,
-          showResult: false
-        });
-      }
-    } else {
-      console.log('年收入为0，不显示结果');
-      this.setData({
-        timeValue: 0,
-        hiringSuggestionMin: 0,
-        hiringSuggestionMax: 0,
-        showResult: false
-      });
-    }
+    // 计算1/4时间价值
+    const timeValueQuarter = Math.round(timeValue * 0.25);
+    
+    // 计算建议雇佣单价范围
+    const hiringSuggestionMin = Math.round(timeValue * 0.25); // 1.0x精力系数
+    const hiringSuggestionMax = Math.round(timeValue * 0.5);  // 2.0x精力系数
+    
+    this.setData({
+      totalAnnualIncome: totalIncome,
+      timeValue: Math.round(timeValue),
+      timeValueQuarter: timeValueQuarter,
+      hiringSuggestionMin: hiringSuggestionMin,
+      hiringSuggestionMax: hiringSuggestionMax,
+      showResult: true
+    });
+    
+    console.log('计算完成:', {
+      totalIncome: totalIncome,
+      timeValue: timeValue,
+      timeValueQuarter: timeValueQuarter,
+      hiringSuggestionMin: hiringSuggestionMin,
+      hiringSuggestionMax: hiringSuggestionMax
+    });
   },
 
   // 重置数据

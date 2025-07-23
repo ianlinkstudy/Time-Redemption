@@ -128,7 +128,7 @@
           <view class="guide-item low">
             <view class="guide-range">
               <text class="guide-label">低于1/4</text>
-              <text class="guide-value">¥{{(timeValue * 0.25).toFixed(0)}}以下</text>
+              <text class="guide-value">¥{{timeValueQuarter}}以下</text>
             </view>
             <text class="guide-desc">直接赎回时间</text>
           </view>
@@ -136,7 +136,7 @@
           <view class="guide-item medium">
             <view class="guide-range">
               <text class="guide-label">1/4-1倍</text>
-              <text class="guide-value">¥{{(timeValue * 0.25).toFixed(0)}} - ¥{{timeValue}}</text>
+              <text class="guide-value">¥{{timeValueQuarter}} - ¥{{timeValue}}</text>
             </view>
             <text class="guide-desc">根据能力消耗度，选择性赎回时间</text>
           </view>
