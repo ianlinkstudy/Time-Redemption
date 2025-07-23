@@ -207,12 +207,17 @@
 /* 输入卡片样式 */
 .input-card {
   margin: 24rpx 32rpx;
+  padding: 32rpx;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.1);
 }
 
 .input-header {
   display: flex;
   align-items: center;
-  margin-bottom: 32rpx;
+  margin-bottom: 40rpx;
 }
 
 .input-icon {
@@ -249,6 +254,7 @@
   font-size: 32rpx;
   transition: all 0.3s ease;
   box-sizing: border-box;
+  min-height: 88rpx;
 }
 
 .form-input:focus {
@@ -266,16 +272,24 @@
   align-items: center;
   justify-content: space-between;
   transition: all 0.3s ease;
+  box-sizing: border-box;
+  min-height: 88rpx;
 }
 
 .picker-text {
   font-size: 32rpx;
   color: var(--text-primary);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .picker-arrow {
   font-size: 24rpx;
   color: var(--text-light);
+  margin-left: 16rpx;
+  flex-shrink: 0;
 }
 
 .form-actions {
