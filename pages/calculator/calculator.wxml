@@ -9,7 +9,7 @@
       </view>
       <view class="navbar-actions">
         <button class="navbar-btn" bindtap="showExplanation">
-          <text class="navbar-btn-icon">❓</text>
+          <text class="navbar-btn-text">计算说明</text>
         </button>
       </view>
     </view>
@@ -114,19 +114,46 @@
       
       <view class="result-main">
         <view class="result-item main-result">
-          <text class="result-label">你的时间价值</text>
+          <text class="result-label">你的时间价值是：</text>
           <text class="result-value highlight">¥{{timeValue || 0}}/小时</text>
         </view>
+      </view>
+      
+      <view class="decision-guide">
+        <view class="guide-header">
+          <text class="guide-title">赎回时间决策指南</text>
+        </view>
         
-        <view class="result-item">
-          <text class="result-label">建议雇佣单价</text>
-          <text class="result-value">¥{{hiringSuggestionMin || 0}} - ¥{{hiringSuggestionMax || 0}}/小时</text>
+        <view class="guide-items">
+          <view class="guide-item low">
+            <view class="guide-range">
+              <text class="guide-label">低于1/4</text>
+              <text class="guide-value">¥{{(timeValue * 0.25).toFixed(0)}}以下</text>
+            </view>
+            <text class="guide-desc">直接赎回时间</text>
+          </view>
+          
+          <view class="guide-item medium">
+            <view class="guide-range">
+              <text class="guide-label">1/4-1倍</text>
+              <text class="guide-value">¥{{(timeValue * 0.25).toFixed(0)}} - ¥{{timeValue}}</text>
+            </view>
+            <text class="guide-desc">根据能力消耗度，选择性赎回时间</text>
+          </view>
+          
+          <view class="guide-item high">
+            <view class="guide-range">
+              <text class="guide-label">大于1倍</text>
+              <text class="guide-value">¥{{timeValue}}以上</text>
+            </view>
+            <text class="guide-desc">已超过自己的时间价值，谨慎赎回</text>
+          </view>
         </view>
       </view>
       
       <view class="result-tip">
         <text class="tip-icon">💡</text>
-        <text class="tip-text">如果外包费用在建议雇佣单价范围内，建议雇人代做</text>
+        <text class="tip-text">只计算时间价值，然后将雇佣价格与自己的时间价值分类，如果购买时间的价格低于自己价格的1/4那么就该不用思考直接花钱买时间，如果购买时间的价格是自己价格的1/4-1，那么你需要根据自己的精力消耗，和能量消耗考虑，思考是否需要赎回自己的时间，如果购买的价格超过自己的时间价值，那么你需要谨慎考虑，是否需要赎回时间。以及你赎回时间后的做的事情是否值得超额。</text>
       </view>
     </view>
 
@@ -159,10 +186,6 @@
     <!-- 操作按钮 -->
     <view class="actions-card card fade-in-up" wx:if="{{!isEditing}}">
       <view class="actions-grid">
-        <button class="action-btn" bindtap="showExplanation">
-          <text class="action-icon">📖</text>
-          <text class="action-text">查看说明</text>
-        </button>
         <button class="action-btn danger" bindtap="resetData" wx:if="{{showResult}}">
           <text class="action-icon">🔄</text>
           <text class="action-text">重置数据</text>
@@ -173,7 +196,7 @@
     <!-- 底部版权信息 -->
     <view class="footer-card card fade-in-up">
       <text class="footer-text">"金钱仅仅是用来购买时间的工具"</text>
-      <text class="footer-author">—— 《买回你的时间》</text>
+      <text class="footer-author">—— 鼓翼成长星球</text>
     </view>
   </view>
 </view>
