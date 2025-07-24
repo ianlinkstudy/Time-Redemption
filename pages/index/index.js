@@ -109,7 +109,8 @@ Page({
     
     // 显示状态
     showWelcome: true,
-    isFirstTimeUser: true
+    isFirstTimeUser: true,
+    lastDataUpdate: 0 // 新增：用于记录数据最后更新时间
   },
 
   onLoad: function() {
@@ -120,6 +121,11 @@ Page({
   },
 
   onShow: function() {
+    console.log('=== 首页 onShow 触发 ===');
+    
+    // 检查数据是否有更新
+    this.checkDataUpdate();
+    
     // 检查时间价值数据是否有更新
     this.checkTimeValueUpdate();
     this.loadUserData();
@@ -142,6 +148,27 @@ Page({
       this.setData({
         navbarClass: ''
       });
+    }
+  },
+
+  // 检查数据更新
+  checkDataUpdate: function() {
+    try {
+      const lastUpdate = wx.getStorageSync('lastDataUpdate') || 0;
+      const currentUpdate = this.data.lastDataUpdate || 0;
+      
+      if (lastUpdate > currentUpdate) {
+        console.log('检测到数据更新，时间戳:', lastUpdate);
+        this.setData({
+          lastDataUpdate: lastUpdate
+        });
+        
+        // 强制重新加载数据
+        this.loadUserData();
+        this.loadStatistics();
+      }
+    } catch (error) {
+      console.error('检查数据更新失败:', error);
     }
   },
 

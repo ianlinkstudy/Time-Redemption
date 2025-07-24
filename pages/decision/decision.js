@@ -29,7 +29,10 @@ Page({
     ],
     
     // 历史记录
-    decisionHistory: []
+    decisionHistory: [],
+    
+    // 数据更新检测
+    lastDataUpdate: 0
   },
 
   onLoad: function() {
@@ -40,10 +43,35 @@ Page({
   },
 
   onShow: function() {
+    console.log('=== 决策页面 onShow 触发 ===');
+    
+    // 检查数据是否有更新
+    this.checkDataUpdate();
+    
     // 检查时间价值数据是否有更新
     this.checkTimeValueUpdate();
     // 每次显示页面时重新加载时间价值数据
     this.loadTimeValue();
+  },
+
+  // 检查数据更新
+  checkDataUpdate: function() {
+    try {
+      const lastUpdate = wx.getStorageSync('lastDataUpdate') || 0;
+      const currentUpdate = this.data.lastDataUpdate || 0;
+      
+      if (lastUpdate > currentUpdate) {
+        console.log('决策页面检测到数据更新，时间戳:', lastUpdate);
+        this.setData({
+          lastDataUpdate: lastUpdate
+        });
+        
+        // 强制重新加载数据
+        this.loadTimeValue();
+      }
+    } catch (error) {
+      console.error('检查数据更新失败:', error);
+    }
   },
 
   // 检查时间价值数据更新

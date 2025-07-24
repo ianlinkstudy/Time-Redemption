@@ -111,6 +111,11 @@ Page({
       wx.setStorageSync('userInfo', userInfo);
       
       console.log('保存用户信息:', userInfo);
+      
+      // 设置数据更新时间戳，用于其他页面检测更新
+      wx.setStorageSync('lastDataUpdate', Date.now());
+      
+      console.log('=== 数据保存完成，已设置更新时间戳 ===');
     } catch (error) {
       console.error('保存数据失败:', error);
     }
@@ -197,6 +202,11 @@ Page({
       hiringSuggestionMin: hiringSuggestionMin,
       hiringSuggestionMax: hiringSuggestionMax
     });
+    
+    // 自动保存数据
+    if (timeValue > 0) {
+      this.saveData();
+    }
   },
 
   // 重置数据
@@ -270,14 +280,17 @@ Page({
     console.log('计算的年总收入:', totalIncome);
     
     if (totalIncome > 0) {
-      // 进行时间价值计算（会自动保存数据）
+      // 进行时间价值计算
       this.calculateTimeValue();
       
-      // 使用setTimeout确保计算完成后再退出编辑模式
+      // 使用setTimeout确保计算完成后再保存和退出编辑模式
       setTimeout(() => {
         console.log('计算完成，当前时间价值:', this.data.timeValue);
         
         if (this.data.timeValue > 0) {
+          // 保存数据到存储
+          this.saveData();
+          
           // 退出编辑模式
           this.setData({
             isEditing: false
@@ -287,6 +300,8 @@ Page({
             title: '保存成功',
             icon: 'success'
           });
+          
+          console.log('=== 保存并退出完成 ===');
         } else {
           wx.showToast({
             title: '计算时间价值失败，请重试',
