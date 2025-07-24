@@ -111,11 +111,17 @@ Page({
           parseFloat(timeCalculatorData.timeValue) : Number(timeCalculatorData.timeValue);
       }
       
+      // 预格式化显示字段
+      const timeValueDisplay = timeValue > 0 ? timeValue.toFixed(2) : '0.00';
+      const totalSavedTimeDisplay = finalSavedTime > 0 ? finalSavedTime.toFixed(1) : '0.0';
+      
       this.setData({
         userInfo: {
           name: wx.getStorageSync('userName') || '时间管理者',
           timeValue: timeValue,
+          timeValueDisplay: timeValueDisplay,
           totalSavedTime: finalSavedTime,
+          totalSavedTimeDisplay: totalSavedTimeDisplay,
           joinDate: joinDate
         }
       });
@@ -129,7 +135,9 @@ Page({
         userInfo: {
           name: '时间管理者',
           timeValue: 0,
+          timeValueDisplay: '0.00',
           totalSavedTime: 0,
+          totalSavedTimeDisplay: '0.0',
           joinDate: new Date().toISOString().split('T')[0]
         }
       });
@@ -231,6 +239,68 @@ Page({
     wx.switchTab({
       url: '/pages/calculator/calculator'
     });
+  },
+
+  // 刷新数据
+  refreshData: function() {
+    console.log('=== 设置页面手动刷新数据 ===');
+    
+    // 强制同步数据
+    this.syncData();
+    
+    // 重新加载数据
+    this.loadUserData();
+    this.calculateDataStats();
+    
+    // 显示当前数据状态
+    setTimeout(() => {
+      console.log('当前设置页面数据:', this.data);
+      wx.showToast({
+        title: '数据已刷新',
+        icon: 'success'
+      });
+    }, 200);
+  },
+
+  // 数据同步和修复
+  syncData: function() {
+    try {
+      console.log('=== 设置页面开始数据同步 ===');
+      
+      // 检查并修复时间价值数据
+      const timeCalculatorData = wx.getStorageSync('timeCalculatorData');
+      if (timeCalculatorData && timeCalculatorData.timeValue !== undefined) {
+        // 确保时间价值是数字类型
+        const timeValue = typeof timeCalculatorData.timeValue === 'string' ? 
+          parseFloat(timeCalculatorData.timeValue) : Number(timeCalculatorData.timeValue);
+        
+        if (!isNaN(timeValue)) {
+          // 更新存储的数据
+          const updatedData = {
+            ...timeCalculatorData,
+            timeValue: timeValue
+          };
+          wx.setStorageSync('timeCalculatorData', updatedData);
+          console.log('时间价值数据已同步:', timeValue);
+        }
+      }
+      
+      // 检查并修复赎回时间数据
+      const redeemedTime = wx.getStorageSync('redeemedTime');
+      if (redeemedTime !== undefined && redeemedTime !== null) {
+        const redeemedTimeNum = typeof redeemedTime === 'string' ? 
+          parseFloat(redeemedTime) : Number(redeemedTime);
+        
+        if (!isNaN(redeemedTimeNum)) {
+          wx.setStorageSync('redeemedTime', redeemedTimeNum);
+          console.log('赎回时间数据已同步:', redeemedTimeNum);
+        }
+      }
+      
+      console.log('=== 设置页面数据同步完成 ===');
+    } catch (error) {
+      console.error('设置页面数据同步失败:', error);
+    }
   },
 
   // 切换通知设置

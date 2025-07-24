@@ -17,8 +17,8 @@
           <text class="edit-icon">✏️</text>
         </view>
         <view class="user-stats">
-          <text class="user-stat">时间价值: ¥{{userInfo.timeValue.toFixed(2)}}/小时</text>
-          <text class="user-stat">已买回: {{userInfo.totalSavedTime.toFixed(1)}}小时</text>
+          <text class="user-stat">时间价值: ¥{{userInfo.timeValueDisplay}}/小时</text>
+          <text class="user-stat">已买回: {{userInfo.totalSavedTimeDisplay}}小时</text>
           <text class="user-stat">加入日期: {{userInfo.joinDate}}</text>
         </view>
       </view>
@@ -32,6 +32,10 @@
       <view class="quick-action-item" bindtap="goToCalculator">
         <view class="quick-action-icon">🧮</view>
         <view class="quick-action-text">时间价值计算器</view>
+      </view>
+      <view class="quick-action-item" bindtap="refreshData">
+        <view class="quick-action-icon">🔄</view>
+        <view class="quick-action-text">刷新数据</view>
       </view>
       <view class="quick-action-item" bindtap="showHelp">
         <view class="quick-action-icon">❓</view>
