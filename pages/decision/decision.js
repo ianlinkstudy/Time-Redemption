@@ -411,11 +411,22 @@ Page({
   // 添加赎回时间
   addRedeemedTime: function(hours) {
     try {
+      console.log('=== 添加赎回时间 ===');
+      console.log('当前赎回时间:', wx.getStorageSync('redeemedTime') || 0);
+      console.log('新增时间:', hours);
+      
       const redeemedTime = wx.getStorageSync('redeemedTime') || 0;
       const newRedeemedTime = redeemedTime + hours;
+      
+      console.log('更新后赎回时间:', newRedeemedTime);
+      
       wx.setStorageSync('redeemedTime', newRedeemedTime);
       
-
+      // 验证保存结果
+      const savedRedeemedTime = wx.getStorageSync('redeemedTime');
+      console.log('保存验证:', savedRedeemedTime);
+      console.log('保存成功:', savedRedeemedTime === newRedeemedTime);
+      
     } catch (error) {
       console.error('保存赎回时间失败:', error);
     }

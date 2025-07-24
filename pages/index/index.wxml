@@ -8,6 +8,9 @@
         <text class="navbar-text">时间赎回器</text>
       </view>
       <view class="navbar-actions">
+        <button class="navbar-btn" bindtap="initTestData">
+          <text class="navbar-btn-text">测试数据</text>
+        </button>
         <button class="navbar-btn" bindtap="refreshData">
           <text class="navbar-btn-text">刷新数据</text>
         </button>
@@ -47,7 +50,7 @@
     </view>
 
     <!-- 时间赎回成果卡片 -->
-    <view class="results-card card fade-in-up" wx:if="{{statistics.totalSavedTime > 0 || statistics.equivalentValue > 0}}">
+    <view class="results-card card fade-in-up">
       <view class="results-header">
         <view class="results-icon">📊</view>
         <view class="results-title">时间赎回成果</view>
