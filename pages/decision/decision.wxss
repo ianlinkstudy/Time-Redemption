@@ -306,19 +306,158 @@
 }
 
 
-/* 用户选择区域 */
+/* 决策建议样式 */
+.decision-recommendation {
+  text-align: center;
+  margin-bottom: 32rpx;
+  padding: 24rpx;
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  border-radius: 16rpx;
+  color: white;
+}
+
+.recommendation-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.recommendation-subtitle {
+  font-size: 28rpx;
+  opacity: 0.9;
+  line-height: 1.4;
+}
+
+/* 价格分析样式 */
+.price-analysis {
+  margin-bottom: 32rpx;
+  padding: 24rpx;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+  border-left: 4rpx solid #4CAF50;
+}
+
+.price-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.price-detail {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* 对比表格样式 */
+.comparison-table {
+  margin-bottom: 32rpx;
+  border: 1rpx solid #e0e0e0;
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.table-header {
+  display: flex;
+  background: #4CAF50;
+  color: white;
+  font-weight: bold;
+}
+
+.table-row {
+  display: flex;
+  border-bottom: 1rpx solid #e0e0e0;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-cell {
+  flex: 1;
+  padding: 20rpx 16rpx;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+}
+
+.table-cell:first-child {
+  background: #f8f9fa;
+  font-weight: 500;
+}
+
+.table-cell.positive {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.table-cell.negative {
+  color: #f44336;
+  font-weight: bold;
+}
+
+/* 总结信息样式 */
+.summary-info {
+  margin-bottom: 32rpx;
+  padding: 24rpx;
+  background: #fff3cd;
+  border: 1rpx solid #ffeaa7;
+  border-radius: 12rpx;
+}
+
+.summary-text {
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: #856404;
+}
+
+.highlight-text {
+  font-weight: bold;
+  color: #4CAF50;
+}
+
+/* 决策指南样式 */
+.decision-guide-section {
+  margin-top: 32rpx;
+}
+
+.guide-card {
+  padding: 24rpx;
+}
+
+.guide-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.guide-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.guide-content text {
+  font-size: 26rpx;
+  line-height: 1.5;
+  color: #666;
+}
+
+/* 用户选择样式 */
 .user-choice-section {
-  margin-top: 24rpx;
+  margin-top: 32rpx;
   padding-top: 24rpx;
-  border-top: 1rpx solid #e5e5ea;
+  border-top: 1rpx solid #e0e0e0;
 }
 
 .choice-title {
-  font-size: 28rpx;
-  font-weight: 600;
-  color: #1d1d1f;
+  font-size: 30rpx;
+  font-weight: bold;
   text-align: center;
-  margin-bottom: 20rpx;
+  margin-bottom: 24rpx;
+  color: #333;
 }
 
 .choice-buttons {
@@ -328,9 +467,9 @@
 
 .choice-btn {
   flex: 1;
-  height: 80rpx;
-  font-size: 28rpx;
-  border-radius: 16rpx;
+  height: 88rpx;
+  font-size: 30rpx;
+  font-weight: bold;
 }
 
 /* 操作按钮 */

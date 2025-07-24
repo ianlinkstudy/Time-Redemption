@@ -215,12 +215,9 @@ Page({
 
   // 任务类型选择
   onTaskTypeChange: function(e) {
-    const selectedType = this.data.taskTypes[e.detail.value];
     this.setData({
-      taskType: selectedType.value,
       taskTypeIndex: e.detail.value,
-      // 自动填充建议价格
-      outsourcePrice: selectedType.avgPrice.toString()
+      taskType: this.data.taskTypes[e.detail.value]
     });
   },
 
@@ -242,15 +239,7 @@ Page({
   analyzeDecision: function() {
     const { taskDescription, taskType, estimatedHours, outsourcePrice, timeValue } = this.data;
     
-    // 验证输入 - 任务描述改为非必填
-    if (!estimatedHours || !outsourcePrice) {
-      wx.showToast({
-        title: '请填写完整信息',
-        icon: 'none'
-      });
-      return;
-    }
-    
+    // 验证输入
     if (!estimatedHours || !outsourcePrice) {
       wx.showToast({
         title: '请填写完整信息',
@@ -271,70 +260,58 @@ Page({
     const hours = parseFloat(estimatedHours);
     const price = parseFloat(outsourcePrice);
     const pricePerHour = price / hours;
-    const suggestedMinPrice = parseFloat(this.data.suggestedMinPrice);
-    const suggestedMaxPrice = parseFloat(this.data.suggestedMaxPrice);
+    const timeValueQuarter = timeValue * 0.25; // 1/4时间价值
+    
+    // 计算价格百分比
+    const pricePercentage = ((pricePerHour / timeValue) * 100).toFixed(1);
     
     // 计算节省金额 (基于时间价值)
     const timeValueSavings = (timeValue * hours) - price;
-    const timeValueRoi = (timeValueSavings / price * 100);
     
-    // 决策逻辑 - 分层比较
+    // 决策逻辑 - 参考计算器的三种策略
     let decision = '';
     let recommendation = '';
     let reason = '';
-    let energyLevel = '';
+    let judgmentText = '';
     
-    if (pricePerHour <= suggestedMinPrice) {
-      // 1.0x以下 - 强烈建议买回时间
+    if (pricePerHour <= timeValueQuarter) {
+      // 低于1/4 - 直接赎回时间
       decision = 'hire';
-      recommendation = '强烈建议买回时间';
-      reason = `外包单价 ¥${pricePerHour.toFixed(2)}/小时 低于建议最低价 ¥${suggestedMinPrice.toFixed(2)}/小时，非常划算！`;
-      energyLevel = '低精力消耗';
-    } else if (pricePerHour > suggestedMinPrice && pricePerHour <= suggestedMaxPrice) {
-      // 1.0x-2.0x之间 - 根据精力消耗选择
-      decision = 'hire';
-      recommendation = '建议买回时间';
-      reason = `外包单价 ¥${pricePerHour.toFixed(2)}/小时 在建议范围内 ¥${suggestedMinPrice.toFixed(2)} - ¥${suggestedMaxPrice.toFixed(2)}/小时`;
-      energyLevel = '中等精力消耗';
-    } else if (pricePerHour > suggestedMaxPrice && pricePerHour <= timeValue) {
-      // 2.0x-时间价值之间 - 考虑性价比
+      recommendation = '直接赎回时间';
+      reason = `赎回时间单价 ¥${pricePerHour.toFixed(2)}/小时，低于您时间价值的1/4 (¥${timeValueQuarter.toFixed(2)}/小时)，非常划算！`;
+      judgmentText = '根据1/4原则，这是高效的投资';
+    } else if (pricePerHour > timeValueQuarter && pricePerHour <= timeValue) {
+      // 1/4-1倍之间 - 考虑赎回时间
       decision = 'consider';
-      recommendation = '谨慎考虑';
-      reason = `外包单价 ¥${pricePerHour.toFixed(2)}/小时 高于建议范围但低于您的时间价值 ¥${timeValue.toFixed(2)}/小时，需权衡性价比`;
-      energyLevel = '高精力消耗';
+      recommendation = '考虑赎回时间';
+      reason = `赎回时间单价 ¥${pricePerHour.toFixed(2)}/小时，在您时间价值的1/4至1倍之间，需要评估您的精力消耗`;
+      judgmentText = '根据1/4-1倍原则，可考虑赎回但需评估精力消耗';
     } else {
-      // 超过时间价值 - 不建议外包
+      // 超过时间价值 - 谨慎赎回时间
       decision = 'self';
-      recommendation = '建议自己完成';
-      reason = `外包单价 ¥${pricePerHour.toFixed(2)}/小时 超过您的时间价值 ¥${timeValue.toFixed(2)}/小时，不划算`;
-      energyLevel = '极高精力消耗';
+      recommendation = '谨慎赎回时间';
+      reason = `赎回时间单价 ¥${pricePerHour.toFixed(2)}/小时，超过您的时间价值 ¥${timeValue.toFixed(2)}/小时，请确保赎回后的时间用途价值足够高`;
+      judgmentText = '根据大于1倍原则，谨慎决策确保时间用途价值足够高';
     }
     
     const analysis = {
-      hours,
+      hours: hours,
       price: price.toFixed(2),
       pricePerHour: pricePerHour.toFixed(2),
+      pricePercentage: pricePercentage,
       savings: timeValueSavings.toFixed(2),
-      roi: timeValueRoi.toFixed(1),
       decision,
       recommendation,
       reason,
-      energyLevel,
+      judgmentText,
       timeValue: timeValue.toFixed(2),
-      suggestedMinPrice: suggestedMinPrice.toFixed(2),
-      suggestedMaxPrice: suggestedMaxPrice.toFixed(2)
+      timeValueQuarter: timeValueQuarter.toFixed(2)
     };
-    
-    // 设置用户选择显示条件 - 总是显示用户选择按钮
-    const showUserChoice = true;
-    
-
     
     this.setData({
       showResult: true,
       decision,
-      analysis,
-      showUserChoice: showUserChoice
+      analysis
     });
   },
 
@@ -360,7 +337,7 @@ Page({
     });
   },
 
-  // 跳转到设置时间价值
+  // 跳转到计算器页面
   goToCalculator: function() {
     wx.switchTab({
       url: '/pages/calculator/calculator'
@@ -371,16 +348,6 @@ Page({
   viewHistory: function() {
     wx.navigateTo({
       url: '/pages/decision/history'
-    });
-  },
-
-  // 查看任务类型说明
-  showTaskTypeInfo: function() {
-    const typeInfo = this.data.taskTypes.map(type => `${type.name}：${type.description} (参考价格：¥${type.avgPrice}/小时)`).join('\n\n');
-    wx.showModal({
-      title: '任务类型说明',
-      content: typeInfo,
-      showCancel: false
     });
   },
 

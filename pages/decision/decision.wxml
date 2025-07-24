@@ -6,15 +6,12 @@
     <text class="subtitle">智能判断是否应该雇人代做</text>
   </view>
 
-
-
   <!-- 时间价值显示 -->
   <view class="time-value-section">
     <view class="time-value-card card-base" wx:if="{{timeValue > 0}}">
       <view class="time-value-title">您的时间价值</view>
       <view class="time-value-amount">¥{{timeValue}}/小时</view>
-      <view class="time-value-tip">精力系数范围：1.0x - 2.0x</view>
-      <view class="suggested-price-tip">建议雇佣单价：¥{{suggestedMinPrice}} - ¥{{suggestedMaxPrice}}/小时</view>
+      <view class="time-value-tip">基于您的收入计算得出</view>
     </view>
     
     <view class="no-time-value card-base" wx:if="{{timeValue <= 0}}">
@@ -30,10 +27,7 @@
     
     <!-- 任务类型 -->
     <view class="form-group">
-      <view class="label">
-        任务类型
-        <text class="label-tip" bindtap="showTaskTypeInfo">查看说明</text>
-      </view>
+      <view class="label">任务类型</view>
       <picker mode="selector" range="{{taskTypes}}" range-key="name" value="{{taskTypeIndex}}" bindchange="onTaskTypeChange">
         <view class="picker">
           {{taskTypes[taskTypeIndex].name}}
@@ -88,65 +82,62 @@
 
   <!-- 决策结果 -->
   <view class="result-section" wx:if="{{showResult}}">
-    <view class="result-card card-base {{decision === 'hire' ? 'hire-result' : decision === 'consider' ? 'consider-result' : 'self-result'}}">
-              <view class="result-header">
-          <view class="result-icon">
-            {{decision === 'hire' ? '👥' : decision === 'consider' ? '🤔' : '🙋‍♂️'}}
-          </view>
-          <view class="result-title">
-            {{analysis.recommendation}}
-          </view>
-        </view>
-      
-      <view class="result-reason">
-        {{analysis.reason}}
+    <view class="result-card card-base">
+      <!-- 决策建议 -->
+      <view class="decision-recommendation">
+        <view class="recommendation-title">{{analysis.recommendation}}</view>
+        <view class="recommendation-subtitle">{{analysis.reason}}</view>
       </view>
       
-      <view class="result-details">
-        <view class="detail-item">
-          <view class="detail-label">您的时间价值</view>
-          <view class="detail-value">¥{{analysis.timeValue}}/小时</view>
+      <!-- 价格分析 -->
+      <view class="price-analysis">
+        <view class="price-title">赎回时间单价分析</view>
+        <view class="price-detail">
+          赎回时间的单价为 ¥{{analysis.pricePerHour}}/小时，为您时间价值的 {{analysis.pricePercentage}}%
         </view>
-        <view class="detail-item">
-          <view class="detail-label">外包单价</view>
-          <view class="detail-value">¥{{analysis.pricePerHour}}/小时</view>
+      </view>
+      
+      <!-- 对比表格 -->
+      <view class="comparison-table">
+        <view class="table-header">
+          <view class="table-cell">项目</view>
+          <view class="table-cell">数值</view>
         </view>
-        <view class="detail-item">
-          <view class="detail-label">建议雇佣单价</view>
-          <view class="detail-value">¥{{analysis.suggestedMinPrice}} - ¥{{analysis.suggestedMaxPrice}}/小时</view>
+        <view class="table-row">
+          <view class="table-cell">您的时间价值</view>
+          <view class="table-cell">¥{{analysis.timeValue}}/小时</view>
         </view>
-        <view class="detail-item">
-          <view class="detail-label">精力消耗等级</view>
-          <view class="detail-value">{{analysis.energyLevel}}</view>
+        <view class="table-row">
+          <view class="table-cell">赎回时间价格</view>
+          <view class="table-cell">¥{{analysis.pricePerHour}}/小时</view>
         </view>
-        <view class="detail-item">
-          <view class="detail-label">外包费用</view>
-          <view class="detail-value">¥{{analysis.price}}</view>
-        </view>
-        <view class="detail-item {{analysis.savings >= 0 ? 'positive' : 'negative'}}">
-          <view class="detail-label">
-            {{analysis.savings >= 0 ? '节省金额' : '额外支出'}}
-          </view>
-          <view class="detail-value">
-            {{analysis.savings >= 0 ? '+' : ''}}¥{{analysis.savings}}
+        <view class="table-row">
+          <view class="table-cell">差额</view>
+          <view class="table-cell {{analysis.savings >= 0 ? 'positive' : 'negative'}}">
+            {{analysis.savings >= 0 ? '+' : ''}}¥{{analysis.savings}}/小时
           </view>
         </view>
       </view>
       
-      <view class="result-tip {{analysis.roi >= 0 ? 'positive-tip' : 'negative-tip'}}">
-        💰 时间赎回性价比: {{analysis.roi}}% (节省金额÷外包费用×100%)
+      <!-- 总结信息 -->
+      <view class="summary-info">
+        <view class="summary-text">
+          您需要花 ¥{{analysis.price}}，买回自己的 {{analysis.hours}} 小时时间，
+          单价为您自己时间价值的 {{analysis.pricePercentage}}%，
+          <text class="highlight-text">{{analysis.judgmentText}}</text>
+        </view>
       </view>
       
       <!-- 用户选择 -->
-      <view class="user-choice-section" wx:if="{{showResult}}">
-        <view class="choice-title">
-          {{decision === 'consider' ? '您是否选择雇佣？(需谨慎考虑)' : '您是否选择雇佣？'}}
-        </view>
+      <view class="user-choice-section">
+        <view class="choice-title">请做出您的选择：</view>
         <view class="choice-buttons">
-          <button class="btn {{decision === 'consider' ? 'btn-secondary' : 'btn-primary'}} choice-btn" bindtap="chooseHire">
-            {{decision === 'consider' ? '🤔 谨慎雇佣' : '✅ 选择雇佣（买回时间）'}}
+          <button class="btn btn-primary choice-btn" bindtap="chooseHire">
+            ✅ 买回时间
           </button>
-          <button class="btn btn-outline choice-btn" bindtap="chooseSelf">❌ 自己完成</button>
+          <button class="btn btn-outline choice-btn" bindtap="chooseSelf">
+            ❌ 自己完成
+          </button>
         </view>
       </view>
     </view>
@@ -165,14 +156,15 @@
     </button>
   </view>
 
-  <!-- 温馨提示 -->
-  <view class="tips-section">
-    <view class="tips-card card-base">
-      <view class="tips-title">💡 决策建议</view>
-      <view class="tips-content">
-        <text>• 除了价格，还要考虑任务质量和时间成本</text>
-        <text>• 复杂任务建议选择经验丰富的服务商</text>
-        <text>• 节省的时间最好用于更有价值的工作</text>
+  <!-- 决策指南 -->
+  <view class="decision-guide-section" wx:if="{{timeValue > 0}}">
+    <view class="guide-card card-base">
+      <view class="guide-title">💡 时间价值分析指南</view>
+      <view class="guide-content">
+        <text>我们将根据您的时间价值与赎回时间的成本比较，提供三种决策建议：</text>
+        <text>• 当赎回时间的成本低于您时间价值的1/4：直接赎回时间，这是高效的投资</text>
+        <text>• 当赎回时间的成本在您时间价值的1/4至1倍之间：可考虑赎回，但需评估您的精力消耗</text>
+        <text>• 当赎回时间的成本高于您的时间价值：谨慎决策，请确保赎回后的时间用途价值足够高</text>
       </view>
     </view>
   </view>
