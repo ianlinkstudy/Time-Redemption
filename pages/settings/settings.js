@@ -43,14 +43,31 @@ Page({
     try {
       const timeCalculatorData = wx.getStorageSync('timeCalculatorData');
       const decisionHistory = wx.getStorageSync('decisionHistory') || [];
+      const redeemedTime = wx.getStorageSync('redeemedTime') || 0;
       
-      // 计算总节省时间
+      console.log('=== 设置页面数据加载调试 ===');
+      console.log('决策历史记录:', decisionHistory);
+      console.log('赎回时间:', redeemedTime);
+      
+      // 计算总节省时间 - 使用新的数据格式
       let totalSavedTime = 0;
       decisionHistory.forEach(record => {
-        if (record.analysis.decision === 'hire' && record.analysis.savings > 0) {
+        // 检查新的决策记录格式
+        if (record.userChoice && record.choseHire && record.estimatedHours) {
+          totalSavedTime += parseFloat(record.estimatedHours);
+        }
+        // 兼容旧的决策记录格式
+        else if (record.analysis && record.analysis.decision === 'hire' && record.analysis.savings > 0) {
           totalSavedTime += record.estimatedHours;
         }
       });
+      
+      // 优先使用存储的赎回时间
+      const finalSavedTime = redeemedTime > 0 ? redeemedTime : totalSavedTime;
+      
+      console.log('计算的总节省时间:', totalSavedTime);
+      console.log('存储的赎回时间:', redeemedTime);
+      console.log('最终使用的节省时间:', finalSavedTime);
       
       // 获取加入日期
       const joinDate = wx.getStorageSync('joinDate') || new Date().toISOString().split('T')[0];
@@ -58,16 +75,35 @@ Page({
         wx.setStorageSync('joinDate', joinDate);
       }
       
+      // 获取时间价值
+      let timeValue = 0;
+      if (timeCalculatorData && timeCalculatorData.timeValue !== undefined) {
+        timeValue = typeof timeCalculatorData.timeValue === 'string' ? 
+          parseFloat(timeCalculatorData.timeValue) : Number(timeCalculatorData.timeValue);
+      }
+      
       this.setData({
         userInfo: {
           name: wx.getStorageSync('userName') || '时间管理者',
-          timeValue: timeCalculatorData?.timeValue || 0,
-          totalSavedTime: totalSavedTime,
+          timeValue: timeValue,
+          totalSavedTime: finalSavedTime,
           joinDate: joinDate
         }
       });
+      
+      console.log('设置的用户信息:', this.data.userInfo);
+      console.log('=== 设置页面调试结束 ===');
     } catch (error) {
       console.error('加载用户数据失败:', error);
+      // 设置默认值
+      this.setData({
+        userInfo: {
+          name: '时间管理者',
+          timeValue: 0,
+          totalSavedTime: 0,
+          joinDate: new Date().toISOString().split('T')[0]
+        }
+      });
     }
   },
 
@@ -93,24 +129,48 @@ Page({
     try {
       const decisionHistory = wx.getStorageSync('decisionHistory') || [];
       const creativeTimeData = wx.getStorageSync('creativeTimeData') || {};
+      const timeCalculatorData = wx.getStorageSync('timeCalculatorData');
+      const appSettings = wx.getStorageSync('appSettings');
+      
+      console.log('=== 设置页面数据统计调试 ===');
+      console.log('决策历史数量:', decisionHistory.length);
+      console.log('创意时间数据:', creativeTimeData);
       
       // 估算存储大小
-      const storageSize = JSON.stringify({
+      const storageData = {
         decisionHistory,
         creativeTimeData,
-        timeCalculatorData: wx.getStorageSync('timeCalculatorData'),
-        appSettings: wx.getStorageSync('appSettings')
-      }).length;
+        timeCalculatorData,
+        appSettings,
+        redeemedTime: wx.getStorageSync('redeemedTime'),
+        userName: wx.getStorageSync('userName'),
+        joinDate: wx.getStorageSync('joinDate')
+      };
+      
+      const storageSize = JSON.stringify(storageData).length;
+      
+      const dataStats = {
+        totalDecisions: decisionHistory.length,
+        totalRecords: decisionHistory.length + (creativeTimeData.activities?.length || 0),
+        storageSize: Math.round(storageSize / 1024) // KB
+      };
+      
+      console.log('数据统计结果:', dataStats);
+      console.log('=== 设置页面数据统计调试结束 ===');
       
       this.setData({
-        dataStats: {
-          totalDecisions: decisionHistory.length,
-          totalRecords: decisionHistory.length + (creativeTimeData.activities?.length || 0),
-          storageSize: Math.round(storageSize / 1024) // KB
-        }
+        dataStats: dataStats
       });
     } catch (error) {
       console.error('计算数据统计失败:', error);
+      // 设置默认值
+      this.setData({
+        dataStats: {
+          totalDecisions: 0,
+          totalRecords: 0,
+          storageSize: 0
+        }
+      });
     }
   },
 
