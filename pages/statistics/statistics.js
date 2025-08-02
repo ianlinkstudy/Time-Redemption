@@ -9,17 +9,7 @@ Page({
     selfDecisions: 0,       // 自己完成决策次数
     costEfficiency: 0,      // 成本效率百分比
     
-    // 分析结果
-    costAnalysis: {
-      status: 'normal',
-      text: '合理',
-      detail: ''
-    },
-    priceAnalysis: {
-      status: 'normal', 
-      text: '合理',
-      detail: ''
-    },
+
     
     // 最近记录
     recentDecisions: [],
@@ -197,47 +187,16 @@ Page({
       }
     });
     
-    // 计算成本效率（赎回时间价值 / 花费金额）
+    // 计算赎回性价比（赎回的总额/如果自己做价值总额的百分比）
     let costEfficiency = 0;
     let costEfficiencyDetail = '';
     if (totalSpentMoney > 0 && userTimeValue > 0) {
       const redeemedTimeValue = totalRedeemedTime * userTimeValue;
-      costEfficiency = (redeemedTimeValue / totalSpentMoney * 100).toFixed(1);
-      costEfficiencyDetail = `赎回时间价值：¥${redeemedTimeValue.toFixed(0)}，花费：¥${totalSpentMoney.toFixed(0)}，效率：${costEfficiency}%`;
+      costEfficiency = (totalSpentMoney / redeemedTimeValue * 100).toFixed(1);
+      costEfficiencyDetail = `赎回花费：¥${totalSpentMoney.toFixed(0)}，如果自己做价值：¥${redeemedTimeValue.toFixed(0)}，性价比：${costEfficiency}%`;
     }
     
-    // 分析花费合理性
-    let costAnalysis = { status: 'normal', text: '合理', detail: '' };
-    if (userTimeValue > 0 && totalRedeemedTime > 0) {
-      const avgCostPerHour = totalSpentMoney / totalRedeemedTime;
-      costAnalysis.detail = `平均每小时花费：¥${avgCostPerHour.toFixed(2)}，您的时间价值：¥${userTimeValue.toFixed(2)}/小时`;
-      
-      if (avgCostPerHour < userTimeValue * 0.5) {
-        costAnalysis = { status: 'excellent', text: '非常划算', detail: costAnalysis.detail };
-      } else if (avgCostPerHour < userTimeValue) {
-        costAnalysis = { status: 'good', text: '比较划算', detail: costAnalysis.detail };
-      } else if (avgCostPerHour > userTimeValue * 2) {
-        costAnalysis = { status: 'poor', text: '成本较高', detail: costAnalysis.detail };
-      }
-    }
-    
-    // 分析雇佣价格合理性
-    let priceAnalysis = { status: 'normal', text: '合理', detail: '' };
-    if (userTimeValue > 0 && totalRedeemedTime > 0) {
-      const suggestedMinPrice = userTimeValue / 4 * 1.0;
-      const suggestedMaxPrice = userTimeValue / 4 * 2.0;
-      const avgPricePerHour = totalSpentMoney / totalRedeemedTime;
-      
-      priceAnalysis.detail = `平均雇佣价格：¥${avgPricePerHour.toFixed(2)}/小时，建议范围：¥${suggestedMinPrice.toFixed(2)} - ¥${suggestedMaxPrice.toFixed(2)}/小时`;
-      
-      if (avgPricePerHour >= suggestedMinPrice && avgPricePerHour <= suggestedMaxPrice) {
-        priceAnalysis = { status: 'good', text: '价格合理', detail: priceAnalysis.detail };
-      } else if (avgPricePerHour < suggestedMinPrice) {
-        priceAnalysis = { status: 'excellent', text: '价格很划算', detail: priceAnalysis.detail };
-      } else {
-        priceAnalysis = { status: 'poor', text: '价格偏高', detail: priceAnalysis.detail };
-      }
-    }
+
     
     // 最近的决策记录（前5条）
     const recentDecisions = decisionHistory.slice(0, 5).map(record => ({
@@ -263,8 +222,6 @@ Page({
       hireDecisions,
       selfDecisions,
       costEfficiency,
-      costAnalysis,
-      priceAnalysis,
       recentDecisions,
       taskTypeStats,
       userTimeValue
@@ -297,34 +254,5 @@ Page({
     });
   },
 
-  // 显示成本详情
-  showCostDetail: function() {
-    wx.showModal({
-      title: '总体花费合理性分析',
-      content: this.data.costAnalysis.detail || '暂无数据',
-      showCancel: false,
-      confirmText: '知道了'
-    });
-  },
 
-  // 显示价格详情
-  showPriceDetail: function() {
-    wx.showModal({
-      title: '雇佣价格合理性分析',
-      content: this.data.priceAnalysis.detail || '暂无数据',
-      showCancel: false,
-      confirmText: '知道了'
-    });
-  },
-
-  // 显示效率详情
-  showEfficiencyDetail: function() {
-    const detail = `赎回时间价值：¥${(this.data.totalRedeemedTime * this.data.userTimeValue).toFixed(0)}，花费：¥${this.data.totalSpentMoney.toFixed(0)}，效率：${this.data.costEfficiency}%`;
-    wx.showModal({
-      title: '成本效率分析',
-      content: detail,
-      showCancel: false,
-      confirmText: '知道了'
-    });
-  }
 });

@@ -420,26 +420,7 @@ Page({
     });
   },
 
-  // 手动刷新数据
-  refreshData: function() {
-    console.log('=== 手动刷新数据 ===');
-    
-    // 强制同步数据
-    this.syncData();
-    
-    // 重新加载数据
-    this.loadUserData();
-    this.loadStatistics();
-    
-    // 显示当前数据状态
-    setTimeout(() => {
-      console.log('当前页面数据:', this.data);
-      wx.showToast({
-        title: '数据已刷新',
-        icon: 'success'
-      });
-    }, 200);
-  },
+
 
   // 数据同步和修复
   syncData: function() {
@@ -499,74 +480,7 @@ Page({
     }
   },
 
-  // 初始化测试数据（用于调试）
-  initTestData: function() {
-    try {
-      console.log('=== 初始化测试数据 ===');
-      
-      // 设置测试时间价值
-      const testTimeData = {
-        annualSalary: '100000',
-        monthlySalary: '',
-        otherIncome: '20000',
-        salaryType: 'annual',
-        timeValue: 60, // 100000 + 20000 = 120000 / 2000 = 60
-        hiringSuggestionMin: 15,
-        hiringSuggestionMax: 30,
-        showResult: true,
-        totalAnnualIncome: 120000,
-        updateTime: new Date().toISOString()
-      };
-      wx.setStorageSync('timeCalculatorData', testTimeData);
-      
-      // 设置测试赎回时间
-      wx.setStorageSync('redeemedTime', 5.5);
-      
-      // 设置测试决策历史
-      const testHistory = [
-        {
-          id: Date.now(),
-          timestamp: new Date().toISOString(),
-          taskDescription: '打扫房间',
-          taskType: 'cleaning',
-          estimatedHours: 2.5,
-          outsourcePrice: 75,
-          userTimeValue: 60,
-          userChoice: true,
-          choseHire: true
-        },
-        {
-          id: Date.now() + 1,
-          timestamp: new Date().toISOString(),
-          taskDescription: '整理文档',
-          taskType: 'document',
-          estimatedHours: 3.0,
-          outsourcePrice: 90,
-          userTimeValue: 60,
-          userChoice: true,
-          choseHire: true
-        }
-      ];
-      wx.setStorageSync('decisionHistory', testHistory);
-      
-      console.log('测试数据初始化完成');
-      console.log('时间价值:', testTimeData.timeValue);
-      console.log('赎回时间:', 5.5);
-      console.log('决策历史数量:', testHistory.length);
-      
-      // 重新加载数据
-      this.loadUserData();
-      this.loadStatistics();
-      
-      wx.showToast({
-        title: '测试数据已初始化',
-        icon: 'success'
-      });
-      
-    } catch (error) {
-      console.error('初始化测试数据失败:', error);
-    }
-  },
+
 
   // 跳转到设置页面
   goToSettings: function() {
@@ -579,7 +493,7 @@ Page({
   showHelp: function() {
     wx.showModal({
       title: '使用帮助',
-      content: '1. 在计算器页面中算出你每小时的时间价值；\n\n2. 在决策页面中理性的判断，是否赎回自己的时间（与自己的时间价值做对比）；\n\n3. 你可在统计页面查看自己时间赎回的成果？\n\n时间赎回器的理念是：金钱只是用来购买时间的工具！',
+      content: '1. 在计算器页面中算出你每小时的时间价值\n\n2. 在决策页面中理性的判断，是否赎回自己的时间（与自己的时间价值做对比）\n\n3. 你可在统计页面查看自己时间赎回的成果\n\n时间赎回器的理念是：金钱只是用来购买时间的工具！',
       confirmText: '知道了',
       showCancel: false
     });

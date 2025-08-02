@@ -28,35 +28,12 @@
         <view class="stat-item">
           <view class="stat-value">{{costEfficiency}}</view>
           <view class="stat-label">%</view>
-          <view class="stat-desc">成本效率</view>
+          <view class="stat-desc">赎回性价比</view>
         </view>
         <view class="stat-item">
           <view class="stat-value">{{totalDecisions}}</view>
           <view class="stat-label">次</view>
           <view class="stat-desc">决策次数</view>
-        </view>
-      </view>
-      <view class="overview-analysis" wx:if="{{totalRedeemedTime > 0}}">
-        <view class="analysis-item">
-          <view class="analysis-header">
-            <text class="analysis-label">总体花费合理性</text>
-            <text class="analysis-icon" bindtap="showCostDetail">ℹ️</text>
-          </view>
-          <text class="analysis-value {{costAnalysis.status}}">{{costAnalysis.text}}</text>
-        </view>
-        <view class="analysis-item">
-          <view class="analysis-header">
-            <text class="analysis-label">雇佣价格合理性</text>
-            <text class="analysis-icon" bindtap="showPriceDetail">ℹ️</text>
-          </view>
-          <text class="analysis-value {{priceAnalysis.status}}">{{priceAnalysis.text}}</text>
-        </view>
-        <view class="analysis-item">
-          <view class="analysis-header">
-            <text class="analysis-label">成本效率</text>
-            <text class="analysis-icon" bindtap="showEfficiencyDetail">ℹ️</text>
-          </view>
-          <text class="analysis-value">{{costEfficiency}}%</text>
         </view>
       </view>
     </view>
@@ -67,10 +44,10 @@
     <view class="section-title">决策统计</view>
     <view class="decision-stats-card">
       <view class="decision-stat-item">
-        <view class="decision-stat-icon">👥</view>
+        <view class="decision-stat-icon">⏰</view>
         <view class="decision-stat-content">
           <view class="decision-stat-value">{{hireDecisions}}</view>
-          <view class="decision-stat-label">雇佣他人</view>
+          <view class="decision-stat-label">赎回时间次数</view>
         </view>
       </view>
       <view class="decision-stat-item">
@@ -122,7 +99,7 @@
         <view class="recent-decision-header">
           <view class="recent-decision-title">{{item.taskDescription || item.taskTypeChinese}}</view>
           <view class="recent-decision-result {{item.choseHire ? 'hire' : 'self'}}">
-            {{item.choseHire ? '✅ 雇佣' : '❌ 自己完成'}}
+            {{item.choseHire ? '✅ 赎回时间' : '❌ 自己完成'}}
           </view>
         </view>
         <view class="recent-decision-details">

@@ -3,28 +3,22 @@ Page({
     // 用户信息
     userInfo: {
       name: '',
+      avatarUrl: '',
       timeValue: 0,
+      timeValueDisplay: '0.00'
+    },
+    
+    // 统计数据（与首页一致）
+    statistics: {
       totalSavedTime: 0,
-      joinDate: ''
-    },
-    
-    // 设置项
-    settings: {
-      notifications: true,
-      darkMode: false,
-      autoCalculate: true,
-      showTips: true
-    },
-    
-    // 数据统计
-    dataStats: {
-      totalDecisions: 0,
-      totalRecords: 0,
-      storageSize: 0
+      equivalentValue: 0,
+      totalSavedTimeDisplay: '0.0',
+      equivalentValueDisplay: '0',
+      totalDecisions: 0
     },
     
     // 版本信息
-    version: '1.0.0',
+    version: 'V0.1',
     
     // 数据更新检测
     lastDataUpdate: 0
@@ -32,8 +26,7 @@ Page({
 
   onLoad: function() {
     this.loadUserData();
-    this.loadSettings();
-    this.calculateDataStats();
+    this.getWechatUserInfo();
   },
 
   onShow: function() {
@@ -43,7 +36,6 @@ Page({
     this.checkDataUpdate();
     
     this.loadUserData();
-    this.calculateDataStats();
   },
 
   // 检查数据更新
@@ -78,25 +70,33 @@ Page({
       console.log('决策历史记录:', decisionHistory);
       console.log('赎回时间:', redeemedTime);
       
-      // 计算总节省时间 - 使用新的数据格式
+      // 获取用户时间价值
+      let timeValue = 0;
+      let timeValueDisplay = '0.00';
+      
+      if (timeCalculatorData && timeCalculatorData.timeValue !== undefined && timeCalculatorData.timeValue !== null) {
+        timeValue = typeof timeCalculatorData.timeValue === 'string' ? parseFloat(timeCalculatorData.timeValue) : timeCalculatorData.timeValue;
+        timeValueDisplay = timeValue.toFixed(2);
+      }
+      
+      // 计算总赎回时间
       let totalSavedTime = 0;
       decisionHistory.forEach(record => {
-        // 检查新的决策记录格式
         if (record.userChoice && record.choseHire && record.estimatedHours) {
           totalSavedTime += parseFloat(record.estimatedHours);
-        }
-        // 兼容旧的决策记录格式
-        else if (record.analysis && record.analysis.decision === 'hire' && record.analysis.savings > 0) {
-          totalSavedTime += record.estimatedHours;
         }
       });
       
       // 优先使用存储的赎回时间
       const finalSavedTime = redeemedTime > 0 ? redeemedTime : totalSavedTime;
       
-      console.log('计算的总节省时间:', totalSavedTime);
+      // 计算等效价值
+      const equivalentValue = finalSavedTime * timeValue;
+      
+      console.log('计算的总赎回时间:', totalSavedTime);
       console.log('存储的赎回时间:', redeemedTime);
-      console.log('最终使用的节省时间:', finalSavedTime);
+      console.log('最终使用的赎回时间:', finalSavedTime);
+      console.log('等效价值:', equivalentValue);
       
       // 获取加入日期
       const joinDate = wx.getStorageSync('joinDate') || new Date().toISOString().split('T')[0];
@@ -104,25 +104,23 @@ Page({
         wx.setStorageSync('joinDate', joinDate);
       }
       
-      // 获取时间价值
-      let timeValue = 0;
-      if (timeCalculatorData && timeCalculatorData.timeValue !== undefined) {
-        timeValue = typeof timeCalculatorData.timeValue === 'string' ? 
-          parseFloat(timeCalculatorData.timeValue) : Number(timeCalculatorData.timeValue);
-      }
-      
       // 预格式化显示字段
-      const timeValueDisplay = timeValue > 0 ? timeValue.toFixed(2) : '0.00';
       const totalSavedTimeDisplay = finalSavedTime > 0 ? finalSavedTime.toFixed(1) : '0.0';
+      const equivalentValueDisplay = equivalentValue > 0 ? Math.round(equivalentValue).toString() : '0';
       
       this.setData({
         userInfo: {
           name: wx.getStorageSync('userName') || '时间管理者',
+          avatarUrl: wx.getStorageSync('userAvatarUrl') || '',
           timeValue: timeValue,
-          timeValueDisplay: timeValueDisplay,
+          timeValueDisplay: timeValueDisplay
+        },
+        statistics: {
           totalSavedTime: finalSavedTime,
+          equivalentValue: equivalentValue,
           totalSavedTimeDisplay: totalSavedTimeDisplay,
-          joinDate: joinDate
+          equivalentValueDisplay: equivalentValueDisplay,
+          totalDecisions: decisionHistory.length
         }
       });
       
@@ -134,6 +132,7 @@ Page({
       this.setData({
         userInfo: {
           name: '时间管理者',
+          avatarUrl: '',
           timeValue: 0,
           timeValueDisplay: '0.00',
           totalSavedTime: 0,
@@ -144,71 +143,91 @@ Page({
     }
   },
 
-  // 加载设置
-  loadSettings: function() {
-    try {
-      const savedSettings = wx.getStorageSync('appSettings');
-      if (savedSettings) {
-        this.setData({
-          settings: {
-            ...this.data.settings,
-            ...savedSettings
-          }
-        });
+  // 获取微信用户信息
+  getWechatUserInfo: function() {
+    const that = this;
+    
+    // 显示获取用户信息的说明
+    wx.showModal({
+      title: '设置用户信息',
+      content: '请选择获取用户信息的方式：\n\n1. 微信登录（推荐）\n2. 手动设置头像和昵称',
+      confirmText: '微信登录',
+      cancelText: '手动设置',
+      success: (res) => {
+        if (res.confirm) {
+          that.wechatLogin();
+        } else {
+          that.showManualSetupGuide();
+        }
       }
-    } catch (error) {
-      console.error('加载设置失败:', error);
+    });
+  },
+
+  // 尝试获取用户信息
+  tryGetUserInfo: function() {
+    const that = this;
+    
+    // 检查是否支持 getUserProfile
+    if (wx.getUserProfile) {
+      wx.getUserProfile({
+        desc: '用于完善用户资料',
+        success: (res) => {
+          console.log('获取微信用户信息成功:', res.userInfo);
+          const userInfo = res.userInfo;
+          
+          // 保存到本地存储
+          wx.setStorageSync('userName', userInfo.nickName);
+          wx.setStorageSync('userAvatarUrl', userInfo.avatarUrl);
+          
+          // 更新页面数据
+          that.setData({
+            'userInfo.name': userInfo.nickName,
+            'userInfo.avatarUrl': userInfo.avatarUrl
+          });
+          
+          wx.showToast({
+            title: '获取成功',
+            icon: 'success'
+          });
+        },
+        fail: (err) => {
+          console.log('获取微信用户信息失败:', err);
+          that.handleUserInfoFail();
+        }
+      });
+    } else {
+      // 如果不支持 getUserProfile，提示用户手动设置
+      that.handleUserInfoFail();
     }
   },
 
-  // 计算数据统计
-  calculateDataStats: function() {
-    try {
-      const decisionHistory = wx.getStorageSync('decisionHistory') || [];
-      const creativeTimeData = wx.getStorageSync('creativeTimeData') || {};
-      const timeCalculatorData = wx.getStorageSync('timeCalculatorData');
-      const appSettings = wx.getStorageSync('appSettings');
-      
-      console.log('=== 设置页面数据统计调试 ===');
-      console.log('决策历史数量:', decisionHistory.length);
-      console.log('创意时间数据:', creativeTimeData);
-      
-      // 估算存储大小
-      const storageData = {
-        decisionHistory,
-        creativeTimeData,
-        timeCalculatorData,
-        appSettings,
-        redeemedTime: wx.getStorageSync('redeemedTime'),
-        userName: wx.getStorageSync('userName'),
-        joinDate: wx.getStorageSync('joinDate')
-      };
-      
-      const storageSize = JSON.stringify(storageData).length;
-      
-      const dataStats = {
-        totalDecisions: decisionHistory.length,
-        totalRecords: decisionHistory.length + (creativeTimeData.activities?.length || 0),
-        storageSize: Math.round(storageSize / 1024) // KB
-      };
-      
-      console.log('数据统计结果:', dataStats);
-      console.log('=== 设置页面数据统计调试结束 ===');
-      
-      this.setData({
-        dataStats: dataStats
-      });
-    } catch (error) {
-      console.error('计算数据统计失败:', error);
-      // 设置默认值
-      this.setData({
-        dataStats: {
-          totalDecisions: 0,
-          totalRecords: 0,
-          storageSize: 0
-        }
-      });
-    }
+  // 显示手动设置指南
+  showManualSetupGuide: function() {
+    wx.showModal({
+      title: '手动设置指南',
+      content: '您可以：\n\n1. 点击头像 → 从相册选择或拍照\n2. 点击用户名 → 输入您的昵称\n\n这样就能个性化您的时间赎回器了！',
+      showCancel: false,
+      confirmText: '知道了'
+    });
+  },
+
+  // 处理获取用户信息失败
+  handleUserInfoFail: function() {
+    // 如果用户拒绝，使用默认信息
+    const storedName = wx.getStorageSync('userName') || '时间管理者';
+    const storedAvatar = wx.getStorageSync('userAvatarUrl') || '';
+    
+    this.setData({
+      'userInfo.name': storedName,
+      'userInfo.avatarUrl': storedAvatar
+    });
+    
+    wx.showModal({
+      title: '获取失败',
+      content: '由于微信政策调整，无法自动获取头像和昵称。\n\n建议您手动设置：\n• 点击头像选择照片\n• 点击用户名输入昵称',
+      showCancel: false,
+      confirmText: '好的'
+    });
   },
 
   // 修改用户名
@@ -234,6 +253,38 @@ Page({
     });
   },
 
+  // 修改用户头像
+  changeUserAvatar: function() {
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['compressed'],
+      sourceType: ['album', 'camera'],
+      success: (res) => {
+        const tempFilePath = res.tempFilePaths[0];
+        
+        // 保存头像到本地存储
+        wx.setStorageSync('userAvatarUrl', tempFilePath);
+        
+        // 更新页面数据
+        this.setData({
+          'userInfo.avatarUrl': tempFilePath
+        });
+        
+        wx.showToast({
+          title: '头像修改成功',
+          icon: 'success'
+        });
+      },
+      fail: (err) => {
+        console.log('选择头像失败:', err);
+        wx.showToast({
+          title: '选择头像失败',
+          icon: 'error'
+        });
+      }
+    });
+  },
+
   // 跳转到时间价值计算器
   goToCalculator: function() {
     wx.switchTab({
@@ -245,12 +296,8 @@ Page({
   refreshData: function() {
     console.log('=== 设置页面手动刷新数据 ===');
     
-    // 强制同步数据
-    this.syncData();
-    
     // 重新加载数据
     this.loadUserData();
-    this.calculateDataStats();
     
     // 显示当前数据状态
     setTimeout(() => {
@@ -429,30 +476,49 @@ Page({
       title: '重置所有数据',
       content: '⚠️ 危险操作！这将删除所有数据，包括决策记录、时间价值设置等。此操作不可恢复！',
       confirmText: '确定重置',
-      confirmColor: '#e74c3c',
+      confirmColor: '#ff3b30',
       success: (res) => {
         if (res.confirm) {
           wx.showModal({
             title: '二次确认',
-            content: '请再次确认是否要重置所有数据？',
+            content: '请再次确认是否要重置所有数据？此操作将清空：\n\n• 时间价值设置\n• 所有决策记录\n• 统计数据\n• 用户信息',
             confirmText: '确定重置',
-            confirmColor: '#e74c3c',
+            confirmColor: '#ff3b30',
             success: (res2) => {
               if (res2.confirm) {
                 try {
                   // 清除所有数据
                   wx.clearStorageSync();
-                  wx.showToast({
-                    title: '重置成功',
-                    icon: 'success'
+                  
+                  // 重置页面数据
+                  this.setData({
+                    userInfo: {
+                      name: '时间管理者',
+                      timeValue: 0,
+                      timeValueDisplay: '0.00',
+                      hasSetTimeValue: false
+                    },
+                    statistics: {
+                      totalSavedTime: 0,
+                      equivalentValue: 0,
+                      totalSavedTimeDisplay: '0.0',
+                      equivalentValueDisplay: '0',
+                      totalDecisions: 0,
+                      recentDecisions: 0
+                    }
                   });
                   
-                  // 重新加载数据
+                  wx.showToast({
+                    title: '重置成功',
+                    icon: 'success',
+                    duration: 2000
+                  });
+                  
+                  // 延迟后重新加载数据
                   setTimeout(() => {
                     this.loadUserData();
-                    this.loadSettings();
-                    this.calculateDataStats();
                   }, 1000);
+                  
                 } catch (error) {
                   console.error('重置数据失败:', error);
                   wx.showToast({
@@ -472,7 +538,7 @@ Page({
   feedback: function() {
     wx.showModal({
       title: '意见反馈',
-      content: '请在小程序评价中留下您的宝贵意见，或联系客服微信：timemanager2024',
+      content: '如有问题或建议，请发送邮件至：\n\niancoding@163.com\n\n我们会认真处理您的反馈！',
       showCancel: false
     });
   },
@@ -481,7 +547,7 @@ Page({
   aboutApp: function() {
     wx.showModal({
       title: '关于时间赎回器',
-      content: `版本：${this.data.version}\n\n基于《买回你的时间》一书理念开发\n\n帮助你计算时间价值，做出明智决策\n\n"金钱仅仅是用来购买时间的工具"`,
+      content: `版本：${this.data.version}\n\n基于《买回你的时间》一书理念开发\n\n帮助你计算时间价值，做出明智决策\n\n"金钱仅仅是用来购买时间的工具"\n\n让每一分钟都更有价值！`,
       showCancel: false
     });
   },

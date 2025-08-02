@@ -16,8 +16,27 @@ Page({
   loadHistory: function() {
     try {
       const history = wx.getStorageSync('decisionHistory') || [];
+      
+      // 任务类型映射表
+      const taskTypeMap = {
+        'cleaning': '家务清洁',
+        'document': '文档整理',
+        'design': '设计制作',
+        'tech': '技术开发',
+        'delivery': '跑腿代办',
+        'other': '其他任务'
+      };
+      
+      // 为没有 taskTypeChinese 的记录添加中文名称
+      const processedHistory = history.map(item => {
+        if (!item.taskTypeChinese) {
+          item.taskTypeChinese = taskTypeMap[item.taskType] || '其他任务';
+        }
+        return item;
+      });
+      
       this.setData({
-        historyList: history
+        historyList: processedHistory
       });
     } catch (error) {
       console.error('加载历史记录失败:', error);

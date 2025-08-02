@@ -1,189 +1,126 @@
 <view class="container">
   <!-- 页面标题 -->
-  <view class="header">
+  <view class="header card-base">
     <text class="title">设置中心</text>
     <text class="subtitle">个人信息与应用设置</text>
   </view>
 
-  <!-- 用户信息卡片 -->
+  <!-- 时间管理者卡片 -->
   <view class="user-info-section">
-    <view class="user-info-card">
-      <view class="user-avatar">
-        <text class="avatar-text">{{userInfo.name.charAt(0)}}</text>
+    <view class="user-info-card card-base">
+      <view class="user-avatar" bindtap="changeUserAvatar">
+        <image wx:if="{{userInfo.avatarUrl}}" class="avatar-image" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+        <text wx:else class="avatar-text">{{userInfo.name.charAt(0)}}</text>
       </view>
       <view class="user-details">
         <view class="user-name" bindtap="changeUserName">
           {{userInfo.name}}
           <text class="edit-icon">✏️</text>
         </view>
+        <view class="avatar-hint">点击头像更换照片</view>
         <view class="user-stats">
           <text class="user-stat">时间价值: ¥{{userInfo.timeValueDisplay}}/小时</text>
-          <text class="user-stat">已买回: {{userInfo.totalSavedTimeDisplay}}小时</text>
-          <text class="user-stat">加入日期: {{userInfo.joinDate}}</text>
+          <text class="user-stat">已买回: {{statistics.totalSavedTimeDisplay}}小时</text>
+          <text class="user-stat">等效价值: ¥{{statistics.equivalentValueDisplay}}</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 个性化设置按钮 -->
+    <view class="wechat-info-section">
+      <view class="wechat-info-btn card-base" bindtap="getWechatUserInfo">
+        <view class="wechat-icon">👤</view>
+        <view class="wechat-text">个性化设置头像和昵称</view>
+        <view class="wechat-arrow">→</view>
+      </view>
+      
+      <!-- 重置用户信息按钮 -->
+      <view class="logout-btn card-base" bindtap="resetUserInfo">
+        <view class="logout-icon">🔄</view>
+        <view class="logout-text">重置用户信息</view>
+        <view class="logout-arrow">→</view>
+      </view>
+      
+    </view>
+  </view>
+
+
+
+  <!-- 使用帮助 -->
+  <view class="help-section">
+    <view class="section-title">使用帮助</view>
+    <view class="help-content card-base">
+      <view class="help-step">
+        <view class="help-step-icon">🧮</view>
+        <view class="help-step-content">
+          <text class="help-step-title">计算时间价值</text>
+          <text class="help-step-desc">在计算器页面中算出你每小时的时间价值</text>
+        </view>
+      </view>
+      
+      <view class="help-step">
+        <view class="help-step-icon">🤖</view>
+        <view class="help-step-content">
+          <text class="help-step-title">智能决策分析</text>
+          <text class="help-step-desc">在决策页面中理性的判断，是否赎回自己的时间（与自己的时间价值做对比）</text>
+        </view>
+      </view>
+      
+      <view class="help-step">
+        <view class="help-step-icon">📈</view>
+        <view class="help-step-content">
+          <text class="help-step-title">查看管理成果</text>
+          <text class="help-step-desc">你可在统计页面查看自己时间赎回的成果</text>
+        </view>
+      </view>
+      
+      <view class="help-step">
+        <view class="help-step-icon">💡</view>
+        <view class="help-step-content">
+          <text class="help-step-title">核心理念</text>
+          <text class="help-step-desc">时间赎回器的理念是：金钱只是用来购买时间的工具！</text>
         </view>
       </view>
     </view>
   </view>
 
-  <!-- 快捷操作 -->
-  <view class="quick-actions-section">
-    <view class="section-title">快捷操作</view>
-    <view class="quick-actions">
-      <view class="quick-action-item" bindtap="goToCalculator">
-        <view class="quick-action-icon">🧮</view>
-        <view class="quick-action-text">时间价值计算器</view>
-      </view>
-      <view class="quick-action-item" bindtap="refreshData">
-        <view class="quick-action-icon">🔄</view>
-        <view class="quick-action-text">刷新数据</view>
-      </view>
-      <view class="quick-action-item" bindtap="showHelp">
-        <view class="quick-action-icon">❓</view>
-        <view class="quick-action-text">使用帮助</view>
-      </view>
-      <view class="quick-action-item" bindtap="shareApp">
-        <view class="quick-action-icon">📤</view>
-        <view class="quick-action-text">分享小程序</view>
-      </view>
-    </view>
-  </view>
-
-  <!-- 应用设置 -->
-  <view class="app-settings-section">
-    <view class="section-title">应用设置</view>
-    <view class="settings-list">
-      <view class="setting-item" bindtap="toggleNotifications">
-        <view class="setting-left">
-          <text class="setting-icon">🔔</text>
-          <text class="setting-text">消息通知</text>
-        </view>
-        <view class="setting-right">
-          <switch checked="{{settings.notifications}}" bindchange="toggleNotifications" />
-        </view>
+  <!-- 意见反馈 -->
+  <view class="feedback-section">
+    <view class="section-title">意见反馈</view>
+    <view class="feedback-content card-base">
+      <view class="feedback-item" bindtap="feedback">
+        <view class="feedback-icon">📝</view>
+        <view class="feedback-text">意见反馈</view>
+        <view class="feedback-arrow">→</view>
       </view>
       
-      <view class="setting-item" bindtap="toggleDarkMode">
-        <view class="setting-left">
-          <text class="setting-icon">🌙</text>
-          <text class="setting-text">深色模式</text>
-        </view>
-        <view class="setting-right">
-          <switch checked="{{settings.darkMode}}" bindchange="toggleDarkMode" />
-        </view>
-      </view>
-      
-      <view class="setting-item" bindtap="toggleAutoCalculate">
-        <view class="setting-left">
-          <text class="setting-icon">⚡</text>
-          <text class="setting-text">自动计算</text>
-        </view>
-        <view class="setting-right">
-          <switch checked="{{settings.autoCalculate}}" bindchange="toggleAutoCalculate" />
-        </view>
-      </view>
-      
-      <view class="setting-item" bindtap="toggleShowTips">
-        <view class="setting-left">
-          <text class="setting-icon">💡</text>
-          <text class="setting-text">显示提示</text>
-        </view>
-        <view class="setting-right">
-          <switch checked="{{settings.showTips}}" bindchange="toggleShowTips" />
-        </view>
+      <view class="feedback-item" bindtap="aboutApp">
+        <view class="feedback-icon">ℹ️</view>
+        <view class="feedback-text">关于时间赎回器</view>
+        <view class="feedback-version">v{{version}}</view>
+        <view class="feedback-arrow">→</view>
       </view>
     </view>
   </view>
 
   <!-- 数据管理 -->
-  <view class="data-management-section">
+  <view class="data-section">
     <view class="section-title">数据管理</view>
-    <view class="data-stats">
-      <view class="data-stat-item">
-        <view class="data-stat-value">{{dataStats.totalDecisions}}</view>
-        <view class="data-stat-label">决策记录</view>
-      </view>
-      <view class="data-stat-item">
-        <view class="data-stat-value">{{dataStats.totalRecords}}</view>
-        <view class="data-stat-label">总记录数</view>
-      </view>
-      <view class="data-stat-item">
-        <view class="data-stat-value">{{dataStats.storageSize}}KB</view>
-        <view class="data-stat-label">存储大小</view>
+    <view class="data-content card-base">
+      <view class="data-item" bindtap="resetAllData">
+        <view class="data-icon">🗑️</view>
+        <view class="data-text">重置所有数据</view>
+        <view class="data-arrow">→</view>
       </view>
     </view>
-    
-    <view class="data-actions">
-      <button class="data-action-btn" bindtap="backupData">
-        <text class="btn-icon">☁️</text>
-        <text class="btn-text">数据备份</text>
-      </button>
-      <button class="data-action-btn" bindtap="restoreData">
-        <text class="btn-icon">📥</text>
-        <text class="btn-text">数据恢复</text>
-      </button>
-      <button class="data-action-btn" bindtap="exportData">
-        <text class="btn-icon">📤</text>
-        <text class="btn-text">导出数据</text>
-      </button>
-      <button class="data-action-btn" bindtap="clearCache">
-        <text class="btn-icon">🗑️</text>
-        <text class="btn-text">清除缓存</text>
-      </button>
-    </view>
-  </view>
-
-  <!-- 关于与帮助 -->
-  <view class="about-section">
-    <view class="section-title">关于与帮助</view>
-    <view class="about-list">
-      <view class="about-item" bindtap="aboutApp">
-        <view class="about-left">
-          <text class="about-icon">ℹ️</text>
-          <text class="about-text">关于时间赎回器</text>
-        </view>
-        <view class="about-right">
-          <text class="about-version">v{{version}}</text>
-          <text class="about-arrow">→</text>
-        </view>
-      </view>
-      
-      <view class="about-item" bindtap="showHelp">
-        <view class="about-left">
-          <text class="about-icon">📖</text>
-          <text class="about-text">使用帮助</text>
-        </view>
-        <view class="about-right">
-          <text class="about-arrow">→</text>
-        </view>
-      </view>
-      
-      <view class="about-item" bindtap="feedback">
-        <view class="about-left">
-          <text class="about-icon">📝</text>
-          <text class="about-text">意见反馈</text>
-        </view>
-        <view class="about-right">
-          <text class="about-arrow">→</text>
-        </view>
-      </view>
-    </view>
-  </view>
-
-  <!-- 危险操作 -->
-  <view class="danger-section">
-    <view class="section-title">危险操作</view>
-    <button class="danger-btn" bindtap="resetAllData">
-      <text class="danger-btn-icon">⚠️</text>
-      <text class="danger-btn-text">重置所有数据</text>
-    </button>
   </view>
 
   <!-- 版权信息 -->
   <view class="copyright-section">
-    <view class="copyright-text">
+    <view class="copyright-text card-base">
       <text class="copyright-line">基于《买回你的时间》理念开发</text>
       <text class="copyright-line">"金钱仅仅是用来购买时间的工具"</text>
-      <text class="copyright-line">© 2024 时间赎回器 v{{version}}</text>
+      <text class="copyright-line">© 2025 时间赎回器 {{version}}</text>
     </view>
   </view>
 </view> 

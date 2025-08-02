@@ -164,6 +164,10 @@ Page({
     try {
       const history = this.data.decisionHistory || [];
       
+      // 获取任务类型的中文名称
+      const taskTypeObj = this.data.taskTypes.find(type => type.value === record.taskType);
+      const taskTypeChinese = taskTypeObj ? taskTypeObj.name : '其他任务';
+      
       // 生成任务唯一标识（基于任务描述、类型、预估时间和外包价格）
       const taskKey = `${record.taskDescription || ''}_${record.taskType}_${record.estimatedHours}_${record.outsourcePrice}`;
       
@@ -177,7 +181,8 @@ Page({
         ...record,
         id: Date.now(),
         timestamp: new Date().toISOString(),
-        taskKey: taskKey // 保存任务唯一标识
+        taskKey: taskKey, // 保存任务唯一标识
+        taskTypeChinese: taskTypeChinese // 保存任务类型中文名称
       };
       
       if (existingIndex !== -1) {
@@ -265,14 +270,15 @@ Page({
     // 计算价格百分比
     const pricePercentage = ((pricePerHour / timeValue) * 100).toFixed(1);
     
-    // 计算节省金额 (基于时间价值)
-    const timeValueSavings = (timeValue * hours) - price;
+    // 计算差额 (赎回时间价格 - 您的时间价值)
+    const priceDifference = pricePerHour - timeValue;
     
     // 决策逻辑 - 参考计算器的三种策略
     let decision = '';
     let recommendation = '';
     let reason = '';
     let judgmentText = '';
+    let colorClass = '';
     
     if (pricePerHour <= timeValueQuarter) {
       // 低于1/4 - 直接赎回时间
@@ -280,18 +286,21 @@ Page({
       recommendation = '直接赎回时间';
       reason = `赎回时间单价 ¥${pricePerHour.toFixed(2)}/小时，低于您时间价值的1/4 (¥${timeValueQuarter.toFixed(2)}/小时)，非常划算！`;
       judgmentText = '根据1/4原则，这是高效的投资';
+      colorClass = 'positive'; // 绿色
     } else if (pricePerHour > timeValueQuarter && pricePerHour <= timeValue) {
       // 1/4-1倍之间 - 考虑赎回时间
       decision = 'consider';
       recommendation = '考虑赎回时间';
       reason = `赎回时间单价 ¥${pricePerHour.toFixed(2)}/小时，在您时间价值的1/4至1倍之间，需要评估您的精力消耗`;
       judgmentText = '根据1/4-1倍原则，可考虑赎回但需评估精力消耗';
+      colorClass = 'warning'; // 橙色
     } else {
       // 超过时间价值 - 谨慎赎回时间
       decision = 'self';
       recommendation = '谨慎赎回时间';
       reason = `赎回时间单价 ¥${pricePerHour.toFixed(2)}/小时，超过您的时间价值 ¥${timeValue.toFixed(2)}/小时，请确保赎回后的时间用途价值足够高`;
       judgmentText = '根据大于1倍原则，谨慎决策确保时间用途价值足够高';
+      colorClass = 'negative'; // 红色
     }
     
     const analysis = {
@@ -299,11 +308,12 @@ Page({
       price: price.toFixed(2),
       pricePerHour: pricePerHour.toFixed(2),
       pricePercentage: pricePercentage,
-      savings: timeValueSavings.toFixed(2),
+      priceDifference: priceDifference.toFixed(2),
       decision,
       recommendation,
       reason,
       judgmentText,
+      colorClass,
       timeValue: timeValue.toFixed(2),
       timeValueQuarter: timeValueQuarter.toFixed(2)
     };

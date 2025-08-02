@@ -316,6 +316,19 @@
   color: white;
 }
 
+/* 决策建议颜色变体 */
+.positive-recommendation {
+  background: linear-gradient(135deg, #34c759, #30d158);
+}
+
+.warning-recommendation {
+  background: linear-gradient(135deg, #ff9500, #ff8c00);
+}
+
+.negative-recommendation {
+  background: linear-gradient(135deg, #ff3b30, #ff453a);
+}
+
 .recommendation-title {
   font-size: 36rpx;
   font-weight: bold;
@@ -335,6 +348,22 @@
   background: #f8f9fa;
   border-radius: 12rpx;
   border-left: 4rpx solid #4CAF50;
+}
+
+/* 价格分析颜色变体 */
+.positive-analysis {
+  border-left: 4rpx solid #34c759;
+  background: rgba(52, 199, 89, 0.05);
+}
+
+.warning-analysis {
+  border-left: 4rpx solid #ff9500;
+  background: rgba(255, 149, 0, 0.05);
+}
+
+.negative-analysis {
+  border-left: 4rpx solid #ff3b30;
+  background: rgba(255, 59, 48, 0.05);
 }
 
 .price-title {
@@ -363,6 +392,19 @@
   background: #4CAF50;
   color: white;
   font-weight: bold;
+}
+
+/* 表格头部颜色变体 */
+.positive-header {
+  background: #34c759 !important;
+}
+
+.warning-header {
+  background: #ff9500 !important;
+}
+
+.negative-header {
+  background: #ff3b30 !important;
 }
 
 .table-row {
@@ -397,6 +439,11 @@
   font-weight: bold;
 }
 
+.table-cell.warning {
+  color: #ff9500;
+  font-weight: bold;
+}
+
 /* 总结信息样式 */
 .summary-info {
   margin-bottom: 32rpx;
@@ -404,6 +451,22 @@
   background: #fff3cd;
   border: 1rpx solid #ffeaa7;
   border-radius: 12rpx;
+}
+
+/* 总结信息颜色变体 */
+.positive-summary {
+  background: rgba(52, 199, 89, 0.1);
+  border: 1rpx solid rgba(52, 199, 89, 0.3);
+}
+
+.warning-summary {
+  background: rgba(255, 149, 0, 0.1);
+  border: 1rpx solid rgba(255, 149, 0, 0.3);
+}
+
+.negative-summary {
+  background: rgba(255, 59, 48, 0.1);
+  border: 1rpx solid rgba(255, 59, 48, 0.3);
 }
 
 .summary-text {
@@ -415,6 +478,19 @@
 .highlight-text {
   font-weight: bold;
   color: #4CAF50;
+}
+
+/* 高亮文本颜色变体 */
+.positive-highlight {
+  color: #34c759;
+}
+
+.warning-highlight {
+  color: #ff9500;
+}
+
+.negative-highlight {
+  color: #ff3b30;
 }
 
 /* 决策指南样式 */

@@ -12,41 +12,45 @@
   <!-- 历史记录列表 -->
   <view class="history-list" wx:if="{{historyList.length > 0}}">
     <view class="history-item card-base" wx:for="{{historyList}}" wx:key="id" data-index="{{index}}" bindtap="viewHistoryDetail">
-      <view class="history-header">
-        <view class="task-info">
-          <view class="task-title">{{item.taskDescription}}</view>
-          <view class="task-meta">
-            <text class="task-type">{{item.taskType}}</text>
-            <text class="task-time">{{item.estimatedHours}}小时</text>
-            <text class="task-price">¥{{item.outsourcePrice}}</text>
+      <!-- 总结性描述 -->
+      <view class="summary-description">
+        <view class="summary-content">
+          <text class="summary-text">您在{{item.taskTypeChinese}}任务上，{{item.choseHire ? '选择了赎回自己的时间' : '选择了自己完成'}}。</text>
+          <view class="summary-choice {{item.choseHire ? 'hire' : 'self'}}">
+            <view class="choice-icon">{{item.choseHire ? '⏰' : '🙋‍♂️'}}</view>
+            <view class="choice-text">{{item.choseHire ? '赎回时间' : '自己完成'}}</view>
           </view>
-        </view>
-        <view class="decision-result {{item.analysis.decision === 'hire' ? 'hire' : 'self'}}">
-          <view class="result-icon">{{item.analysis.decision === 'hire' ? '👥' : '🙋‍♂️'}}</view>
-          <view class="result-text">{{item.analysis.recommendation}}</view>
         </view>
       </view>
       
-      <view class="history-details">
-        <view class="detail-row">
-          <text class="detail-label">外包单价:</text>
-          <text class="detail-value">¥{{item.analysis.pricePerHour}}/小时</text>
-        </view>
-        <view class="detail-row">
-          <text class="detail-label">时间价值:</text>
-          <text class="detail-value">¥{{item.userTimeValue}}/小时</text>
-        </view>
-        <view class="detail-row {{item.analysis.savings > 0 ? 'positive' : 'negative'}}">
-          <text class="detail-label">{{item.analysis.savings > 0 ? '节省' : '额外支出'}}:</text>
-          <text class="detail-value">{{item.analysis.savings > 0 ? '+' : ''}}¥{{item.analysis.savings}}</text>
-        </view>
-        <view class="detail-row user-choice">
-          <text class="detail-label">您的选择:</text>
-          <text class="detail-value {{item.choseHire ? 'hire-choice' : 'self-choice'}}">
-            {{item.choseHire ? '✅ 选择雇佣' : '❌ 自己完成'}}
-          </text>
+      <view class="history-header">
+        <view class="task-info">
+          <view class="task-title">{{item.taskDescription}}</view>
         </view>
       </view>
+      
+      <!-- 价格分析表格 -->
+      <view class="price-analysis-table">
+        <view class="table-row">
+          <text class="table-cell">您的时间价值</text>
+          <text class="table-cell">¥{{item.userTimeValue}}/小时</text>
+        </view>
+        <view class="table-row">
+          <text class="table-cell">赎回时间价格</text>
+          <text class="table-cell {{item.analysis.colorClass}}">¥{{item.analysis.pricePerHour}}/小时</text>
+        </view>
+        <view class="table-row">
+          <text class="table-cell">差额</text>
+          <text class="table-cell {{item.analysis.colorClass}}">¥{{item.analysis.priceDifference}}/小时</text>
+        </view>
+      </view>
+      
+      <!-- 智能分析结果 -->
+      <view class="analysis-result {{item.analysis.colorClass}}-analysis">
+        <text class="analysis-text">您需要花 ¥{{item.outsourcePrice}}, 买回自己的{{item.estimatedHours}}小时时间, 单价为您自己时间价值的{{item.analysis.pricePercentage}}%, {{item.analysis.judgmentText}}</text>
+      </view>
+      
+
       
       <view class="history-footer">
         <view class="timestamp">{{formatTime(item.timestamp)}}</view>

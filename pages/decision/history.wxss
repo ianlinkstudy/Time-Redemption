@@ -82,6 +82,58 @@
   background: #f8f9fa;
 }
 
+/* 总结性描述 */
+.summary-description {
+  margin-bottom: 16rpx;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid #e5e5ea;
+}
+
+.summary-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-text {
+  font-size: 28rpx;
+  color: #1d1d1f;
+  font-weight: 500;
+  line-height: 1.4;
+  flex: 1;
+  margin-right: 16rpx;
+}
+
+.summary-choice {
+  display: flex;
+  align-items: center;
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  background: #f2f2f7;
+  min-width: 120rpx;
+  justify-content: center;
+}
+
+.summary-choice.hire {
+  background: rgba(52, 199, 89, 0.1);
+  color: #34c759;
+}
+
+.summary-choice.self {
+  background: rgba(255, 149, 0, 0.1);
+  color: #ff9500;
+}
+
+.choice-icon {
+  font-size: 24rpx;
+  margin-right: 8rpx;
+}
+
+.choice-text {
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
 /* 历史记录头部 */
 .history-header {
   display: flex;
@@ -122,28 +174,87 @@
   border-radius: 8rpx;
 }
 
-/* 决策结果 */
-.decision-result {
+
+
+/* 价格分析表格 */
+.price-analysis-table {
+  background: #f2f2f7;
+  border-radius: 12rpx;
+  margin-bottom: 16rpx;
+  overflow: hidden;
+}
+
+
+
+.table-row {
+  display: flex;
+  border-bottom: 1rpx solid #e5e5ea;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-cell {
+  flex: 1;
+  padding: 16rpx;
+  font-size: 26rpx;
+  color: #1d1d1f;
+  font-weight: 500;
   text-align: center;
-  min-width: 120rpx;
 }
 
-.decision-result.hire {
-  color: #34c759;
-}
-
-.decision-result.self {
-  color: #ff9500;
-}
-
-.result-icon {
-  font-size: 32rpx;
-  margin-bottom: 4rpx;
-}
-
-.result-text {
-  font-size: 22rpx;
+.table-cell:first-child {
+  text-align: left;
   font-weight: 600;
+}
+
+.table-cell.positive {
+  color: #34c759;
+  font-weight: bold;
+}
+
+.table-cell.warning {
+  color: #ff9500;
+  font-weight: bold;
+}
+
+.table-cell.negative {
+  color: #ff3b30;
+  font-weight: bold;
+}
+
+
+
+/* 智能分析结果 */
+.analysis-result {
+  background: #f2f2f7;
+  border-radius: 12rpx;
+  padding: 16rpx;
+  margin-bottom: 16rpx;
+  border-left: 4rpx solid;
+}
+
+.analysis-result.positive-analysis {
+  border-left-color: #34c759;
+  background: rgba(52, 199, 89, 0.05);
+}
+
+.analysis-result.warning-analysis {
+  border-left-color: #ff9500;
+  background: rgba(255, 149, 0, 0.05);
+}
+
+.analysis-result.negative-analysis {
+  border-left-color: #ff3b30;
+  background: rgba(255, 59, 48, 0.05);
+}
+
+.analysis-text {
+  font-size: 26rpx;
+  color: #1d1d1f;
+  line-height: 1.5;
+  font-weight: 400;
 }
 
 /* 历史详情 */

@@ -14,10 +14,10 @@
     "backgroundColor": "#f5f5f5"
   },
   "tabBar": {
-    "color": "#999999",
-    "selectedColor": "#667eea",
+    "color": "#86868b",
+    "selectedColor": "#007aff",
     "backgroundColor": "#ffffff",
-    "borderStyle": "black",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",
@@ -43,5 +43,12 @@
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "permission": {
+    "scope.userInfo": {
+      "desc": "用于完善用户资料"
+    }
+  },
+  "requiredBackgroundModes": ["audio"],
+  "plugins": {}
 }
