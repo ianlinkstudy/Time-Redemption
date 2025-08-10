@@ -32,6 +32,12 @@
           <text class="nickname-hint">点击输入您的昵称</text>
         </view>
         
+        <!-- 登录状态显示 -->
+        <view class="login-status">
+          <text wx:if="{{isLoggedIn}}" class="login-status-text login-success">✅ 已登录微信</text>
+          <text wx:else class="login-status-text login-pending">⏳ 未登录微信</text>
+        </view>
+        
         <view class="user-stats">
           <text class="user-stat">时间价值: ¥{{userInfo.timeValueDisplay}}/小时</text>
           <text class="user-stat">已买回: {{statistics.totalSavedTimeDisplay}}小时</text>
@@ -40,11 +46,19 @@
       </view>
     </view>
     
-    <!-- 微信登录说明 -->
+    <!-- 微信登录和设置按钮 -->
     <view class="wechat-info-section">
+      <!-- 微信登录按钮 -->
+      <view wx:if="{{!isLoggedIn}}" class="wechat-login-btn card-base" bindtap="wechatLogin">
+        <view class="wechat-icon">🔗</view>
+        <view class="wechat-text">微信登录获取用户信息</view>
+        <view class="wechat-arrow">→</view>
+      </view>
+      
+      <!-- 用户信息设置说明 -->
       <view class="wechat-info-btn card-base" bindtap="showWechatLoginGuide">
         <view class="wechat-icon">👤</view>
-        <view class="wechat-text">微信用户信息设置说明</view>
+        <view class="wechat-text">{{isLoggedIn ? '用户信息设置说明' : '手动设置头像和昵称'}}</view>
         <view class="wechat-arrow">→</view>
       </view>
       

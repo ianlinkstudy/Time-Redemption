@@ -129,6 +129,29 @@
   display: block;
 }
 
+/* 登录状态样式 */
+.login-status {
+  margin-bottom: 16rpx;
+}
+
+.login-status-text {
+  font-size: 24rpx;
+  font-weight: 500;
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  display: inline-block;
+}
+
+.login-success {
+  color: #34c759;
+  background: rgba(52, 199, 89, 0.1);
+}
+
+.login-pending {
+  color: #ff9500;
+  background: rgba(255, 149, 0, 0.1);
+}
+
 .user-stats {
   display: flex;
   flex-direction: column;
@@ -145,6 +168,21 @@
 /* 微信信息获取按钮 */
 .wechat-info-section {
   margin-bottom: 0;
+}
+
+/* 微信登录按钮 */
+.wechat-login-btn {
+  padding: 32rpx;
+  display: flex;
+  align-items: center;
+  color: #007aff;
+  transition: all 0.3s ease;
+  margin-bottom: 16rpx;
+}
+
+.wechat-login-btn:active {
+  background: rgba(0, 122, 255, 0.1);
+  transform: scale(0.98);
 }
 
 .wechat-info-btn {

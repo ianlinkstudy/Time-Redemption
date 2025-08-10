@@ -21,12 +21,16 @@ Page({
     version: 'V0.1',
     
     // 数据更新检测
-    lastDataUpdate: 0
+    lastDataUpdate: 0,
+    
+    // 登录状态
+    isLoggedIn: false,
+    openid: ''
   },
 
   onLoad: function() {
     this.loadUserData();
-    this.showWechatLoginGuide();
+    this.checkLoginStatus();
   },
 
   onShow: function() {
@@ -36,6 +40,141 @@ Page({
     this.checkDataUpdate();
     
     this.loadUserData();
+  },
+
+  // 检查登录状态
+  checkLoginStatus: function() {
+    const openid = wx.getStorageSync('openid');
+    const isLoggedIn = !!openid;
+    
+    this.setData({
+      isLoggedIn: isLoggedIn,
+      openid: openid || ''
+    });
+    
+    if (isLoggedIn) {
+      console.log('用户已登录，openid:', openid);
+    } else {
+      console.log('用户未登录');
+    }
+  },
+
+  // 微信登录
+  wechatLogin: function() {
+    const that = this;
+    
+    wx.showLoading({
+      title: '登录中...'
+    });
+    
+    wx.login({
+      success: function(res) {
+        console.log('wx.login 成功:', res);
+        
+        if (res.code) {
+          // 发送code到后端服务器
+          that.sendCodeToServer(res.code);
+        } else {
+          wx.hideLoading();
+          wx.showToast({
+            title: '登录失败',
+            icon: 'error'
+          });
+        }
+      },
+      fail: function(err) {
+        console.log('wx.login 失败:', err);
+        wx.hideLoading();
+        wx.showToast({
+          title: '登录失败',
+          icon: 'error'
+        });
+      }
+    });
+  },
+
+  // 发送code到后端服务器
+  sendCodeToServer: function(code) {
+    const that = this;
+    
+    // 这里需要替换为您的后端服务器地址
+    const serverUrl = 'https://your-server.com/api/login';
+    
+    wx.request({
+      url: serverUrl,
+      method: 'POST',
+      data: {
+        code: code
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function(res) {
+        wx.hideLoading();
+        console.log('服务器响应:', res.data);
+        
+        if (res.data.success) {
+          // 保存用户信息
+          const userInfo = res.data.userInfo;
+          const openid = res.data.openid;
+          
+          // 保存到本地存储
+          wx.setStorageSync('openid', openid);
+          wx.setStorageSync('userName', userInfo.nickName);
+          wx.setStorageSync('userAvatarUrl', userInfo.avatarUrl);
+          
+          // 更新页面数据
+          that.setData({
+            isLoggedIn: true,
+            openid: openid,
+            'userInfo.name': userInfo.nickName,
+            'userInfo.avatarUrl': userInfo.avatarUrl
+          });
+          
+          wx.showToast({
+            title: '登录成功',
+            icon: 'success'
+          });
+        } else {
+          wx.showToast({
+            title: res.data.message || '登录失败',
+            icon: 'error'
+          });
+        }
+      },
+      fail: function(err) {
+        wx.hideLoading();
+        console.log('请求服务器失败:', err);
+        
+        // 如果后端服务器不可用，使用模拟数据
+        that.useMockUserInfo();
+      }
+    });
+  },
+
+  // 使用模拟用户信息（当后端不可用时）
+  useMockUserInfo: function() {
+    wx.showModal({
+      title: '登录提示',
+      content: '后端服务器暂时不可用，将使用模拟用户信息进行演示。\n\n您可以：\n1. 点击头像按钮选择头像\n2. 在昵称输入框输入昵称',
+      showCancel: false,
+      confirmText: '知道了',
+      success: () => {
+        // 使用默认用户信息
+        const mockUserInfo = {
+          nickName: '微信用户',
+          avatarUrl: ''
+        };
+        
+        wx.setStorageSync('userName', mockUserInfo.nickName);
+        wx.setStorageSync('userAvatarUrl', mockUserInfo.avatarUrl);
+        
+        this.setData({
+          'userInfo.name': mockUserInfo.nickName,
+          'userInfo.avatarUrl': mockUserInfo.avatarUrl
+        });
+      }
+    });
   },
 
   // 微信最新的头像选择回调
@@ -78,9 +217,35 @@ Page({
 
   // 显示微信登录指南
   showWechatLoginGuide: function() {
+    if (this.data.isLoggedIn) {
+      wx.showModal({
+        title: '用户信息设置',
+        content: `您已登录微信\nOpenID: ${this.data.openid.substring(0, 8)}...\n\n可以：\n1. 点击头像按钮选择微信头像\n2. 在昵称输入框输入昵称`,
+        showCancel: false,
+        confirmText: '知道了'
+      });
+    } else {
+      wx.showModal({
+        title: '微信登录',
+        content: '是否要使用微信登录获取用户信息？\n\n登录后可以：\n1. 自动获取微信头像和昵称\n2. 享受个性化服务\n3. 数据云端同步',
+        confirmText: '微信登录',
+        cancelText: '手动设置',
+        success: (res) => {
+          if (res.confirm) {
+            this.wechatLogin();
+          } else {
+            this.showManualSetupGuide();
+          }
+        }
+      });
+    }
+  },
+
+  // 显示手动设置指南
+  showManualSetupGuide: function() {
     wx.showModal({
-      title: '微信用户信息设置',
-      content: '根据微信最新政策，请按以下方式设置：\n\n1. 点击头像按钮 → 选择微信头像\n2. 在昵称输入框 → 输入您的昵称\n\n这样就能个性化您的时间赎回器了！',
+      title: '手动设置指南',
+      content: '您可以：\n\n1. 点击头像按钮 → 选择微信头像\n2. 在昵称输入框 → 输入您的昵称\n\n这样就能个性化您的时间赎回器了！',
       showCancel: false,
       confirmText: '知道了'
     });
@@ -90,15 +255,18 @@ Page({
   resetUserInfo: function() {
     wx.showModal({
       title: '重置用户信息',
-      content: '确定要重置头像和昵称吗？',
+      content: '确定要重置头像、昵称和登录状态吗？',
       success: (res) => {
         if (res.confirm) {
           // 清除用户信息
           wx.removeStorageSync('userName');
           wx.removeStorageSync('userAvatarUrl');
+          wx.removeStorageSync('openid');
           
           // 重置为默认值
           this.setData({
+            isLoggedIn: false,
+            openid: '',
             userInfo: {
               ...this.data.userInfo,
               name: '时间管理者',

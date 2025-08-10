@@ -1,0 +1,27 @@
+{
+  "name": "time-redemption-server",
+  "version": "1.0.0",
+  "description": "时间赎回器微信小程序后端服务器",
+  "main": "server-example.js",
+  "scripts": {
+    "start": "node server-example.js",
+    "dev": "nodemon server-example.js"
+  },
+  "keywords": [
+    "微信小程序",
+    "时间管理",
+    "后端服务"
+  ],
+  "author": "时间赎回器开发团队",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+} 
