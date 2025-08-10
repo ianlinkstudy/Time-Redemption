@@ -26,7 +26,7 @@ Page({
 
   onLoad: function() {
     this.loadUserData();
-    this.getWechatUserInfo();
+    this.showWechatLoginGuide();
   },
 
   onShow: function() {
@@ -36,6 +36,83 @@ Page({
     this.checkDataUpdate();
     
     this.loadUserData();
+  },
+
+  // 微信最新的头像选择回调
+  onChooseAvatar: function(e) {
+    console.log('头像选择回调:', e.detail);
+    const { avatarUrl } = e.detail;
+    
+    if (avatarUrl) {
+      // 保存头像到本地存储
+      wx.setStorageSync('userAvatarUrl', avatarUrl);
+      
+      // 更新页面数据
+      this.setData({
+        'userInfo.avatarUrl': avatarUrl
+      });
+      
+      wx.showToast({
+        title: '头像设置成功',
+        icon: 'success'
+      });
+    }
+  },
+
+  // 昵称输入回调
+  onInputNickname: function(e) {
+    const nickName = e.detail.value.trim();
+    
+    if (nickName) {
+      // 保存昵称到本地存储
+      wx.setStorageSync('userName', nickName);
+      
+      // 更新页面数据
+      this.setData({
+        'userInfo.name': nickName
+      });
+      
+      console.log('昵称已更新:', nickName);
+    }
+  },
+
+  // 显示微信登录指南
+  showWechatLoginGuide: function() {
+    wx.showModal({
+      title: '微信用户信息设置',
+      content: '根据微信最新政策，请按以下方式设置：\n\n1. 点击头像按钮 → 选择微信头像\n2. 在昵称输入框 → 输入您的昵称\n\n这样就能个性化您的时间赎回器了！',
+      showCancel: false,
+      confirmText: '知道了'
+    });
+  },
+
+  // 重置用户信息
+  resetUserInfo: function() {
+    wx.showModal({
+      title: '重置用户信息',
+      content: '确定要重置头像和昵称吗？',
+      success: (res) => {
+        if (res.confirm) {
+          // 清除用户信息
+          wx.removeStorageSync('userName');
+          wx.removeStorageSync('userAvatarUrl');
+          
+          // 重置为默认值
+          this.setData({
+            userInfo: {
+              ...this.data.userInfo,
+              name: '时间管理者',
+              avatarUrl: ''
+            }
+          });
+          
+          wx.showToast({
+            title: '重置成功',
+            icon: 'success'
+          });
+        }
+      }
+    });
   },
 
   // 检查数据更新
@@ -143,145 +220,23 @@ Page({
     }
   },
 
-  // 获取微信用户信息
-  getWechatUserInfo: function() {
-    const that = this;
-    
-    // 显示获取用户信息的说明
+  // 修改用户名（保留兼容性）
+  changeUserName: function() {
     wx.showModal({
-      title: '设置用户信息',
-      content: '请选择获取用户信息的方式：\n\n1. 微信登录（推荐）\n2. 手动设置头像和昵称',
-      confirmText: '微信登录',
-      cancelText: '手动设置',
-      success: (res) => {
-        if (res.confirm) {
-          that.wechatLogin();
-        } else {
-          that.showManualSetupGuide();
-        }
-      }
-    });
-  },
-
-  // 尝试获取用户信息
-  tryGetUserInfo: function() {
-    const that = this;
-    
-    // 检查是否支持 getUserProfile
-    if (wx.getUserProfile) {
-      wx.getUserProfile({
-        desc: '用于完善用户资料',
-        success: (res) => {
-          console.log('获取微信用户信息成功:', res.userInfo);
-          const userInfo = res.userInfo;
-          
-          // 保存到本地存储
-          wx.setStorageSync('userName', userInfo.nickName);
-          wx.setStorageSync('userAvatarUrl', userInfo.avatarUrl);
-          
-          // 更新页面数据
-          that.setData({
-            'userInfo.name': userInfo.nickName,
-            'userInfo.avatarUrl': userInfo.avatarUrl
-          });
-          
-          wx.showToast({
-            title: '获取成功',
-            icon: 'success'
-          });
-        },
-        fail: (err) => {
-          console.log('获取微信用户信息失败:', err);
-          that.handleUserInfoFail();
-        }
-      });
-    } else {
-      // 如果不支持 getUserProfile，提示用户手动设置
-      that.handleUserInfoFail();
-    }
-  },
-
-  // 显示手动设置指南
-  showManualSetupGuide: function() {
-    wx.showModal({
-      title: '手动设置指南',
-      content: '您可以：\n\n1. 点击头像 → 从相册选择或拍照\n2. 点击用户名 → 输入您的昵称\n\n这样就能个性化您的时间赎回器了！',
+      title: '修改用户名',
+      content: '请直接在昵称输入框中输入新的用户名',
       showCancel: false,
       confirmText: '知道了'
     });
   },
 
-  // 处理获取用户信息失败
-  handleUserInfoFail: function() {
-    // 如果用户拒绝，使用默认信息
-    const storedName = wx.getStorageSync('userName') || '时间管理者';
-    const storedAvatar = wx.getStorageSync('userAvatarUrl') || '';
-    
-    this.setData({
-      'userInfo.name': storedName,
-      'userInfo.avatarUrl': storedAvatar
-    });
-    
-    wx.showModal({
-      title: '获取失败',
-      content: '由于微信政策调整，无法自动获取头像和昵称。\n\n建议您手动设置：\n• 点击头像选择照片\n• 点击用户名输入昵称',
-      showCancel: false,
-      confirmText: '好的'
-    });
-  },
-
-  // 修改用户名
-  changeUserName: function() {
-    wx.showModal({
-      title: '修改用户名',
-      content: '请输入新的用户名',
-      editable: true,
-      placeholderText: this.data.userInfo.name,
-      success: (res) => {
-        if (res.confirm && res.content.trim()) {
-          const newName = res.content.trim();
-          wx.setStorageSync('userName', newName);
-          this.setData({
-            'userInfo.name': newName
-          });
-          wx.showToast({
-            title: '修改成功',
-            icon: 'success'
-          });
-        }
-      }
-    });
-  },
-
-  // 修改用户头像
+  // 修改用户头像（保留兼容性）
   changeUserAvatar: function() {
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['compressed'],
-      sourceType: ['album', 'camera'],
-      success: (res) => {
-        const tempFilePath = res.tempFilePaths[0];
-        
-        // 保存头像到本地存储
-        wx.setStorageSync('userAvatarUrl', tempFilePath);
-        
-        // 更新页面数据
-        this.setData({
-          'userInfo.avatarUrl': tempFilePath
-        });
-        
-        wx.showToast({
-          title: '头像修改成功',
-          icon: 'success'
-        });
-      },
-      fail: (err) => {
-        console.log('选择头像失败:', err);
-        wx.showToast({
-          title: '选择头像失败',
-          icon: 'error'
-        });
-      }
+    wx.showModal({
+      title: '修改头像',
+      content: '请直接点击头像按钮选择微信头像',
+      showCancel: false,
+      confirmText: '知道了'
     });
   },
 

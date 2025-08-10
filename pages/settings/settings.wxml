@@ -8,16 +8,30 @@
   <!-- 时间管理者卡片 -->
   <view class="user-info-section">
     <view class="user-info-card card-base">
-      <view class="user-avatar" bindtap="changeUserAvatar">
+      <!-- 使用微信最新的头像选择按钮 -->
+      <button 
+        class="avatar-btn" 
+        open-type="chooseAvatar" 
+        bindchooseavatar="onChooseAvatar"
+      >
         <image wx:if="{{userInfo.avatarUrl}}" class="avatar-image" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
         <text wx:else class="avatar-text">{{userInfo.name.charAt(0)}}</text>
-      </view>
+      </button>
+      
       <view class="user-details">
-        <view class="user-name" bindtap="changeUserName">
-          {{userInfo.name}}
-          <text class="edit-icon">✏️</text>
+        <!-- 昵称输入框 -->
+        <view class="nickname-input-section">
+          <input 
+            class="nickname-input"
+            type="text" 
+            placeholder="请输入昵称" 
+            value="{{userInfo.name}}"
+            bindinput="onInputNickname"
+            maxlength="20"
+          />
+          <text class="nickname-hint">点击输入您的昵称</text>
         </view>
-        <view class="avatar-hint">点击头像更换照片</view>
+        
         <view class="user-stats">
           <text class="user-stat">时间价值: ¥{{userInfo.timeValueDisplay}}/小时</text>
           <text class="user-stat">已买回: {{statistics.totalSavedTimeDisplay}}小时</text>
@@ -26,11 +40,11 @@
       </view>
     </view>
     
-    <!-- 个性化设置按钮 -->
+    <!-- 微信登录说明 -->
     <view class="wechat-info-section">
-      <view class="wechat-info-btn card-base" bindtap="getWechatUserInfo">
+      <view class="wechat-info-btn card-base" bindtap="showWechatLoginGuide">
         <view class="wechat-icon">👤</view>
-        <view class="wechat-text">个性化设置头像和昵称</view>
+        <view class="wechat-text">微信用户信息设置说明</view>
         <view class="wechat-arrow">→</view>
       </view>
       

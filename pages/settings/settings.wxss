@@ -51,7 +51,8 @@
   color: #1d1d1f;
 }
 
-.user-avatar {
+/* 微信最新的头像选择按钮样式 */
+.avatar-btn {
   width: 120rpx;
   height: 120rpx;
   border-radius: 60rpx;
@@ -62,12 +63,21 @@
   margin-right: 32rpx;
   position: relative;
   overflow: hidden;
-  box-shadow: none;
   border: none;
   outline: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  filter: none;
+  padding: 0;
+  line-height: 1;
+  box-shadow: 0 4rpx 12rpx rgba(0, 122, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.avatar-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2rpx 8rpx rgba(0, 122, 255, 0.4);
+}
+
+.avatar-btn::after {
+  border: none;
 }
 
 .avatar-image {
@@ -77,9 +87,6 @@
   border: none;
   box-shadow: none;
   background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  filter: none;
 }
 
 .avatar-text {
@@ -88,33 +95,38 @@
   color: white;
 }
 
-
-
 .user-details {
   flex: 1;
 }
 
-.user-name {
+/* 昵称输入框样式 */
+.nickname-input-section {
+  margin-bottom: 16rpx;
+}
+
+.nickname-input {
   font-size: 36rpx;
   font-weight: 600;
   color: #1d1d1f;
-  margin-bottom: 16rpx;
-  display: flex;
-  align-items: center;
+  padding: 12rpx 0;
+  border: none;
+  background: transparent;
+  width: 100%;
+  box-sizing: border-box;
   letter-spacing: -0.2rpx;
 }
 
-.edit-icon {
-  font-size: 24rpx;
-  margin-left: 12rpx;
-  opacity: 0.6;
+.nickname-input::placeholder {
+  color: #86868b;
+  font-weight: 400;
 }
 
-.avatar-hint {
+.nickname-hint {
   font-size: 22rpx;
   color: #007aff;
-  margin-bottom: 16rpx;
   opacity: 0.8;
+  margin-top: 4rpx;
+  display: block;
 }
 
 .user-stats {
@@ -374,8 +386,12 @@
     text-align: center;
   }
   
-  .user-avatar {
+  .avatar-btn {
     margin-right: 0;
     margin-bottom: 24rpx;
+  }
+  
+  .nickname-input {
+    text-align: center;
   }
 } 
