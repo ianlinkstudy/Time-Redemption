@@ -43,12 +43,40 @@ Page({
     this.loadUserData();
   },
 
+  // 验证文件路径是否有效
+  isValidFilePath: function(filePath) {
+    if (!filePath) return false;
+    
+    // 检查是否是本地文件路径
+    if (filePath.startsWith(wx.env.USER_DATA_PATH)) {
+      return true;
+    }
+    
+    // 检查是否是HTTPS路径
+    if (filePath.startsWith('https://')) {
+      return true;
+    }
+    
+    // 检查是否是微信小程序内部路径
+    if (filePath.startsWith('wx://') || filePath.startsWith('wxfile://')) {
+      return true;
+    }
+    
+    // 其他路径都认为是无效的
+    return false;
+  },
+
   // 清理临时文件路径
   cleanTempAvatarPath: function() {
     const avatarUrl = wx.getStorageSync('userAvatarUrl');
     
-    if (avatarUrl && avatarUrl.startsWith('http://tmp/')) {
-      console.log('清理临时文件路径:', avatarUrl);
+    // 检查所有不支持的HTTP协议路径
+    if (avatarUrl && (
+      avatarUrl.startsWith('http://tmp/') || 
+      avatarUrl.startsWith('http://store/') ||
+      avatarUrl.startsWith('http://')
+    )) {
+      console.log('清理不支持的HTTP协议路径:', avatarUrl);
       wx.removeStorageSync('userAvatarUrl');
       
       // 更新页面数据
@@ -97,7 +125,7 @@ Page({
   clearLoginStatus: function() {
     // 清理头像文件
     const avatarUrl = wx.getStorageSync('userAvatarUrl');
-    if (avatarUrl && !avatarUrl.startsWith('http://tmp/')) {
+    if (avatarUrl && !avatarUrl.startsWith('http://')) {
       // 删除本地头像文件
       wx.removeSavedFile({
         filePath: avatarUrl,
@@ -536,10 +564,10 @@ Page({
       // 获取用户头像，处理本地文件路径
       let avatarUrl = wx.getStorageSync('userAvatarUrl') || '';
       
-      // 如果是临时文件路径，尝试转换为本地路径
-      if (avatarUrl && avatarUrl.startsWith('http://tmp/')) {
-        console.log('检测到临时文件路径，尝试转换:', avatarUrl);
-        // 这里可以添加文件转换逻辑，暂时使用空字符串
+      // 验证文件路径是否有效
+      if (avatarUrl && !this.isValidFilePath(avatarUrl)) {
+        console.log('检测到无效的文件路径，清理:', avatarUrl);
+        wx.removeStorageSync('userAvatarUrl');
         avatarUrl = '';
       }
       
