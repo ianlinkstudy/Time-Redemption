@@ -34,8 +34,10 @@
         
         <!-- 登录状态显示 -->
         <view class="login-status">
-          <text wx:if="{{isLoggedIn}}" class="login-status-text login-success">✅ 已登录微信</text>
-          <text wx:else class="login-status-text login-pending">⏳ 未登录微信</text>
+          <text wx:if="{{isLoggedIn}}" class="login-status-text login-success">
+            {{isMockLogin ? '✅ 模拟登录' : '✅ 微信登录'}}
+          </text>
+          <text wx:else class="login-status-text login-pending">⏳ 未登录</text>
         </view>
         
         <view class="user-stats">
