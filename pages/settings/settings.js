@@ -43,6 +43,21 @@ Page({
     this.loadUserData();
   },
 
+  // 清理临时文件路径
+  cleanTempAvatarPath: function() {
+    const avatarUrl = wx.getStorageSync('userAvatarUrl');
+    
+    if (avatarUrl && avatarUrl.startsWith('http://tmp/')) {
+      console.log('清理临时文件路径:', avatarUrl);
+      wx.removeStorageSync('userAvatarUrl');
+      
+      // 更新页面数据
+      this.setData({
+        'userInfo.avatarUrl': ''
+      });
+    }
+  },
+
   // 检查登录状态
   checkLoginStatus: function() {
     const openid = wx.getStorageSync('openid');
@@ -61,6 +76,9 @@ Page({
       return;
     }
     
+    // 清理临时文件路径
+    this.cleanTempAvatarPath();
+    
     this.setData({
       isLoggedIn: isLoggedIn,
       openid: openid || '',
@@ -77,6 +95,22 @@ Page({
 
   // 清除登录状态
   clearLoginStatus: function() {
+    // 清理头像文件
+    const avatarUrl = wx.getStorageSync('userAvatarUrl');
+    if (avatarUrl && !avatarUrl.startsWith('http://tmp/')) {
+      // 删除本地头像文件
+      wx.removeSavedFile({
+        filePath: avatarUrl,
+        success: function() {
+          console.log('头像文件已删除');
+        },
+        fail: function(err) {
+          console.log('删除头像文件失败:', err);
+        }
+      });
+    }
+    
+    // 清除存储数据
     wx.removeStorageSync('openid');
     wx.removeStorageSync('userName');
     wx.removeStorageSync('userAvatarUrl');
@@ -299,19 +333,60 @@ Page({
     const { avatarUrl } = e.detail;
     
     if (avatarUrl) {
-      // 保存头像到本地存储
-      wx.setStorageSync('userAvatarUrl', avatarUrl);
-      
-      // 更新页面数据
-      this.setData({
-        'userInfo.avatarUrl': avatarUrl
-      });
-      
-      wx.showToast({
-        title: '头像设置成功',
-        icon: 'success'
-      });
+      // 将临时文件保存到本地文件系统
+      this.saveAvatarToLocal(avatarUrl);
     }
+  },
+
+  // 保存头像到本地文件系统
+  saveAvatarToLocal: function(tempFilePath) {
+    const that = this;
+    
+    wx.showLoading({
+      title: '保存头像中...'
+    });
+    
+    // 生成唯一的文件名
+    const fileName = 'avatar_' + Date.now() + '.jpg';
+    const savedFilePath = `${wx.env.USER_DATA_PATH}/${fileName}`;
+    
+    // 将临时文件复制到本地
+    wx.saveFile({
+      tempFilePath: tempFilePath,
+      success: function(res) {
+        wx.hideLoading();
+        console.log('头像保存成功:', res.savedFilePath);
+        
+        // 保存头像路径到本地存储
+        wx.setStorageSync('userAvatarUrl', res.savedFilePath);
+        
+        // 更新页面数据
+        that.setData({
+          'userInfo.avatarUrl': res.savedFilePath
+        });
+        
+        wx.showToast({
+          title: '头像设置成功',
+          icon: 'success'
+        });
+      },
+      fail: function(err) {
+        wx.hideLoading();
+        console.log('头像保存失败:', err);
+        
+        // 如果保存失败，直接使用临时路径
+        wx.setStorageSync('userAvatarUrl', tempFilePath);
+        
+        that.setData({
+          'userInfo.avatarUrl': tempFilePath
+        });
+        
+        wx.showToast({
+          title: '头像设置成功',
+          icon: 'success'
+        });
+      }
+    });
   },
 
   // 昵称输入回调
@@ -458,10 +533,20 @@ Page({
       const totalSavedTimeDisplay = finalSavedTime > 0 ? finalSavedTime.toFixed(1) : '0.0';
       const equivalentValueDisplay = equivalentValue > 0 ? Math.round(equivalentValue).toString() : '0';
       
+      // 获取用户头像，处理本地文件路径
+      let avatarUrl = wx.getStorageSync('userAvatarUrl') || '';
+      
+      // 如果是临时文件路径，尝试转换为本地路径
+      if (avatarUrl && avatarUrl.startsWith('http://tmp/')) {
+        console.log('检测到临时文件路径，尝试转换:', avatarUrl);
+        // 这里可以添加文件转换逻辑，暂时使用空字符串
+        avatarUrl = '';
+      }
+      
       this.setData({
         userInfo: {
           name: wx.getStorageSync('userName') || '时间管理者',
-          avatarUrl: wx.getStorageSync('userAvatarUrl') || '',
+          avatarUrl: avatarUrl,
           timeValue: timeValue,
           timeValueDisplay: timeValueDisplay
         },

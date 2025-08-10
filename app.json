@@ -44,11 +44,6 @@
   "style": "v2",
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents",
-  "permission": {
-    "scope.userInfo": {
-      "desc": "用于完善用户资料"
-    }
-  },
   "requiredBackgroundModes": ["audio"],
   "plugins": {}
 }
