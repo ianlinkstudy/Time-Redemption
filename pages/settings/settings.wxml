@@ -51,7 +51,7 @@
       <!-- 微信登录按钮 -->
       <view wx:if="{{!isLoggedIn}}" class="wechat-login-btn card-base" bindtap="wechatLogin">
         <view class="wechat-icon">🔗</view>
-        <view class="wechat-text">微信登录获取用户信息</view>
+        <view class="wechat-text">模拟微信登录</view>
         <view class="wechat-arrow">→</view>
       </view>
       

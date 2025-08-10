@@ -67,89 +67,52 @@ Page({
       title: '登录中...'
     });
     
-    wx.login({
-      success: function(res) {
-        console.log('wx.login 成功:', res);
-        
-        if (res.code) {
-          // 发送code到后端服务器
-          that.sendCodeToServer(res.code);
-        } else {
-          wx.hideLoading();
-          wx.showToast({
-            title: '登录失败',
-            icon: 'error'
-          });
-        }
-      },
-      fail: function(err) {
-        console.log('wx.login 失败:', err);
-        wx.hideLoading();
-        wx.showToast({
-          title: '登录失败',
-          icon: 'error'
-        });
-      }
-    });
+    // 模拟登录过程
+    setTimeout(() => {
+      wx.hideLoading();
+      
+      // 生成模拟的openid
+      const mockOpenid = 'mock_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      
+      // 使用默认用户信息
+      const userInfo = {
+        nickName: '微信用户',
+        avatarUrl: ''
+      };
+      
+      // 保存到本地存储
+      wx.setStorageSync('openid', mockOpenid);
+      wx.setStorageSync('userName', userInfo.nickName);
+      wx.setStorageSync('userAvatarUrl', userInfo.avatarUrl);
+      
+      // 更新页面数据
+      this.setData({
+        isLoggedIn: true,
+        openid: mockOpenid,
+        'userInfo.name': userInfo.nickName,
+        'userInfo.avatarUrl': userInfo.avatarUrl
+      });
+      
+      wx.showToast({
+        title: '登录成功',
+        icon: 'success'
+      });
+      
+      // 显示登录成功提示
+      wx.showModal({
+        title: '登录成功',
+        content: '您已成功登录！\n\n现在可以：\n1. 点击头像按钮选择微信头像\n2. 在昵称输入框输入您的昵称\n\n这样就能个性化您的时间赎回器了！',
+        showCancel: false,
+        confirmText: '知道了'
+      });
+      
+    }, 1500); // 模拟网络延迟
   },
 
-  // 发送code到后端服务器
+  // 模拟登录处理（已集成到wechatLogin中）
   sendCodeToServer: function(code) {
-    const that = this;
-    
-    // 这里需要替换为您的后端服务器地址
-    const serverUrl = 'https://your-server.com/api/login';
-    
-    wx.request({
-      url: serverUrl,
-      method: 'POST',
-      data: {
-        code: code
-      },
-      header: {
-        'content-type': 'application/json'
-      },
-      success: function(res) {
-        wx.hideLoading();
-        console.log('服务器响应:', res.data);
-        
-        if (res.data.success) {
-          // 保存用户信息
-          const userInfo = res.data.userInfo;
-          const openid = res.data.openid;
-          
-          // 保存到本地存储
-          wx.setStorageSync('openid', openid);
-          wx.setStorageSync('userName', userInfo.nickName);
-          wx.setStorageSync('userAvatarUrl', userInfo.avatarUrl);
-          
-          // 更新页面数据
-          that.setData({
-            isLoggedIn: true,
-            openid: openid,
-            'userInfo.name': userInfo.nickName,
-            'userInfo.avatarUrl': userInfo.avatarUrl
-          });
-          
-          wx.showToast({
-            title: '登录成功',
-            icon: 'success'
-          });
-        } else {
-          wx.showToast({
-            title: res.data.message || '登录失败',
-            icon: 'error'
-          });
-        }
-      },
-      fail: function(err) {
-        wx.hideLoading();
-        console.log('请求服务器失败:', err);
-        
-        // 如果后端服务器不可用，使用模拟数据
-        that.useMockUserInfo();
-      }
-    });
+    // 此方法已不再使用，保留用于兼容性
+    console.log('模拟登录处理:', code);
   },
 
   // 使用模拟用户信息（当后端不可用时）
@@ -226,9 +189,9 @@ Page({
       });
     } else {
       wx.showModal({
-        title: '微信登录',
-        content: '是否要使用微信登录获取用户信息？\n\n登录后可以：\n1. 自动获取微信头像和昵称\n2. 享受个性化服务\n3. 数据云端同步',
-        confirmText: '微信登录',
+        title: '模拟微信登录',
+        content: '是否要进行模拟登录？\n\n登录后可以：\n1. 设置个性化头像和昵称\n2. 享受完整功能体验\n3. 数据本地保存',
+        confirmText: '开始登录',
         cancelText: '手动设置',
         success: (res) => {
           if (res.confirm) {
