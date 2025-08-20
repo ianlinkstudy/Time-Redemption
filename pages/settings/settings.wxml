@@ -71,6 +71,28 @@
         <view class="logout-arrow">→</view>
       </view>
       
+      <!-- 手机号获取按钮 -->
+      <view wx:if="{{isLoggedIn}}" class="phone-section card-base">
+        <button 
+          class="phone-btn" 
+          open-type="getPhoneNumber" 
+          bindgetphonenumber="getPhoneNumber">
+          <view class="phone-icon">📱</view>
+          <view class="phone-text">获取手机号</view>
+        </button>
+        <text wx:if="{{phoneNumber}}" class="phone-display">{{phoneNumber}}</text>
+      </view>
+      
+      <!-- 完成设置按钮 -->
+      <view wx:if="{{isLoggedIn}}" class="complete-section card-base">
+        <button 
+          class="complete-btn" 
+          bindtap="checkUserInfoComplete">
+          <view class="complete-icon">✅</view>
+          <view class="complete-text">完成设置</view>
+        </button>
+      </view>
+      
     </view>
   </view>
 
