@@ -72,6 +72,16 @@ Page({
       return true;
     }
     
+    // 检查是否是微信小程序临时文件路径（需要转换）
+    if (filePath.startsWith('http://tmp/') || filePath.startsWith('http://store/')) {
+      return false; // 这些路径需要转换
+    }
+    
+    // 检查是否是其他HTTP路径
+    if (filePath.startsWith('http://')) {
+      return false; // HTTP路径不支持
+    }
+    
     // 其他路径都认为是无效的
     return false;
   },
@@ -92,6 +102,12 @@ Page({
       // 更新页面数据
       this.setData({
         'userInfo.avatarUrl': ''
+      });
+      
+      // 显示提示
+      wx.showToast({
+        title: '头像路径已清理',
+        icon: 'none'
       });
     }
   },
@@ -136,8 +152,9 @@ Page({
     // 清理头像文件
     const avatarUrl = wx.getStorageSync('userAvatarUrl');
     if (avatarUrl && !avatarUrl.startsWith('http://')) {
-      // 删除本地头像文件
-      wx.removeSavedFile({
+      // 使用新的文件系统API删除本地头像文件
+      const fileManager = wx.getFileSystemManager();
+      fileManager.removeSavedFile({
         filePath: avatarUrl,
         success: function() {
           console.log('头像文件已删除');
@@ -370,9 +387,21 @@ Page({
     console.log('头像选择回调:', e.detail);
     const { avatarUrl } = e.detail;
     
+    // 检查是否是用户取消
+    if (e.detail.errMsg && e.detail.errMsg.includes('cancel')) {
+      console.log('用户取消选择头像');
+      return;
+    }
+    
     if (avatarUrl) {
       // 将临时文件保存到本地文件系统
       this.saveAvatarToLocal(avatarUrl);
+    } else {
+      console.log('未获取到头像URL');
+      wx.showToast({
+        title: '选择头像失败',
+        icon: 'error'
+      });
     }
   },
 
@@ -384,13 +413,17 @@ Page({
       title: '保存头像中...'
     });
     
+    // 使用新的文件系统API替代wx.saveFile
+    const fileManager = wx.getFileSystemManager();
+    
     // 生成唯一的文件名
     const fileName = 'avatar_' + Date.now() + '.jpg';
     const savedFilePath = `${wx.env.USER_DATA_PATH}/${fileName}`;
     
     // 将临时文件复制到本地
-    wx.saveFile({
+    fileManager.saveFile({
       tempFilePath: tempFilePath,
+      filePath: savedFilePath,
       success: function(res) {
         wx.hideLoading();
         console.log('头像保存成功:', res.savedFilePath);
@@ -412,17 +445,30 @@ Page({
         wx.hideLoading();
         console.log('头像保存失败:', err);
         
-        // 如果保存失败，直接使用临时路径
-        wx.setStorageSync('userAvatarUrl', tempFilePath);
+        // 如果保存失败，检查是否是用户取消
+        if (err.errMsg && err.errMsg.includes('cancel')) {
+          console.log('用户取消选择头像');
+          return;
+        }
         
-        that.setData({
-          'userInfo.avatarUrl': tempFilePath
-        });
-        
-        wx.showToast({
-          title: '头像设置成功',
-          icon: 'success'
-        });
+        // 如果保存失败，尝试直接使用临时路径（但需要处理HTTP协议问题）
+        if (tempFilePath && !tempFilePath.startsWith('http://')) {
+          wx.setStorageSync('userAvatarUrl', tempFilePath);
+          
+          that.setData({
+            'userInfo.avatarUrl': tempFilePath
+          });
+          
+          wx.showToast({
+            title: '头像设置成功',
+            icon: 'success'
+          });
+        } else {
+          wx.showToast({
+            title: '头像设置失败',
+            icon: 'error'
+          });
+        }
       }
     });
   },
