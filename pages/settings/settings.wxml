@@ -50,17 +50,10 @@
     
     <!-- 微信登录和设置按钮 -->
     <view class="wechat-info-section">
-      <!-- 一键登录按钮 -->
-      <view wx:if="{{!isLoggedIn}}" class="one-click-login-btn card-base" bindtap="oneClickLogin">
-        <view class="login-icon">🚀</view>
-        <view class="login-text">一键登录</view>
-        <view class="login-arrow">→</view>
-      </view>
-      
-      <!-- 微信登录按钮 -->
-      <view wx:if="{{!isLoggedIn}}" class="wechat-login-btn card-base" bindtap="wechatLogin">
-        <view class="wechat-icon">🔗</view>
-        <view class="wechat-text">微信登录获取用户信息</view>
+      <!-- 微信快捷登录按钮 -->
+      <view wx:if="{{!isLoggedIn}}" class="wechat-quick-login-btn card-base" bindtap="wechatQuickLogin">
+        <view class="wechat-icon">🚀</view>
+        <view class="wechat-text">微信账号快捷登录</view>
         <view class="wechat-arrow">→</view>
       </view>
       
@@ -81,34 +74,7 @@
     </view>
   </view>
 
-  <!-- 手机号获取弹窗 -->
-  <view wx:if="{{showPhoneModal}}" class="phone-modal-overlay" bindtap="hidePhoneModal">
-    <view class="phone-modal" catchtap="stopPropagation">
-      <view class="phone-modal-header">
-        <text class="phone-modal-title">完善用户信息</text>
-        <text class="phone-modal-close" bindtap="hidePhoneModal">×</text>
-      </view>
-      
-      <view class="phone-modal-content">
-        <text class="phone-modal-desc">为了提供更好的服务，请授权获取您的手机号</text>
-        
-        <button 
-          class="phone-btn" 
-          open-type="getPhoneNumber" 
-          bindgetphonenumber="getPhoneNumber"
-        >
-          <view class="phone-btn-icon">📱</view>
-          <view class="phone-btn-text">获取手机号</view>
-        </button>
-        
-        <view class="phone-modal-tips">
-          <text class="tips-text">• 手机号仅用于身份验证</text>
-          <text class="tips-text">• 不会用于其他用途</text>
-          <text class="tips-text">• 可以随时取消授权</text>
-        </view>
-      </view>
-    </view>
-  </view>
+
 
 
   <!-- 使用帮助 -->

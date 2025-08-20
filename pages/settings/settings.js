@@ -28,8 +28,7 @@ Page({
     openid: '',
     isMockLogin: false,
     
-    // 一键登录相关
-    showPhoneModal: false,
+    // 登录相关
     phoneNumber: '',
     sessionKey: ''
   },
@@ -186,21 +185,21 @@ Page({
     console.log('登录状态已清除');
   },
 
-  // 微信登录
-  wechatLogin: function() {
+  // 微信快捷登录（根据官方文档实现）
+  wechatQuickLogin: function() {
     const that = this;
     
     wx.showLoading({
       title: '登录中...'
     });
     
-    // 第一步：调用 wx.login() 获取临时登录凭证
+    // 第一步：调用 wx.login 获取临时登录凭证
     wx.login({
       success: function(res) {
         console.log('wx.login 成功:', res);
         
         if (res.code) {
-          // 第二步：将 code 发送到开发者服务器
+          // 第二步：发送 code 到后台换取 openid 和 session_key
           that.sendCodeToServer(res.code);
         } else {
           wx.hideLoading();
@@ -221,12 +220,11 @@ Page({
     });
   },
 
-  // 发送code到开发者服务器
+  // 发送code到后台服务器
   sendCodeToServer: function(code) {
     const that = this;
     
     // 这里需要替换为您的真实服务器地址
-    // 注意：需要在微信开发者工具中配置合法域名
     const serverUrl = 'https://your-server.com/api/login';
     
     wx.request({
@@ -243,37 +241,19 @@ Page({
         console.log('服务器响应:', res.data);
         
         if (res.data.success) {
-          // 保存用户信息
-          const userInfo = res.data.userInfo;
-          const openid = res.data.openid;
-          const sessionKey = res.data.sessionKey; // 注意：session_key不应该下发到小程序
+          // 保存 openid 和 session_key
+          wx.setStorageSync('openid', res.data.openid);
+          wx.setStorageSync('session_key', res.data.session_key);
           
-          // 保存到本地存储（不保存session_key）
-          wx.setStorageSync('openid', openid);
-          wx.setStorageSync('userName', userInfo.nickName);
-          wx.setStorageSync('userAvatarUrl', userInfo.avatarUrl);
-          wx.setStorageSync('loginTime', Date.now());
-          
-          // 更新页面数据
+          // 保存到页面数据
           that.setData({
             isLoggedIn: true,
-            openid: openid,
-            'userInfo.name': userInfo.nickName,
-            'userInfo.avatarUrl': userInfo.avatarUrl
+            openid: res.data.openid,
+            sessionKey: res.data.session_key
           });
           
-          wx.showToast({
-            title: '登录成功',
-            icon: 'success'
-          });
-          
-          // 显示登录成功提示
-          wx.showModal({
-            title: '微信登录成功',
-            content: `登录成功！\n\n用户标识：${openid.substring(0, 8)}...\n\n现在可以：\n1. 点击头像按钮选择微信头像\n2. 在昵称输入框输入您的昵称\n\n这样就能个性化您的时间赎回器了！`,
-            showCancel: false,
-            confirmText: '知道了'
-          });
+          // 第三步：获取用户信息（使用最新API）
+          that.getUserInfo();
           
         } else {
           wx.showToast({
@@ -289,6 +269,184 @@ Page({
         // 如果服务器不可用，使用模拟登录
         that.useMockLogin();
       }
+    });
+  },
+
+  // 获取用户信息（使用微信最新API）
+  getUserInfo: function() {
+    const that = this;
+    
+    // 使用微信最新的用户信息获取方式
+    // 根据官方文档，现在需要通过 button 组件的 open-type 来获取
+    wx.showModal({
+      title: '获取用户信息',
+      content: '请点击头像按钮选择微信头像，并在昵称输入框中输入您的昵称',
+      showCancel: false,
+      confirmText: '知道了',
+      success: function() {
+        // 显示用户信息设置界面
+        that.showUserInfoSetup();
+      }
+    });
+  },
+
+  // 显示用户信息设置界面
+  showUserInfoSetup: function() {
+    wx.showModal({
+      title: '设置用户信息',
+      content: '请按以下步骤设置：\n\n1. 点击头像按钮选择微信头像\n2. 在昵称输入框输入您的昵称\n3. 点击"获取手机号"按钮（可选）',
+      showCancel: false,
+      confirmText: '开始设置'
+    });
+  },
+
+  // 微信最新的头像选择回调
+  onChooseAvatar: function(e) {
+    console.log('头像选择回调:', e.detail);
+    const { avatarUrl } = e.detail;
+    
+    // 检查是否是用户取消
+    if (e.detail.errMsg && e.detail.errMsg.includes('cancel')) {
+      console.log('用户取消选择头像');
+      return;
+    }
+    
+    if (avatarUrl) {
+      // 将临时文件保存到本地文件系统
+      this.saveAvatarToLocal(avatarUrl);
+    } else {
+      console.log('未获取到头像URL');
+      wx.showToast({
+        title: '选择头像失败',
+        icon: 'error'
+      });
+    }
+  },
+
+  // 昵称输入回调
+  onInputNickname: function(e) {
+    const nickName = e.detail.value.trim();
+    
+    if (nickName) {
+      // 保存昵称到本地存储
+      wx.setStorageSync('userName', nickName);
+      
+      // 更新页面数据
+      this.setData({
+        'userInfo.name': nickName
+      });
+      
+      console.log('昵称已更新:', nickName);
+      
+      // 检查是否已完成基本信息设置
+      this.checkUserInfoComplete();
+    }
+  },
+
+  // 检查用户信息是否完整
+  checkUserInfoComplete: function() {
+    const userName = wx.getStorageSync('userName');
+    const userAvatarUrl = wx.getStorageSync('userAvatarUrl');
+    
+    if (userName && userAvatarUrl) {
+      wx.showToast({
+        title: '用户信息设置完成',
+        icon: 'success'
+      });
+      
+      // 可以选择是否获取手机号
+      this.showPhoneNumberOption();
+    }
+  },
+
+  // 显示手机号获取选项
+  showPhoneNumberOption: function() {
+    wx.showModal({
+      title: '完善信息',
+      content: '是否要获取手机号以完善用户信息？\n\n手机号将用于：\n• 身份验证\n• 账号安全\n• 个性化服务',
+      confirmText: '获取手机号',
+      cancelText: '暂不获取',
+      success: (res) => {
+        if (res.confirm) {
+          this.getPhoneNumber();
+        } else {
+          this.onLoginComplete();
+        }
+      }
+    });
+  },
+
+  // 获取手机号
+  getPhoneNumber: function(e) {
+    const that = this;
+    
+    if (e && e.detail.errMsg === "getPhoneNumber:ok") {
+      wx.showLoading({
+        title: '获取手机号中...'
+      });
+      
+      // 发送到解密接口
+      wx.request({
+        url: 'https://your-server.com/api/decrypt-phone',
+        method: 'POST',
+        data: {
+          encryptedData: e.detail.encryptedData,
+          iv: e.detail.iv,
+          session_key: this.data.sessionKey
+        },
+        success: function(res) {
+          wx.hideLoading();
+          
+          if (res.data.success) {
+            // 保存手机号
+            wx.setStorageSync('phoneNumber', res.data.phoneNumber);
+            
+            // 更新页面数据
+            that.setData({
+              phoneNumber: res.data.phoneNumber
+            });
+            
+            that.onLoginComplete();
+            
+          } else {
+            wx.showToast({
+              title: '获取手机号失败',
+              icon: 'error'
+            });
+          }
+        },
+        fail: function(err) {
+          wx.hideLoading();
+          console.log('获取手机号失败:', err);
+          
+          wx.showToast({
+            title: '获取手机号失败',
+            icon: 'error'
+          });
+        }
+      });
+    } else {
+      console.log('用户拒绝授权手机号');
+      this.onLoginComplete();
+    }
+  },
+
+  // 登录完成处理
+  onLoginComplete: function() {
+    const userName = wx.getStorageSync('userName');
+    const phoneNumber = wx.getStorageSync('phoneNumber');
+    
+    let content = `欢迎使用时间赎回器！\n\n用户信息：${userName}`;
+    if (phoneNumber) {
+      content += `\n手机号：${phoneNumber}`;
+    }
+    content += '\n\n现在可以享受完整的个性化服务了！';
+    
+    wx.showModal({
+      title: '登录成功',
+      content: content,
+      showCancel: false,
+      confirmText: '知道了'
     });
   },
 
@@ -382,29 +540,6 @@ Page({
     });
   },
 
-  // 微信最新的头像选择回调
-  onChooseAvatar: function(e) {
-    console.log('头像选择回调:', e.detail);
-    const { avatarUrl } = e.detail;
-    
-    // 检查是否是用户取消
-    if (e.detail.errMsg && e.detail.errMsg.includes('cancel')) {
-      console.log('用户取消选择头像');
-      return;
-    }
-    
-    if (avatarUrl) {
-      // 将临时文件保存到本地文件系统
-      this.saveAvatarToLocal(avatarUrl);
-    } else {
-      console.log('未获取到头像URL');
-      wx.showToast({
-        title: '选择头像失败',
-        icon: 'error'
-      });
-    }
-  },
-
   // 保存头像到本地文件系统
   saveAvatarToLocal: function(tempFilePath) {
     const that = this;
@@ -473,23 +608,6 @@ Page({
     });
   },
 
-  // 昵称输入回调
-  onInputNickname: function(e) {
-    const nickName = e.detail.value.trim();
-    
-    if (nickName) {
-      // 保存昵称到本地存储
-      wx.setStorageSync('userName', nickName);
-      
-      // 更新页面数据
-      this.setData({
-        'userInfo.name': nickName
-      });
-      
-      console.log('昵称已更新:', nickName);
-    }
-  },
-
   // 显示微信登录指南
   showWechatLoginGuide: function() {
     if (this.data.isLoggedIn) {
@@ -504,15 +622,13 @@ Page({
       });
     } else {
       wx.showModal({
-        title: '登录方式说明',
-        content: '提供两种登录方式：\n\n🚀 一键登录：\n• 自动获取用户信息\n• 获取手机号\n• 完整的登录流程\n\n🔗 微信登录：\n• 获取用户标识\n• 手动设置头像昵称\n• 服务器不可用时自动降级',
-        confirmText: '一键登录',
-        cancelText: '微信登录',
+        title: '微信快捷登录说明',
+        content: '微信快捷登录流程：\n\n1. 点击"微信账号快捷登录"按钮\n2. 自动获取用户标识(openid)\n3. 手动设置头像和昵称\n4. 可选择获取手机号\n\n符合微信最新登录规范！',
+        confirmText: '开始登录',
+        cancelText: '取消',
         success: (res) => {
           if (res.confirm) {
-            this.oneClickLogin();
-          } else {
-            this.wechatLogin();
+            this.wechatQuickLogin();
           }
         }
       });
@@ -1033,8 +1149,8 @@ Page({
             sessionKey: res.data.session_key
           });
           
-          // 第三步：获取用户信息
-          that.getUserProfile();
+          // 第三步：获取用户信息（使用最新API）
+          that.getUserInfo();
           
         } else {
           wx.showToast({
@@ -1053,63 +1169,115 @@ Page({
     });
   },
 
-  // 获取用户信息
-  getUserProfile: function() {
+  // 获取用户信息（使用微信最新API）
+  getUserInfo: function() {
     const that = this;
     
-    wx.getUserProfile({
-      desc: '用于完善会员资料',
-      success: function(res) {
-        console.log('获取用户信息成功:', res.userInfo);
-        
-        // 保存用户信息
-        wx.setStorageSync('userInfo', res.userInfo);
-        
-        // 更新页面数据
-        that.setData({
-          userInfo: {
-            ...that.data.userInfo,
-            name: res.userInfo.nickName,
-            avatarUrl: res.userInfo.avatarUrl
-          }
-        });
-        
-        // 显示获取手机号的弹窗
-        that.showPhoneModal();
-        
-        wx.showToast({
-          title: '用户信息获取成功',
-          icon: 'success'
-        });
-      },
-      fail: function(err) {
-        console.log('获取用户信息失败:', err);
-        
-        // 如果获取用户信息失败，仍然可以继续
-        that.showPhoneModal();
+    // 使用微信最新的用户信息获取方式
+    // 根据官方文档，现在需要通过 button 组件的 open-type 来获取
+    wx.showModal({
+      title: '获取用户信息',
+      content: '请点击头像按钮选择微信头像，并在昵称输入框中输入您的昵称',
+      showCancel: false,
+      confirmText: '知道了',
+      success: function() {
+        // 显示用户信息设置界面
+        that.showUserInfoSetup();
       }
     });
   },
 
-  // 显示手机号获取弹窗
-  showPhoneModal: function() {
-    this.setData({
-      showPhoneModal: true
+  // 显示用户信息设置界面
+  showUserInfoSetup: function() {
+    wx.showModal({
+      title: '设置用户信息',
+      content: '请按以下步骤设置：\n\n1. 点击头像按钮选择微信头像\n2. 在昵称输入框输入您的昵称\n3. 点击"获取手机号"按钮（可选）',
+      showCancel: false,
+      confirmText: '开始设置'
     });
   },
 
-  // 隐藏手机号获取弹窗
-  hidePhoneModal: function() {
-    this.setData({
-      showPhoneModal: false
+  // 微信最新的头像选择回调
+  onChooseAvatar: function(e) {
+    console.log('头像选择回调:', e.detail);
+    const { avatarUrl } = e.detail;
+    
+    // 检查是否是用户取消
+    if (e.detail.errMsg && e.detail.errMsg.includes('cancel')) {
+      console.log('用户取消选择头像');
+      return;
+    }
+    
+    if (avatarUrl) {
+      // 将临时文件保存到本地文件系统
+      this.saveAvatarToLocal(avatarUrl);
+    } else {
+      console.log('未获取到头像URL');
+      wx.showToast({
+        title: '选择头像失败',
+        icon: 'error'
+      });
+    }
+  },
+
+  // 昵称输入回调
+  onInputNickname: function(e) {
+    const nickName = e.detail.value.trim();
+    
+    if (nickName) {
+      // 保存昵称到本地存储
+      wx.setStorageSync('userName', nickName);
+      
+      // 更新页面数据
+      this.setData({
+        'userInfo.name': nickName
+      });
+      
+      console.log('昵称已更新:', nickName);
+      
+      // 检查是否已完成基本信息设置
+      this.checkUserInfoComplete();
+    }
+  },
+
+  // 检查用户信息是否完整
+  checkUserInfoComplete: function() {
+    const userName = wx.getStorageSync('userName');
+    const userAvatarUrl = wx.getStorageSync('userAvatarUrl');
+    
+    if (userName && userAvatarUrl) {
+      wx.showToast({
+        title: '用户信息设置完成',
+        icon: 'success'
+      });
+      
+      // 可以选择是否获取手机号
+      this.showPhoneNumberOption();
+    }
+  },
+
+  // 显示手机号获取选项
+  showPhoneNumberOption: function() {
+    wx.showModal({
+      title: '完善信息',
+      content: '是否要获取手机号以完善用户信息？\n\n手机号将用于：\n• 身份验证\n• 账号安全\n• 个性化服务',
+      confirmText: '获取手机号',
+      cancelText: '暂不获取',
+      success: (res) => {
+        if (res.confirm) {
+          this.getPhoneNumber();
+        } else {
+          this.onLoginComplete();
+        }
+      }
     });
   },
 
-  // 获取用户手机号
+  // 获取手机号
   getPhoneNumber: function(e) {
     const that = this;
     
-    if (e.detail.errMsg === "getPhoneNumber:ok") {
+    if (e && e.detail.errMsg === "getPhoneNumber:ok") {
       wx.showLoading({
         title: '获取手机号中...'
       });
@@ -1132,12 +1300,10 @@ Page({
             
             // 更新页面数据
             that.setData({
-              phoneNumber: res.data.phoneNumber,
-              showPhoneModal: false
+              phoneNumber: res.data.phoneNumber
             });
             
-            // 登录成功后的处理
-            that.onLoginSuccess(res.data.phoneNumber);
+            that.onLoginComplete();
             
           } else {
             wx.showToast({
@@ -1158,15 +1324,24 @@ Page({
       });
     } else {
       console.log('用户拒绝授权手机号');
-      this.hidePhoneModal();
+      this.onLoginComplete();
     }
   },
 
-  // 登录成功后的处理
-  onLoginSuccess: function(phoneNumber) {
+  // 登录完成处理
+  onLoginComplete: function() {
+    const userName = wx.getStorageSync('userName');
+    const phoneNumber = wx.getStorageSync('phoneNumber');
+    
+    let content = `欢迎使用时间赎回器！\n\n用户信息：${userName}`;
+    if (phoneNumber) {
+      content += `\n手机号：${phoneNumber}`;
+    }
+    content += '\n\n现在可以享受完整的个性化服务了！';
+    
     wx.showModal({
       title: '登录成功',
-      content: `欢迎使用时间赎回器！\n\n用户信息：${this.data.userInfo.name}\n手机号：${phoneNumber}\n\n现在可以享受完整的个性化服务了！`,
+      content: content,
       showCancel: false,
       confirmText: '知道了'
     });
