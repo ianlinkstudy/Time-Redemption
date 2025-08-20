@@ -199,8 +199,8 @@ Page({
         console.log('wx.login 成功:', res);
         
         if (res.code) {
-          // 第二步：发送 code 到后台换取 openid 和 session_key
-          that.sendCodeToServer(res.code);
+          // 第二步：模拟服务器响应（避免域名配置问题）
+          that.simulateServerResponse(res.code);
         } else {
           wx.hideLoading();
           wx.showToast({
@@ -220,7 +220,42 @@ Page({
     });
   },
 
-  // 发送code到后台服务器
+  // 模拟服务器响应（避免域名配置问题）
+  simulateServerResponse: function(code) {
+    const that = this;
+    
+    // 模拟网络延迟
+    setTimeout(() => {
+      wx.hideLoading();
+      
+      // 生成模拟的openid和session_key
+      const mockOpenid = 'mock_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      const mockSessionKey = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      
+      console.log('模拟服务器响应成功:', {
+        openid: mockOpenid,
+        session_key: mockSessionKey
+      });
+      
+      // 保存 openid 和 session_key
+      wx.setStorageSync('openid', mockOpenid);
+      wx.setStorageSync('session_key', mockSessionKey);
+      
+      // 保存到页面数据
+      this.setData({
+        isLoggedIn: true,
+        openid: mockOpenid,
+        sessionKey: mockSessionKey,
+        isMockLogin: true
+      });
+      
+      // 第三步：获取用户信息（使用最新API）
+      this.getUserInfo();
+      
+    }, 1500); // 模拟网络延迟
+  },
+
+  // 发送code到后台服务器（保留用于真实服务器）
   sendCodeToServer: function(code) {
     const that = this;
     
@@ -249,7 +284,8 @@ Page({
           that.setData({
             isLoggedIn: true,
             openid: res.data.openid,
-            sessionKey: res.data.session_key
+            sessionKey: res.data.session_key,
+            isMockLogin: false
           });
           
           // 第三步：获取用户信息（使用最新API）
@@ -385,46 +421,27 @@ Page({
         title: '获取手机号中...'
       });
       
-      // 发送到解密接口
-      wx.request({
-        url: 'https://your-server.com/api/decrypt-phone',
-        method: 'POST',
-        data: {
-          encryptedData: e.detail.encryptedData,
-          iv: e.detail.iv,
-          session_key: this.data.sessionKey
-        },
-        success: function(res) {
-          wx.hideLoading();
-          
-          if (res.data.success) {
-            // 保存手机号
-            wx.setStorageSync('phoneNumber', res.data.phoneNumber);
-            
-            // 更新页面数据
-            that.setData({
-              phoneNumber: res.data.phoneNumber
-            });
-            
-            that.onLoginComplete();
-            
-          } else {
-            wx.showToast({
-              title: '获取手机号失败',
-              icon: 'error'
-            });
-          }
-        },
-        fail: function(err) {
-          wx.hideLoading();
-          console.log('获取手机号失败:', err);
-          
-          wx.showToast({
-            title: '获取手机号失败',
-            icon: 'error'
-          });
-        }
-      });
+      // 模拟手机号解密（避免域名配置问题）
+      setTimeout(() => {
+        wx.hideLoading();
+        
+        // 生成模拟手机号
+        const mockPhoneNumber = '138****' + Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+        
+        console.log('模拟手机号解密成功:', mockPhoneNumber);
+        
+        // 保存手机号
+        wx.setStorageSync('phoneNumber', mockPhoneNumber);
+        
+        // 更新页面数据
+        this.setData({
+          phoneNumber: mockPhoneNumber
+        });
+        
+        this.onLoginComplete();
+        
+      }, 1000);
+      
     } else {
       console.log('用户拒绝授权手机号');
       this.onLoginComplete();
@@ -435,11 +452,17 @@ Page({
   onLoginComplete: function() {
     const userName = wx.getStorageSync('userName');
     const phoneNumber = wx.getStorageSync('phoneNumber');
+    const isMockLogin = this.data.isMockLogin;
     
     let content = `欢迎使用时间赎回器！\n\n用户信息：${userName}`;
     if (phoneNumber) {
       content += `\n手机号：${phoneNumber}`;
     }
+    
+    if (isMockLogin) {
+      content += '\n\n注意：这是模拟登录，数据仅保存在本地。';
+    }
+    
     content += '\n\n现在可以享受完整的个性化服务了！';
     
     wx.showModal({
@@ -623,7 +646,7 @@ Page({
     } else {
       wx.showModal({
         title: '微信快捷登录说明',
-        content: '微信快捷登录流程：\n\n1. 点击"微信账号快捷登录"按钮\n2. 自动获取用户标识(openid)\n3. 手动设置头像和昵称\n4. 可选择获取手机号\n\n符合微信最新登录规范！',
+        content: '微信快捷登录流程：\n\n1. 点击"微信账号快捷登录"按钮\n2. 自动获取用户标识(openid)\n3. 手动设置头像和昵称\n4. 可选择获取手机号\n\n注意：当前使用模拟登录，无需配置服务器域名！',
         confirmText: '开始登录',
         cancelText: '取消',
         success: (res) => {
@@ -1146,7 +1169,8 @@ Page({
           that.setData({
             isLoggedIn: true,
             openid: res.data.openid,
-            sessionKey: res.data.session_key
+            sessionKey: res.data.session_key,
+            isMockLogin: false
           });
           
           // 第三步：获取用户信息（使用最新API）
