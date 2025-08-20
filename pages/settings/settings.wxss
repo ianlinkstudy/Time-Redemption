@@ -170,6 +170,39 @@
   margin-bottom: 0;
 }
 
+/* 一键登录按钮 */
+.one-click-login-btn {
+  padding: 32rpx;
+  display: flex;
+  align-items: center;
+  color: #34c759;
+  transition: all 0.3s ease;
+  margin-bottom: 16rpx;
+  background: linear-gradient(135deg, #34c759, #30d158);
+}
+
+.one-click-login-btn:active {
+  background: linear-gradient(135deg, #30d158, #34c759);
+  transform: scale(0.98);
+}
+
+.login-icon {
+  font-size: 32rpx;
+  margin-right: 24rpx;
+}
+
+.login-text {
+  flex: 1;
+  font-size: 30rpx;
+  color: white;
+  font-weight: 600;
+}
+
+.login-arrow {
+  font-size: 24rpx;
+  color: white;
+}
+
 /* 微信登录按钮 */
 .wechat-login-btn {
   padding: 32rpx;
@@ -213,6 +246,101 @@
 .wechat-arrow {
   font-size: 24rpx;
   color: #86868b;
+}
+
+/* 手机号获取弹窗 */
+.phone-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.phone-modal {
+  background: white;
+  border-radius: 20rpx;
+  width: 600rpx;
+  max-width: 90vw;
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.3);
+}
+
+.phone-modal-header {
+  padding: 32rpx;
+  border-bottom: 1rpx solid #e5e5ea;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.phone-modal-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.phone-modal-close {
+  font-size: 48rpx;
+  color: #86868b;
+  line-height: 1;
+  padding: 8rpx;
+}
+
+.phone-modal-content {
+  padding: 32rpx;
+}
+
+.phone-modal-desc {
+  font-size: 28rpx;
+  color: #86868b;
+  line-height: 1.5;
+  margin-bottom: 32rpx;
+  display: block;
+}
+
+.phone-btn {
+  background: linear-gradient(135deg, #007aff, #5856d6);
+  color: white;
+  border: none;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.phone-btn::after {
+  border: none;
+}
+
+.phone-btn-icon {
+  font-size: 32rpx;
+  margin-right: 16rpx;
+}
+
+.phone-btn-text {
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.phone-modal-tips {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.tips-text {
+  font-size: 24rpx;
+  color: #86868b;
+  line-height: 1.4;
 }
 
 /* 重置用户信息按钮 */

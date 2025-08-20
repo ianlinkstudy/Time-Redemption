@@ -26,7 +26,12 @@ Page({
     // 登录状态
     isLoggedIn: false,
     openid: '',
-    isMockLogin: false
+    isMockLogin: false,
+    
+    // 一键登录相关
+    showPhoneModal: false,
+    phoneNumber: '',
+    sessionKey: ''
   },
 
   onLoad: function() {
@@ -41,6 +46,11 @@ Page({
     this.checkDataUpdate();
     
     this.loadUserData();
+  },
+
+  // 阻止事件冒泡
+  stopPropagation: function(e) {
+    // 阻止事件冒泡
   },
 
   // 验证文件路径是否有效
@@ -448,15 +458,15 @@ Page({
       });
     } else {
       wx.showModal({
-        title: '微信登录说明',
-        content: '微信登录流程：\n\n1. 调用微信登录接口获取临时凭证\n2. 发送凭证到服务器换取用户标识\n3. 获取用户唯一标识(openid)\n\n如果服务器不可用，将自动使用模拟登录。',
-        confirmText: '开始登录',
-        cancelText: '手动设置',
+        title: '登录方式说明',
+        content: '提供两种登录方式：\n\n🚀 一键登录：\n• 自动获取用户信息\n• 获取手机号\n• 完整的登录流程\n\n🔗 微信登录：\n• 获取用户标识\n• 手动设置头像昵称\n• 服务器不可用时自动降级',
+        confirmText: '一键登录',
+        cancelText: '微信登录',
         success: (res) => {
           if (res.confirm) {
-            this.wechatLogin();
+            this.oneClickLogin();
           } else {
-            this.showManualSetupGuide();
+            this.wechatLogin();
           }
         }
       });
@@ -907,6 +917,212 @@ Page({
     wx.showShareMenu({
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
+    });
+  },
+
+  // 一键登录功能
+  oneClickLogin: function() {
+    const that = this;
+    
+    wx.showLoading({
+      title: '登录中...'
+    });
+    
+    // 第一步：调用 wx.login 获取临时登录凭证
+    wx.login({
+      success: function(res) {
+        console.log('wx.login 成功:', res);
+        
+        if (res.code) {
+          // 第二步：发送 code 到后台换取 openid 和 session_key
+          that.sendCodeToServer(res.code);
+        } else {
+          wx.hideLoading();
+          wx.showToast({
+            title: '获取登录凭证失败',
+            icon: 'error'
+          });
+        }
+      },
+      fail: function(err) {
+        console.log('wx.login 失败:', err);
+        wx.hideLoading();
+        wx.showToast({
+          title: '登录失败',
+          icon: 'error'
+        });
+      }
+    });
+  },
+
+  // 发送code到后台服务器
+  sendCodeToServer: function(code) {
+    const that = this;
+    
+    // 这里需要替换为您的真实服务器地址
+    const serverUrl = 'https://your-server.com/api/login';
+    
+    wx.request({
+      url: serverUrl,
+      method: 'POST',
+      data: {
+        code: code
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      success: function(res) {
+        wx.hideLoading();
+        console.log('服务器响应:', res.data);
+        
+        if (res.data.success) {
+          // 保存 openid 和 session_key
+          wx.setStorageSync('openid', res.data.openid);
+          wx.setStorageSync('session_key', res.data.session_key);
+          
+          // 保存到页面数据
+          that.setData({
+            isLoggedIn: true,
+            openid: res.data.openid,
+            sessionKey: res.data.session_key
+          });
+          
+          // 第三步：获取用户信息
+          that.getUserProfile();
+          
+        } else {
+          wx.showToast({
+            title: res.data.message || '登录失败',
+            icon: 'error'
+          });
+        }
+      },
+      fail: function(err) {
+        wx.hideLoading();
+        console.log('请求服务器失败:', err);
+        
+        // 如果服务器不可用，使用模拟登录
+        that.useMockLogin();
+      }
+    });
+  },
+
+  // 获取用户信息
+  getUserProfile: function() {
+    const that = this;
+    
+    wx.getUserProfile({
+      desc: '用于完善会员资料',
+      success: function(res) {
+        console.log('获取用户信息成功:', res.userInfo);
+        
+        // 保存用户信息
+        wx.setStorageSync('userInfo', res.userInfo);
+        
+        // 更新页面数据
+        that.setData({
+          userInfo: {
+            ...that.data.userInfo,
+            name: res.userInfo.nickName,
+            avatarUrl: res.userInfo.avatarUrl
+          }
+        });
+        
+        // 显示获取手机号的弹窗
+        that.showPhoneModal();
+        
+        wx.showToast({
+          title: '用户信息获取成功',
+          icon: 'success'
+        });
+      },
+      fail: function(err) {
+        console.log('获取用户信息失败:', err);
+        
+        // 如果获取用户信息失败，仍然可以继续
+        that.showPhoneModal();
+      }
+    });
+  },
+
+  // 显示手机号获取弹窗
+  showPhoneModal: function() {
+    this.setData({
+      showPhoneModal: true
+    });
+  },
+
+  // 隐藏手机号获取弹窗
+  hidePhoneModal: function() {
+    this.setData({
+      showPhoneModal: false
+    });
+  },
+
+  // 获取用户手机号
+  getPhoneNumber: function(e) {
+    const that = this;
+    
+    if (e.detail.errMsg === "getPhoneNumber:ok") {
+      wx.showLoading({
+        title: '获取手机号中...'
+      });
+      
+      // 发送到解密接口
+      wx.request({
+        url: 'https://your-server.com/api/decrypt-phone',
+        method: 'POST',
+        data: {
+          encryptedData: e.detail.encryptedData,
+          iv: e.detail.iv,
+          session_key: this.data.sessionKey
+        },
+        success: function(res) {
+          wx.hideLoading();
+          
+          if (res.data.success) {
+            // 保存手机号
+            wx.setStorageSync('phoneNumber', res.data.phoneNumber);
+            
+            // 更新页面数据
+            that.setData({
+              phoneNumber: res.data.phoneNumber,
+              showPhoneModal: false
+            });
+            
+            // 登录成功后的处理
+            that.onLoginSuccess(res.data.phoneNumber);
+            
+          } else {
+            wx.showToast({
+              title: '获取手机号失败',
+              icon: 'error'
+            });
+          }
+        },
+        fail: function(err) {
+          wx.hideLoading();
+          console.log('获取手机号失败:', err);
+          
+          wx.showToast({
+            title: '获取手机号失败',
+            icon: 'error'
+          });
+        }
+      });
+    } else {
+      console.log('用户拒绝授权手机号');
+      this.hidePhoneModal();
+    }
+  },
+
+  // 登录成功后的处理
+  onLoginSuccess: function(phoneNumber) {
+    wx.showModal({
+      title: '登录成功',
+      content: `欢迎使用时间赎回器！\n\n用户信息：${this.data.userInfo.name}\n手机号：${phoneNumber}\n\n现在可以享受完整的个性化服务了！`,
+      showCancel: false,
+      confirmText: '知道了'
     });
   }
 }); 
